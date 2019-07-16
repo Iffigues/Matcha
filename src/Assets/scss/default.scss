@@ -1,0 +1,20 @@
+body{
+    margin: 0;
+
+    a{
+        color: black;
+    }
+}
+
+.navbar {
+    display: flex;
+    float: left;
+    margin: 20px 100px auto;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+li {
+    float: left;
+    margin-left: 20px;
+    list-style-type: none;
+}
