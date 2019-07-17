@@ -7,6 +7,7 @@ class Contact extends Component{
             <div>
                 <h1>Contact</h1>
                 <p>
+		gdffgfgdgdgdgrgt fs  dfdfh 
                      je suis à la page de contact 
                 </p>
             </div>

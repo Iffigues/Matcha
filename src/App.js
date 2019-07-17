@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 // Css
 import './Assets/css/default.min.css';
 // Component
-import Header from './components/headerComponent/header';
 import Contact from './components/pages/Contact';
 import Products from './components/pages/Products';
 import Homepage from './components/pages/Homepage';
@@ -14,7 +13,6 @@ class App extends Component {
       <Router>
         <div className="App">
 
-          <Header />
 
           {/* <Route exact path="/" render={() => (
           

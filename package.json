@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.2.0",
     "express": "^4.17.1",
+    "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.2.7",
+    "nodemon": "^1.19.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-jss": "^8.6.1",
@@ -13,6 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "devserver": "nodemon -w server -w package.json ./server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
