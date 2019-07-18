@@ -1,10 +1,8 @@
-function alola(db, login) {
+function alola(db, tab, res) {
 	const collection = db.collection('user');
-	collection.find({'login': login}).toArray(function(err, docs) {
-		assert.equal(err, null);
-		console.log("Found the following records");
-		console.log(docs);
-		return (docs);
+	collection.find(tab).toArray(function(err, docs) {
+		res.writeHeader(200, {'Content-Type':'application/json'});
+		res.end(JSON.stringify(docs));
 	});
 }
 
