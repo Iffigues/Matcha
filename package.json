@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.2.0",
+    "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.2.7",
