@@ -10,8 +10,7 @@ function query(callback, tab, res) {
 	client.connect(function(err) {
 		assert.equal(null, err);
 		const db = client.db(dbName);
-		callback(db, tab, res);
-		client.close();
+		callback(db, tab, res, client);
 	});
 }
 
