@@ -5,7 +5,7 @@ function user(tab, hash) {
 	let user = {};
 	user.login = tab.login;
 	user.pwd = hash;
-	user.email = tab.mail
+	user.email = tab.email
 	return user;
 }
 
@@ -15,7 +15,10 @@ function register(db, tab, res, client) {
 		const collection = db.collection('user');
 		collection.insertOne(r, function(err, res) {
 			console.log(err);
-			client.close();
+			collection.createIndexes( { "login": 1 }, { unique: true }, function(err, res){
+				collection.createIndexes( { "email": 1 }, { unique: true }, function(err, res){
+				})
+			})
 		});
 	});
 	res.end();

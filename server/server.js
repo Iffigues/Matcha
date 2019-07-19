@@ -17,7 +17,8 @@ app.use(bodyParser.text({ type: 'text/html' }))
 app.post('/register', function (req, res) {
 	let user = req.body.user;
 	let pwd = req.body.pwd;
-	mg.query(reg.register, {login: user, pwd: pwd}, res);
+	let email = req.body.email;
+	mg.query(reg.register, {login: user, pwd: pwd, email: email}, res);
 });
 
 app.post('/login', function (req, res) {
