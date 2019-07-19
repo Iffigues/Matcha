@@ -13,12 +13,12 @@ function register(db, tab, res, client) {
 	bcrypt.hash(tab.pwd, saltRounds, function(err, hash) {
 		let r = user(tab, hash);
 		const collection = db.collection('user');
-		collection.insertOne(r, function(err, res) {
-			console.log(err);
-			collection.createIndexes( { "login": 1 }, { unique: true }, function(err, res){
-				collection.createIndexes( { "email": 1 }, { unique: true }, function(err, res){
-				})
-			})
+		collection.findOne({$or:[{login: r.login}, {email: r.email}]}, function(err, docs){
+			if (!docs) {
+				collection.insertOne(r, function(err, rest) {
+					console.log(err);
+				});
+			}
 		});
 	});
 	res.end();

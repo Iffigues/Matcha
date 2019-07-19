@@ -3,7 +3,7 @@ const assert = require('assert');
 var sanitize = require('mongo-sanitize');
 
 const url = 'mongodb://localhost:27017';
-const dbName = 'matcha';
+const dbName = 'matchas';
 const client = new MongoClient(url,{ useNewUrlParser: true });
 
 function query(callback, tab, res) {
