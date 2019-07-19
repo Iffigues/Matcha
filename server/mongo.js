@@ -3,11 +3,15 @@ const assert = require('assert');
 var sanitize = require('mongo-sanitize');
 
 const url = 'mongodb://localhost:27017';
-const dbName = 'matcha';
+const dbName = 'matchas';
 const client = new MongoClient(url,{ useNewUrlParser: true });
 
-client.connect(function(err) {
-	assert.equal(null, err);
-	const db = client.db(dbName);
-	client.close();
-});
+function query(callback, tab, res) {
+	client.connect(function(err) {
+		assert.equal(null, err);
+		const db = client.db(dbName);
+		callback(db, tab, res, client);
+	});
+}
+
+module.exports.query = query;
