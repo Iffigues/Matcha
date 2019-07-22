@@ -1,6 +1,11 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+
+const googleMapsClient = require('@google/maps').createClient({
+	  key: 'your API key here'
+});
+
 function user(tab, hash) {
 	let user = {};
 	user.login = tab.login;
