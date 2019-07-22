@@ -14,13 +14,26 @@ type Props = {
 
 
 class RegisterPage extends Component<Props, State> {
+	  constructor() {
+		      super();
+		      this.handleSubmit = this.handleSubmit.bind(this);
+		    }
 
+	  handleSubmit(event) {
+		      event.preventDefault();
+		      const data = new FormData(event.target);
+		    	console.log(this.correctForm);
+		      fetch('http://gopiko.fr:8080/register', {
+			            method: 'POST',
+			            body: data,
+			       });
+		    }
   render() {
     const { classes } = this.props;
 
     const correctForm = (
-      <InfoRegister onClick={() => this.setState({ locationForm: true })} />
-    );
+      <InfoRegister onClick={() => this.setState({ locationForm: true })} onSubmit={() => alert("sdds")}/>
+   );
 
     return (
       <div className={classes.container}>
@@ -43,7 +56,7 @@ class RegisterPage extends Component<Props, State> {
 
         <div className={classes.registerContainer} />
         <div className={classes.darkBox}>
-          <form className={classes.registerFormWrapper}>
+          <form className={classes.registerFormWrapper} onSubmit={this.handleSubmit}>
             <div className={classes.registerTitle}>
               More ways to meet people who worth it !
             </div>

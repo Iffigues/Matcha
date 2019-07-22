@@ -26,9 +26,8 @@ class InfoRegister extends Component<Props, State> {
     password: '',
     email: '',
   };
-
   render() {
-    const { classes, onClick } = this.props;
+    const { classes, onClick, onSubmit} = this.props;
 
     return (
       <div className={classes.container}>
@@ -54,6 +53,7 @@ class InfoRegister extends Component<Props, State> {
           <InputForm
             type="text"
             placeholder="Last Name"
+	    name="name"
             onChange={e => this.setState({ lastname: e.target.value })}
           />
         </div>
@@ -61,6 +61,7 @@ class InfoRegister extends Component<Props, State> {
           <InputForm
             type="text"
             placeholder="Username"
+	    name="hahaha"
             onChange={e => this.setState({ username: e.target.value })}
           />
           <InputForm
@@ -79,7 +80,7 @@ class InfoRegister extends Component<Props, State> {
             }}
           />
         </div>
-        <ButtonForm text="CONTINUE" onClick={onClick} />
+        <ButtonForm text="CONTINUE" onClick={onClick} onSubmit={onSubmit}/>
       </div>
     );
   }
