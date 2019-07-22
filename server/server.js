@@ -16,7 +16,7 @@ app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 app.use(bodyParser.text({ type: 'text/html' }))
 app.use(function(req, res, next) {
 	  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	  res.header("Access-Control-Allow-Headers", "*,Origin, X-Requested-With, Content-Type, Accept");
 	  next();
 });
 app.post('/register', function (req, res) {

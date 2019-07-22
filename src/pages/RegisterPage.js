@@ -25,7 +25,11 @@ class RegisterPage extends Component<Props, State> {
 		    	console.log(data.get("gender"));
 		      fetch('http://gopiko.fr:8080/register', {
 			            method: 'POST',
-			            body: data,
+			      		  headers: {
+						      Accept: 'application/json',
+						      'Content-Type': 'application/json',
+						    },
+			            body: JSON.stringify({gender:data.get('gender')}),
 			       });
 		    }
   render() {
