@@ -22,7 +22,7 @@ class RegisterPage extends Component<Props, State> {
 	  handleSubmit(event) {
 		      event.preventDefault();
 		      const data = new FormData(event.target);
-		    	console.log(this.correctForm);
+		    	console.log(data.get("gender"));
 		      fetch('http://gopiko.fr:8080/register', {
 			            method: 'POST',
 			            body: data,
