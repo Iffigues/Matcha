@@ -17,7 +17,9 @@
     "react-jss": "^8.6.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "socket.io": "^2.2.0"
+    "sendmail": "^1.6.1",
+    "socket.io": "^2.2.0",
+    "uuid-token-generator": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

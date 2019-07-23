@@ -14,9 +14,6 @@ type Props = {
 
 
 class RegisterPage extends Component<Props, State> {
-	constructor() {
-		super(Props);
-	}
 	grapValue = (data) => {
 		var b = {};
 		b.gender = data.get('gender');
