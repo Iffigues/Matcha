@@ -6,19 +6,18 @@ function login(db, tab, res, client) {
 	let p = "not good"
 	const collection = db.collection('user');
 	collection.findOne({login: tab.login}, (err, docs) => {
-	if (docs) {
+		if (docs && docs.active) {
 			bcrypt.compare(tab.pwd, docs.pwd, (err, ress) => {
 				console.log(err);
-				    if (ress === true) {
-					    console.log(ress);
-					    this.b = 200;
-					    this.p = "user is connected";
+				if (ress === true) {
+					this.b = 200;
+					this.p = "user is connected";
 					res.writeHeader(200,{"Content-Type":"application:json"});
-					    res.end(JSON.stringify(docs));
-					    return;
-				    }
+					res.end(JSON.stringify(docs));
+					return;
+				}
 			});
-			
+
 		} else {
 			res.end();
 		}

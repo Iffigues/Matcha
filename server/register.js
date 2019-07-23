@@ -10,7 +10,8 @@ function user(tab, hash) {
 	let user = {};
 	user.login = tab.login;
 	user.pwd = hash;
-	user.email = tab.email
+	user.email = tab.email;
+	user.active = 0;
 	return user;
 }
 

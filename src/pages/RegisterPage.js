@@ -15,11 +15,9 @@ type Props = {
 
 class RegisterPage extends Component<Props, State> {
 	constructor() {
-		super();
-		this.handleSubmit = this.handleSubmit.bind(this);
+		super(Props);
 	}
-
-	grapValue(data) {
+	grapValue = (data) => {
 		var b = {};
 		b.gender = data.get('gender');
 		b.lastname = data.get('lastname');
@@ -30,7 +28,7 @@ class RegisterPage extends Component<Props, State> {
 		console.log(b);
 		return (b);
 	}
-	handleSubmit(event) {
+	handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.target);
 		fetch('http://gopiko.fr:8080/register', {
