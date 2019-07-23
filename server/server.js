@@ -22,7 +22,7 @@ app.post('/register', function (req, res) {
 	let user = req.body.username;
 	let pwd = req.body.password;
 	let email = req.body.email;
-	let firstname = req.body.firtstname;
+	let firstname = req.body.firstname;
 	let lastname = req.body.lastname;
 	let gender = req.body.gender;
 	mg.query(reg.register, {login: user, pwd: pwd, email: email, firstname: firstname, lastname: lastname, gender: gender}, res);

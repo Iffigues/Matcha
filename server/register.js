@@ -2,21 +2,32 @@ const TokenGenerator = require('uuid-token-generator');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-
+const Validateur = require("./validateur.js");
 
 const googleMapsClient = require('@google/maps').createClient({
 	key: 'your API key here'
 });
 
+function verif(data) {
+	let valid = new Validateur();
+	let found = valid.isName(data.firstname+" "+data.lastname);
+	if (!found)
+		return false;
+	return data;
+}
+
 function user(tab, hash) {
 	let user = {};
-	const tokgen = new TokenGenerator();
+	console.log(tab);
+	const token = new TokenGenerator();
 	user.login = tab.login;
+	user.lastname = tab.lastname;
+	user.firstname = tab.firstname;
 	user.pwd = hash;
 	user.email = tab.email;
 	user.active = 0;
-	user.token = tokgen.generate();
-	return user;
+	user.token = token.generate();
+	return verif(user);
 }
 
 function sendmai(token){
