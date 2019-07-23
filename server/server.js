@@ -10,7 +10,6 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
 app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' })) 
 app.use(bodyParser.text({ type: 'text/html' }))
@@ -20,11 +19,13 @@ app.use(function(req, res, next) {
 	  next();
 });
 app.post('/register', function (req, res) {
-	let user = req.body.user;
-	let pwd = req.body.pwd;
+	let user = req.body.username;
+	let pwd = req.body.password;
 	let email = req.body.email;
-	console.log(req.body);
-	mg.query(reg.register, {login: user, pwd: pwd, email: email}, res);
+	let firstname = req.body.firtstname;
+	let lastname = req.body.lastname;
+	let gender = req.body.gender;
+	mg.query(reg.register, {login: user, pwd: pwd, email: email, firstname: firstname, lastname: lastname, gender: gender}, res);
 });
 
 app.post('/login', function (req, res) {

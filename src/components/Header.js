@@ -10,7 +10,8 @@ import ButtonNormal from './ButtonNormal';
 
 type Props = {
   classes: Object,
-  pathname : string
+  pathname: String,
+  history: Object
 };
 
 
@@ -27,7 +28,8 @@ class Header extends Component<Props> {
 
     const {
       classes,
-      pathname
+      pathname,
+	history
   } = this.props;
 
     switch (pathname) {
@@ -41,17 +43,15 @@ class Header extends Component<Props> {
         break;
       default:
         text = 'Login';
-    }
-
+    }	
+console.log("c'est ici le prob ==> " + history + '<=');
     return (
       <div className={classes.container}>
         <img className={classes.matchaLogo} src={matchaLogo} alt="" />
         <div className={classes.notifications}>
           <ButtonNormal
             text={text}
-            onClick={() => {
-              ;/*Next page*/
-            }}
+            onClick={() => history.push('/')}
           />
         </div>
       </div>

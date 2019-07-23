@@ -15,7 +15,7 @@ function user(tab, hash) {
 }
 
 function register(db, tab, res, client) {
-	bcrypt.hash(tab.pwd, saltRounds, function(err, hash) {
+	bcrypt.hash(tab.pwd, saltRounds, (err, hash) => {
 		let r = user(tab, hash);
 		const collection = db.collection('user');
 		collection.findOne({$or:[{login: r.login}, {email: r.email}]}, function(err, docs){

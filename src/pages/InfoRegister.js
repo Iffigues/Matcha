@@ -47,13 +47,14 @@ class InfoRegister extends Component<Props, State> {
         <div className={classes.inputWrapper}>
           <InputForm
             type="text"
+	    name="firstname"
             placeholder="First Name"
             onChange={e => this.setState({ firstname: e.target.value })}
           />
           <InputForm
             type="text"
             placeholder="Last Name"
-	    name="name"
+	    name="lastname"
             onChange={e => this.setState({ lastname: e.target.value })}
           />
         </div>
@@ -61,12 +62,13 @@ class InfoRegister extends Component<Props, State> {
           <InputForm
             type="text"
             placeholder="Username"
-	    name="hahaha"
+	    name="username"
             onChange={e => this.setState({ username: e.target.value })}
           />
           <InputForm
             type="password"
             placeholder="Password"
+	    name="password"
             onChange={e => this.setState({ password: e.target.value })}
           />
         </div>
@@ -74,6 +76,7 @@ class InfoRegister extends Component<Props, State> {
           <InputForm
             type="email"
             placeholder="Email"
+	    name="email"
             onChange={e => this.setState({ email: e.target.value })}
             style={{
               width: '370px',

@@ -1,14 +1,13 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-function alola(db, tab, res, client) {
+function login(db, tab, res, client) {
 	let b = 400;
 	let p = "not good"
 	const collection = db.collection('user');
-	collection.findOne({login: tab.login}, function(err, docs) {
-		console.log(docs);
+	collection.findOne({login: tab.login}, (err, docs) => {
 	if (docs) {
-			bcrypt.compare(tab.pwd, docs.pwd, function(err, ress) {
+			bcrypt.compare(tab.pwd, docs.pwd, (err, ress) => {
 				console.log(err);
 				    if (ress === true) {
 					    console.log(ress);
@@ -28,4 +27,4 @@ function alola(db, tab, res, client) {
 	});
 }
 
-module.exports.alola = alola;
+module.exports.login = login;
