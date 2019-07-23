@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.2.0",
     "bcrypt": "^3.0.6",
     "express": "^4.17.1",
+    "flow-bin": "0.103.0",
     "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.2.7",
     "nodemailer": "^6.3.0",
@@ -41,6 +42,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "eslint": "5.16.0",
+    "eslint-plugin-react": "^7.14.2",
     "gulp": "^4.0.2",
     "gulp-changed": "^3.0.0",
     "gulp-clean-css": "^4.2.0",
