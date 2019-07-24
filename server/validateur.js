@@ -8,6 +8,15 @@ class Validate {
 	isName (name) {
 		return(this.name.test(name));
 	}
+	isEmail (email) {
+		return (this.email.test(email));
+	}
+	isPwd (pwd) {
+		return (this.password.test(pwd));
+	}
+	isLogin (login) {
+		return (this.username.test(login));
+	}
 }
 
 module.exports = Validate;

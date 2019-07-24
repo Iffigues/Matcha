@@ -10,15 +10,19 @@ const googleMapsClient = require('@google/maps').createClient({
 
 function verif(data) {
 	let valid = new Validateur();
-	let found = valid.isName(data.firstname+" "+data.lastname);
-	if (!found)
-		return false;
-	return data;
+	if (!valid.isName(data.firstname+" "+data.lastname))
+		return ({i:0, res:"invalide  firstname or lastname"});
+	if (!valid.isEmail(data.email))
+		return ({i:0, res: "invalide email"});
+	if (!valid.isPwd(data.pwd))
+		return ({i:0, res: "invalide password"});
+	if (!valid.isLogin(data.login))
+		return ({i:0, res: "invalide username"});
+	return ({i:1,res:data});
 }
 
 function user(tab, hash) {
 	let user = {};
-	console.log(tab);
 	const token = new TokenGenerator();
 	user.login = tab.login;
 	user.lastname = tab.lastname;
@@ -46,13 +50,14 @@ function register(db, tab, res, client) {
 	bcrypt.hash(tab.pwd, saltRounds, (err, hash) => {
 		let r = user(tab, hash);
 		const collection = db.collection('user');
-		collection.findOne({$or:[{login: r.login}, {email: r.email}]}, function(err, docs){
-			if (!docs) {
-				collection.insertOne(r, function(err, rest) {
-					sendmai(docs.token);
-				});
-			}
-		});
+		if (r.i)
+			collection.findOne({$or:[{login: r.res.login}, {email: r.res.email}]}, function(err, docs){
+				if (!docs) {
+					collection.insertOne(r.res, function(err, rest) {
+						sendmai(r.res.token);
+					});
+				}
+			});
 	});
 	res.end();
 }
