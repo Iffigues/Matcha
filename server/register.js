@@ -34,12 +34,12 @@ function user(tab, hash) {
 	return verif(user);
 }
 
-function sendmai(token){
+function sendmai(token, username){
 	sendmail({
 		from: 'no-reply@yourdomain.com',
 		to: 'iffigues@vivaldi.net',
 		subject: 'test sendmail',
-		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/?token="+token+"\">https://gopiko.fr:3000/?token="+token+"</a></body></html>",
+		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:3000/?token="+token+"</a></body></html>",
 	}, function(err, reply) {
 		console.log(err && err.stack);
 		console.dir(reply);
@@ -47,19 +47,25 @@ function sendmai(token){
 }
 
 function register(db, tab, res, client) {
+	let b = 202;
+	let r = {};
 	bcrypt.hash(tab.pwd, saltRounds, (err, hash) => {
-		let r = user(tab, hash);
+		r = user(tab, hash);
 		const collection = db.collection('user');
+		if (!r.i) {
+			b = 404;
+		}
 		if (r.i)
 			collection.findOne({$or:[{login: r.res.login}, {email: r.res.email}]}, function(err, docs){
 				if (!docs) {
 					collection.insertOne(r.res, function(err, rest) {
-						sendmai(r.res.token);
+						sendmai(r.res.token, r.res.login);
 					});
 				}
 			});
 	});
-	res.end();
+	res.writeHeader(b,{"Content-Type":"application/json"});
+	res.end(JSON.stringify(r.res));
 }
 
 module.exports.register = register;

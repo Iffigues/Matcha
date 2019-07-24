@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const app = express();
 const mg = require('./mongo.js');
+const val = require("./accept.js");
 const reg = require('./register.js');
 const query = require('./query');
 
@@ -28,6 +29,11 @@ app.post('/register', function (req, res) {
 	mg.query(reg.register, {login: user, pwd: pwd, email: email, firstname: firstname, lastname: lastname, gender: gender}, res);
 });
 
+app.get('/validate/:log/:id', function (req, res) {
+	let id =  req.params.id;
+	let log = req.params.log;
+	mg.query(val.accept, {id: id, log: log}, res);
+})
 
 app.post('/login', function (req, res) {
 	let user = req.body.user;
