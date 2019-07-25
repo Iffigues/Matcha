@@ -2,16 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
 const app = express();
+const cookieParser = require('cookie-parser');
 const mg = require('./mongo.js');
 const val = require("./accept.js");
 const reg = require('./register.js');
 const query = require('./query');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
+const withAuth = require('./middleware');
 
-app.use(passport.initialize());
-require('./passport')(passport);
-
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(express.json());
@@ -34,14 +33,6 @@ app.post('/register', function (req, res) {
 	mg.query(reg.register, {login: user, pwd: pwd, email: email, firstname: firstname, lastname: lastname, gender: gender}, res);
 });
 
-app.get('/me', passport.authenticate('jwt', { session: false }), (req, res) => {
-	return res.json({
-		id: req.user.id,
-		name: req.user.name,
-		email: req.user.email
-	});
-});
-
 app.get('/validate/:log/:id', function (req, res) {
 	let id =  req.params.id;
 	let log = req.params.log;
@@ -51,7 +42,7 @@ app.get('/validate/:log/:id', function (req, res) {
 app.post('/login', function (req, res) {
 	let user = req.body.user;
 	let pwd = req.body.pwd;
-	mg.query(query.alola, {login: user, pwd: pwd}, res);
+	mg.query(query.login, {login: user, pwd: pwd}, res);
 });
 
 app.listen(process.env.PORT || 8080);

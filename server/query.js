@@ -1,32 +1,28 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const passport = require('./passport.js');
+const tok = require('./tok');
 
 function login(db, tab, res, client) {
 	let b = 400;
 	let p = "not good"
+	console.log(tab);
 	const collection = db.collection('user');
 	collection.findOne({login: tab.login}, (err, docs) => {
 		if (docs && docs.active) {
 			bcrypt.compare(tab.pwd, docs.pwd, (err, ress) => {
+				console.log(ress);
 				if (ress === true) {
-					const payload = {
-						id: user.id,
-						name: user.name,
-						avatar: user.avatar
-					}
-					jwt.sign(payload, 'secret', {
-						expiresIn: 3600
-					}, (err, token) => {
-						this.b = 200;
-						this.p = "user is connected";
-						res.json({
-							success: true,
-							token: `Bearer ${token}`
-						});
-						return;
+					toke = new tok();
+					this.b = 200;
+					this.p = "user is connected";
+					const payload = { docs };
+					const token = jwt.sign(payload, 'my-secret', {
+						expiresIn: '1h'
 					});
+					console.log("hahaha");
+					res.cookie('token', token, { httpOnly: true })
+						.sendStatus(200);
 				}
 			});
 

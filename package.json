@@ -8,6 +8,7 @@
     "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "flow-bin": "0.103.0",
     "gravatar": "^1.8.0",
