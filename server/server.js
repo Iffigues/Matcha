@@ -6,6 +6,11 @@ const mg = require('./mongo.js');
 const val = require("./accept.js");
 const reg = require('./register.js');
 const query = require('./query');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
+
+app.use(passport.initialize());
+require('./passport')(passport);
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -15,9 +20,9 @@ app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' })) 
 app.use(bodyParser.text({ type: 'text/html' }))
 app.use(function(req, res, next) {
-	  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-	  res.header("Access-Control-Allow-Headers", "*,Origin, X-Requested-With, Content-Type, Accept");
-	  next();
+	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+	res.header("Access-Control-Allow-Headers", "*,Origin, X-Requested-With, Content-Type, Accept");
+	next();
 });
 app.post('/register', function (req, res) {
 	let user = req.body.username;
@@ -27,6 +32,14 @@ app.post('/register', function (req, res) {
 	let lastname = req.body.lastname;
 	let gender = req.body.gender;
 	mg.query(reg.register, {login: user, pwd: pwd, email: email, firstname: firstname, lastname: lastname, gender: gender}, res);
+});
+
+app.get('/me', passport.authenticate('jwt', { session: false }), (req, res) => {
+	return res.json({
+		id: req.user.id,
+		name: req.user.name,
+		email: req.user.email
+	});
 });
 
 app.get('/validate/:log/:id', function (req, res) {

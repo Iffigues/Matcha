@@ -5,6 +5,14 @@ class Validate {
 		this.password = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
 		this.username = /^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$/;
 	}
+	isEmpty(value) {
+		return (
+			value === undefined ||
+			value === null ||
+			(typeof value === 'object' && Object.keys(value).length === 0) ||
+			(typeof value === 'string' && value.trim().length === 0)
+		);
+	}
 	isName (name) {
 		return(this.name.test(name));
 	}
