@@ -7,23 +7,27 @@ import coupleSand from '../images/photos_selected/Register-Page/couple-hug-beach
 import certification from '../images/photos_selected/Register-Page/certified.png';
 import geometricHeart from '../images/photos_selected/Register-Page/geometric-heart.jpg';
 import InfoRegister from './InfoRegister';
+import LocationRegister from './LocationRegister'
 
 type Props = {
   classes: Object,
+  history: Object,
 };
 
+type State = {
+  locationForm: boolean,
+};
 
 class RegisterPage extends Component<Props, State> {
-	  constructor() {
-		      super();
-		      this.handleSubmit = this.handleSubmit.bind(this);
-		    }
+    state = {
+      locationForm: false,
+    };
 
-	  handleSubmit(event) {
+	  handleSubmit = (event) => {
 		      event.preventDefault();
 		      const data = new FormData(event.target);
 		    	console.log(data.get("gender"));
-		      fetch('http://gopiko.fr:8080/register', {
+		      fetch('http://localhost:8080/register', {
 			            method: 'POST',
 			      		  headers: {
 						      Accept: 'application/json',
@@ -32,12 +36,16 @@ class RegisterPage extends Component<Props, State> {
 			            body: JSON.stringify({gender:data.get('gender')}),
 			       });
 		    }
+   
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
+    const { locationForm } = this.state;
 
-    const correctForm = (
-      <InfoRegister onClick={() => this.setState({ locationForm: true })} onSubmit={() => alert("sdds")}/>
-   );
+    const correctForm = locationForm ? (
+      <LocationRegister onClick={() => this.handleSubmit.then(history.push('/login'))} />
+    ) : (
+      <InfoRegister onClick={() => this.setState({ locationForm: true })} />
+    );
 
     return (
       <div className={classes.container}>
