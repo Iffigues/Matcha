@@ -42,7 +42,7 @@ class RegisterPage extends Component<Props, State> {
     const { locationForm } = this.state;
 
     const correctForm = locationForm ? (
-      <LocationRegister onClick={() => this.handleSubmit.then(history.push('/login'))} />
+      <LocationRegister onClick={() => { history.push('/login') }} />
     ) : (
       <InfoRegister onClick={() => this.setState({ locationForm: true })} />
     );
