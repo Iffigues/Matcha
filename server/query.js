@@ -11,7 +11,6 @@ function login(db, tab, res, client) {
 	collection.findOne({login: tab.login}, (err, docs) => {
 		if (docs && docs.active) {
 			bcrypt.compare(tab.pwd, docs.pwd, (err, ress) => {
-				console.log(ress);
 				if (ress === true) {
 					toke = new tok();
 					this.b = 200;
@@ -20,7 +19,6 @@ function login(db, tab, res, client) {
 					const token = jwt.sign(payload, 'my-secret', {
 						expiresIn: '1h'
 					});
-					console.log("hahaha");
 					res.cookie('token', token, { httpOnly: true })
 						.sendStatus(200);
 				}

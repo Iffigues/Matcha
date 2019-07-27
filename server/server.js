@@ -39,6 +39,10 @@ app.get('/validate/:log/:id', function (req, res) {
 	mg.query(val.accept, {id: id, log: log}, res);
 })
 
+app.get('/connected', withAuth, function (req, res) {
+	res.sendStatus(202);
+})
+
 app.post('/login', function (req, res) {
 	let user = req.body.user;
 	let pwd = req.body.pwd;
