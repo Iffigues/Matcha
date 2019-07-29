@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppContainer from './pages/AppContainer';
-import * as serviceWorker from './serviceWorker';
+import routes from './routes/route';
+import { Provider } from 'react-redux';
+import store from './store/index';
 
 ReactDOM.render(
-    <AppContainer />, 
-    document.getElementById('root')
+  <Provider store={store}>{routes}</Provider>,
+  document.getElementById('root')
 );
 
-serviceWorker.unregister();

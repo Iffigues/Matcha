@@ -10,8 +10,13 @@ import ButtonNormal from './ButtonNormal';
 
 type Props = {
   classes: Object,
+<<<<<<< HEAD
   pathname: String,
   history: Object
+=======
+  pathname : String,
+  history: Object,
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
 };
 
 
@@ -29,7 +34,11 @@ class Header extends Component<Props> {
     const {
       classes,
       pathname,
+<<<<<<< HEAD
 	history
+=======
+      history,
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
   } = this.props;
 
     switch (pathname) {
@@ -37,21 +46,34 @@ class Header extends Component<Props> {
         text = 'REGISTER';
         location = '/register';
         break;
+      case '/':
       case '/register':
         text = 'LOGIN';
         location = '/login';
         break;
       default:
+<<<<<<< HEAD
         text = 'Login';
     }	
 console.log("c'est ici le prob ==> " + history + '<=');
+=======
+        text = 'Default - chanhe header.js bouton text';
+    }
+
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
     return (
       <div className={classes.container}>
         <img className={classes.matchaLogo} src={matchaLogo} alt="" />
         <div className={classes.notifications}>
           <ButtonNormal
             text={text}
+<<<<<<< HEAD
             onClick={() => history.push('/')}
+=======
+            onClick={() =>
+              history.push(location)
+            }
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
           />
         </div>
       </div>

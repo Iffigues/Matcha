@@ -7,13 +7,23 @@ import coupleSand from '../images/photos_selected/Register-Page/couple-hug-beach
 import certification from '../images/photos_selected/Register-Page/certified.png';
 import geometricHeart from '../images/photos_selected/Register-Page/geometric-heart.jpg';
 import InfoRegister from './InfoRegister';
+import LocationRegister from './LocationRegister'
 
 type Props = {
+<<<<<<< HEAD
 	classes: Object,
+=======
+  classes: Object,
+  history: Object,
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
 };
 
+type State = {
+  locationForm: boolean,
+};
 
 class RegisterPage extends Component<Props, State> {
+<<<<<<< HEAD
 	constructor() {
 		super();
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,6 +58,35 @@ class RegisterPage extends Component<Props, State> {
 		const correctForm = (
 			<InfoRegister onClick={() => this.setState({ locationForm: true })} onSubmit={() => alert("sdds")}/>
 		);
+=======
+    state = {
+      locationForm: false,
+    };
+
+	  handleSubmit = (event) => {
+		      event.preventDefault();
+		      const data = new FormData(event.target);
+		    	console.log(data.get("gender"));
+		      fetch('http://localhost:8080/register', {
+			            method: 'POST',
+			      		  headers: {
+						      Accept: 'application/json',
+						      'Content-Type': 'application/json',
+						    },
+			            body: JSON.stringify({gender:data.get('gender')}),
+			       });
+		    }
+   
+  render() {
+    const { classes, history } = this.props;
+    const { locationForm } = this.state;
+
+    const correctForm = locationForm ? (
+      <LocationRegister onClick={() => { history.push('/login') }} />
+    ) : (
+      <InfoRegister onClick={() => this.setState({ locationForm: true })} />
+    );
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
 
 		return (
 			<div className={classes.container}>
