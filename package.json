@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
     "@google/maps": "^0.5.5",
     "@material-ui/core": "^4.2.0",
     "bcrypt": "^3.0.6",
@@ -12,15 +11,12 @@
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "flow-bin": "0.103.0",
-<<<<<<< HEAD
-=======
     "axios": "^0.17.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "flow-bin": "^0.63.1",
->>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
     "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.0.1",
     "nodemon": "^1.19.1",
@@ -34,8 +30,7 @@
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
-    "socket.io": "^2.2.0"
-=======
+    "socket.io": "^2.2.0",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "jws": "^3.2.2",
@@ -55,7 +50,6 @@
     "socket.io": "^2.2.0",
     "uuid-token-generator": "^1.0.0",
     "validator": "^11.1.0"
->>>>>>> iffigues
   },
   "scripts": {
     "start": "react-scripts start",
