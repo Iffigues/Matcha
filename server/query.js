@@ -6,7 +6,7 @@ const tok = require('./tok');
 function login(db, tab, res, client) {
 	let b = 400;
 	let p = "not good"
-	console.log(tab);
+
 	const collection = db.collection('user');
 	collection.findOne({login: tab.login}, (err, docs) => {
 		if (docs && docs.active) {
