@@ -31,7 +31,7 @@ class RegisterPage extends Component<Props, State> {
 		b.email = data.get('email');
 		b.username = data.get('username');
 		b.password = data.get('password');
-		console.log(b);
+		console.log("ici la DATA =>>> " + b);
 		return (b);
 	}
 	state = {
@@ -41,19 +41,18 @@ class RegisterPage extends Component<Props, State> {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.target);
-		console.log(data.get("gender"));
-		fetch('http://gopiko.fr:3000/register', {
+		fetch('http://gopiko.fr:8081/register', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({gender:data.get('gender')}),
+			body: JSON.stringify(this.grapValue(data)),
 		});
 	}
 
 	render() {
-		const { classes, history } = this.props;
+		const { classes, history, onSubmit } = this.props;
 		const { locationForm } = this.state;
 
 		const correctForm = locationForm ? (

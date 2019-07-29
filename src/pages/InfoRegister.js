@@ -27,7 +27,7 @@ class InfoRegister extends Component<Props, State> {
     email: '',
   };
   render() {
-    const { classes, onClick, onSubmit} = this.props;
+    const { classes, onClick } = this.props;
 
     return (
       <div className={classes.container}>
@@ -83,7 +83,7 @@ class InfoRegister extends Component<Props, State> {
             }}
           />
         </div>
-        <ButtonForm text="CONTINUE" onClick={onClick} onSubmit={onSubmit}/>
+        <ButtonForm text="CONTINUE" onClick={onClick} />
       </div>
     );
   }

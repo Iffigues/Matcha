@@ -40,9 +40,7 @@ class LocationRegister extends Component<Props, State> {
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`,
     );
 
-    this.locationAccepted(response)
-    .then(console.log('la réponse est la suivante =>' + response + '<==')).then(
-    console.log('le navigator.geolocation =>' + navigator.geolocation));
+    this.locationAccepted(response);
   }
 
   componentDidMount() {
@@ -85,7 +83,7 @@ class LocationRegister extends Component<Props, State> {
             value={value}
           />
         </div>
-        <ButtonForm text="REGISTER" onClick={onClick} />
+        <ButtonForm  text="REGISTER" onClick={onClick} />
       </div>
     );
   }
