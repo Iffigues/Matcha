@@ -10,30 +10,20 @@ import InfoRegister from './InfoRegister';
 import LocationRegister from './LocationRegister'
 
 type Props = {
-<<<<<<< HEAD
 	classes: Object,
-=======
-  classes: Object,
-  history: Object,
->>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
+	history: Object,
 };
 
 type State = {
-  locationForm: boolean,
+	locationForm: boolean,
 };
 
 class RegisterPage extends Component<Props, State> {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	constructor() {
 		super();
-		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	grapValue(data) {
-=======
 	grapValue = (data) => {
->>>>>>> iffigues
 		var b = {};
 		b.gender = data.get('gender');
 		b.lastname = data.get('lastname');
@@ -44,53 +34,33 @@ class RegisterPage extends Component<Props, State> {
 		console.log(b);
 		return (b);
 	}
+	state = {
+		locationForm: false,
+	};
+
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.target);
-		fetch('http://gopiko.fr:8080/register', {
+		console.log(data.get("gender"));
+		fetch('http://gopiko.fr:3000/register', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(this.grapValue(data)),
+			body: JSON.stringify({gender:data.get('gender')}),
 		});
 	}
+
 	render() {
-		const { classes } = this.props;
+		const { classes, history } = this.props;
+		const { locationForm } = this.state;
 
-		const correctForm = (
-			<InfoRegister onClick={() => this.setState({ locationForm: true })} onSubmit={() => alert("sdds")}/>
+		const correctForm = locationForm ? (
+			<LocationRegister onClick={() => { history.push('/login') }} />
+		) : (
+			<InfoRegister onClick={() => this.setState({ locationForm: true })} />
 		);
-=======
-    state = {
-      locationForm: false,
-    };
-
-	  handleSubmit = (event) => {
-		      event.preventDefault();
-		      const data = new FormData(event.target);
-		    	console.log(data.get("gender"));
-		      fetch('http://localhost:8080/register', {
-			            method: 'POST',
-			      		  headers: {
-						      Accept: 'application/json',
-						      'Content-Type': 'application/json',
-						    },
-			            body: JSON.stringify({gender:data.get('gender')}),
-			       });
-		    }
-   
-  render() {
-    const { classes, history } = this.props;
-    const { locationForm } = this.state;
-
-    const correctForm = locationForm ? (
-      <LocationRegister onClick={() => { history.push('/login') }} />
-    ) : (
-      <InfoRegister onClick={() => this.setState({ locationForm: true })} />
-    );
->>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
 
 		return (
 			<div className={classes.container}>
