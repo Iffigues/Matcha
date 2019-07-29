@@ -1,0 +1,95 @@
+{
+  "name": "my-react-project",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+<<<<<<< HEAD
+    "@google/maps": "^0.5.5",
+    "@material-ui/core": "^4.2.0",
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "flow-bin": "0.103.0",
+<<<<<<< HEAD
+=======
+    "axios": "^0.17.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "flow-bin": "^0.63.1",
+>>>>>>> 9af63eaeb7e93dc9a8f416969f83a13965e6b5a8
+    "mongo-sanitize": "^1.0.1",
+    "mongodb": "^3.0.1",
+    "nodemon": "^1.19.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-jss": "^8.2.0",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17",
+    "react-star-rating-component": "^1.3.0",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.2.0",
+    "socket.io": "^2.2.0"
+=======
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "jws": "^3.2.2",
+    "mongo-sanitize": "^1.0.1",
+    "mongodb": "^3.2.7",
+    "mongoose": "^5.6.6",
+    "nodemailer": "^6.3.0",
+    "nodemon": "^1.19.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-jss": "^8.6.1",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
+    "sendmail": "^1.6.1",
+    "socket.io": "^2.2.0",
+    "uuid-token-generator": "^1.0.0",
+    "validator": "^11.1.0"
+>>>>>>> iffigues
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "devserver": "nodemon -w server -w package.json ./server/server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "eslint": "5.16.0",
+    "eslint-plugin-react": "^7.14.2",
+    "gulp": "^4.0.2",
+    "gulp-changed": "^3.0.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "4.0.2",
+    "gulp-uglify": "^3.0.2"
+  }
+}
