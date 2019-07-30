@@ -39,7 +39,6 @@ class InfoRegister extends Component<Props, State> {
 		let r = e.target.name;
 		this.props.onUpdate(r, e.target.value);
 		this.setState({sval:e.target.value});
-		console.log(e.target.value);
 	};
 	render() {
 		const { classes, onClick, onSubmit} = this.props;

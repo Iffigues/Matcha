@@ -45,7 +45,6 @@ class RegisterPage extends Component<Props, State> {
 		if (name == "password")
 			y.password = val;
 		this.setState(y);
-		//console.log(this.state)
 	}
 	componentDidUpdate(prevProps) {
 		console.log(this.state.firstname);
@@ -83,7 +82,7 @@ class RegisterPage extends Component<Props, State> {
 		const { locationForm } = this.state;
 
 		const correctForm = locationForm ? (
-			<LocationRegister onClick={() => { history.push('/login') }} />
+			<LocationRegister onClick={() => { history.push('/login') }} onUpdate={this.onUpdate}/>
 		) : (
 			<InfoRegister onClick={(e) =>{this.setState({ locationForm: true }); }} onUpdate={this.onUpdate} />
 		);

@@ -34,6 +34,11 @@ class LocationRegister extends Component<Props, State> {
     }
   }
 
+  	update = (e) => {
+				let r = e.target.name;
+				this.props.onUpdate(r, e.target.value);
+				this.setState({sval:e.target.value});
+			};
   async locationDenied(getLocation) {
     const { latitude, longitude } = getLocation.data.location;
     const response = await axios.get(
@@ -78,6 +83,7 @@ class LocationRegister extends Component<Props, State> {
           <InputForm
             type="text"
             disabled={disabled}
+	   onChange={this.update} 
             style={{
               backgroundColor,
               width: '300px',
