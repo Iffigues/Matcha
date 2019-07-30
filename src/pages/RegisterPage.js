@@ -25,7 +25,7 @@ class RegisterPage extends Component<Props, State> {
 		this.state = {
 			firstname: "",
 			lastname: "",
-			username: "",
+			password: "",
 			email: "",
 			username: ''
 		}
@@ -41,7 +41,7 @@ class RegisterPage extends Component<Props, State> {
 		return (e.test(y));
 	}
 	isPwd = (y) => {
-		let e = password = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
+		let e = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
 		return (e.test(y));
 	}
 	isLogin = (y) => {
@@ -50,20 +50,20 @@ class RegisterPage extends Component<Props, State> {
 	}
 	onUpdate = (name, val) => {
 		let y = {};
-		if (name == "firstname")
+		if (name === "firstname")
 			y.firstname = val;
-		if (name == "lastname")
+		if (name === "lastname")
 			y.lastname = val;
-		if (name == "email")
+		if (name === "email")
 			y.email = val;
-		if (name == "username")
+		if (name === "username")
 			y.username = val;
-		if (name == "password")
+		if (name === "password")
 			y.password = val;
 		this.setState(y);
 	}
 	componentDidUpdate(prevProps) {
-		console.log(this.state.firstname);
+
 	}
 	grapValue = (data) => {
 		var b = {};
@@ -100,7 +100,11 @@ class RegisterPage extends Component<Props, State> {
 		const correctForm = locationForm ? (
 			<LocationRegister onClick={() => { history.push('/login') }} onUpdate={this.onUpdate}/>
 		) : (
-			<InfoRegister onClick={(e) =>{this.setState({ locationForm: true }); }} onUpdate={this.onUpdate} />
+			<InfoRegister onClick={(e) =>{
+				alert(this.isName(this.state.firstname));
+				this.setState({ locationForm: true }); 
+				console.log("true="+this.isName(this.state.firstname));
+			}} onUpdate={this.onUpdate} />
 		);
 
 		return (
