@@ -32,7 +32,8 @@ class RegisterPage extends Component<Props, State> {
 	}
 	
 	isEmail = (y) => {
-		let e = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		alert(y);
+		let e = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return (e.test(y));
 	}
 
@@ -101,9 +102,8 @@ class RegisterPage extends Component<Props, State> {
 			<LocationRegister onClick={() => { history.push('/login') }} onUpdate={this.onUpdate}/>
 		) : (
 			<InfoRegister onClick={(e) =>{
-				alert(this.isName(this.state.firstname));
+				alert(this.isEmail(this.state.email));
 				this.setState({ locationForm: true }); 
-				console.log("true="+this.isName(this.state.firstname));
 			}} onUpdate={this.onUpdate} />
 		);
 

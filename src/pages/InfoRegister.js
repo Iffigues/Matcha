@@ -77,13 +77,13 @@ class InfoRegister extends Component<Props, State> {
 			type="text"
 			placeholder="Username"
 			name="username"
-			onChange={e => this.setState({ username: e.target.value })}
+			onChange={this.update}
 			/>
 			<InputForm
 			type="password"
 			placeholder="Password"
 			name="password"
-			onChange={e => this.setState({ password: e.target.value })}
+			onChange={this.update}
 			/>
 			</div>
 			<div className={`${classes.inputWrapper} ${classes.inputEmail}`}>
@@ -91,7 +91,7 @@ class InfoRegister extends Component<Props, State> {
 			type="email"
 			placeholder="Email"
 			name="email"
-			onChange={e => this.setState({ email: e.target.value })}
+			onChange={this.update}
 			style={{
 				width: '370px',
 			}}
