@@ -8,6 +8,7 @@ import certification from '../images/photos_selected/Register-Page/certified.png
 import geometricHeart from '../images/photos_selected/Register-Page/geometric-heart.jpg';
 import InfoRegister from './InfoRegister';
 import LocationRegister from './LocationRegister'
+import ButtonForm from '../components/ButtonForm';
 
 type Props = {
 	classes: Object,
@@ -21,8 +22,55 @@ type State = {
 class RegisterPage extends Component<Props, State> {
 	constructor() {
 		super();
+<<<<<<< HEAD
+=======
+		this.state = {
+			firstname: "",
+			lastname: "",
+			password: "",
+			email: "",
+			username: ''
+		}
+>>>>>>> iffigues
+	}
+	
+	isEmail = (y) => {
+		let e = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return (e.test(y));
 	}
 
+	isName = (y) => {
+		let e = /^[a-z ,.'-]+$/i;
+		return (e.test(y));
+	}
+	isPwd = (y) => {
+		let e = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
+		return (e.test(y));
+	}
+	isLogin = (y) => {
+		let e = /^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$/;
+		return (e.test(y));
+	}
+	onUpdate = (name, val) => {
+		let y = {};
+		if (name === "firstname")
+			y.firstname = val;
+		if (name === "lastname")
+			y.lastname = val;
+		if (name === "email")
+			y.email = val;
+		if (name === "username")
+			y.username = val;
+		if (name === "password")
+			y.password = val;
+		this.setState(y);
+	}
+	componentDidUpdate(prevProps) {
+
+<<<<<<< HEAD
+=======
+	}
+>>>>>>> iffigues
 	grapValue = (data) => {
 		var b = {};
 		b.gender = data.get('gender');
@@ -41,17 +89,23 @@ class RegisterPage extends Component<Props, State> {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.target);
+<<<<<<< HEAD
 		fetch('http://gopiko.fr:8081/register', {
+=======
+		console.log(data.get("gender"));
+		fetch('http://gopiko.fr:3000/register', {
+>>>>>>> iffigues
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(this.grapValue(data)),
+			body: JSON.stringify({gender:data.get('gender')}),
 		});
 	}
 
 	render() {
+<<<<<<< HEAD
 		const { classes, history, onSubmit } = this.props;
 		const { locationForm } = this.state;
 
@@ -59,6 +113,19 @@ class RegisterPage extends Component<Props, State> {
 			<LocationRegister onClick={() => { history.push('/login') }} />
 		) : (
 			<InfoRegister onClick={() => this.setState({ locationForm: true })} />
+=======
+		const { classes, history } = this.props;
+		const { locationForm } = this.state;
+
+		const correctForm = locationForm ? (
+			<LocationRegister onClick={() => { history.push('/login') }} onUpdate={this.onUpdate}/>
+		) : (
+			<InfoRegister onClick={(e) =>{
+				alert(this.isName(this.state.firstname));
+				this.setState({ locationForm: true }); 
+				console.log("true="+this.isName(this.state.firstname));
+			}} onUpdate={this.onUpdate} />
+>>>>>>> iffigues
 		);
 
 		return (
@@ -79,10 +146,9 @@ class RegisterPage extends Component<Props, State> {
 			</div>
 			</div>
 			</div>
-
-			<div className={classes.registerContainer} />
+			<div className={classes.registerContainer} onSubmit={this.handleSubmit}/>
 			<div className={classes.darkBox}>
-			<form className={classes.registerFormWrapper} onSubmit={this.handleSubmit}>
+			<form className={classes.registerFormWrapper}>
 			<div className={classes.registerTitle}>
 			More ways to meet people who worth it !
 			</div>
