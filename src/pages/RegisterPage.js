@@ -8,6 +8,7 @@ import certification from '../images/photos_selected/Register-Page/certified.png
 import geometricHeart from '../images/photos_selected/Register-Page/geometric-heart.jpg';
 import InfoRegister from './InfoRegister';
 import LocationRegister from './LocationRegister'
+import ButtonForm from '../components/ButtonForm';
 
 type Props = {
 	classes: Object,
@@ -21,8 +22,20 @@ type State = {
 class RegisterPage extends Component<Props, State> {
 	constructor() {
 		super();
+		this.state = {
+			sval: "" 
+		}
 	}
-
+	
+	onUpdate = (name, val) => {
+		console.log("name="+name)
+		this.setState({
+			l: val
+		});
+		//console.log(this.state)
+	}
+	componentDidUpdate(prevProps) {
+	}
 	grapValue = (data) => {
 		var b = {};
 		b.gender = data.get('gender');
@@ -51,7 +64,6 @@ class RegisterPage extends Component<Props, State> {
 			body: JSON.stringify({gender:data.get('gender')}),
 		});
 	}
-
 	render() {
 		const { classes, history } = this.props;
 		const { locationForm } = this.state;
@@ -59,7 +71,7 @@ class RegisterPage extends Component<Props, State> {
 		const correctForm = locationForm ? (
 			<LocationRegister onClick={() => { history.push('/login') }} />
 		) : (
-			<InfoRegister onClick={() => this.setState({ locationForm: true })} />
+			<InfoRegister onClick={(e) =>{this.setState({ locationForm: true }); }} onUpdate={this.onUpdate} />
 		);
 
 		return (
@@ -80,10 +92,9 @@ class RegisterPage extends Component<Props, State> {
 			</div>
 			</div>
 			</div>
-
-			<div className={classes.registerContainer} />
+			<div className={classes.registerContainer} onSubmit={this.handleSubmit}/>
 			<div className={classes.darkBox}>
-			<form className={classes.registerFormWrapper} onSubmit={this.handleSubmit}>
+			<form className={classes.registerFormWrapper}>
 			<div className={classes.registerTitle}>
 			More ways to meet people who worth it !
 			</div>
