@@ -31,8 +31,24 @@ class RegisterPage extends Component<Props, State> {
 		}
 	}
 	
+	isEmail = (y) => {
+		let e = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return (e.test(y));
+	}
+
+	isName = (y) => {
+		let e = /^[a-z ,.'-]+$/i;
+		return (e.test(y));
+	}
+	isPwd = (y) => {
+		let e = password = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
+		return (e.test(y));
+	}
+	isLogin = (y) => {
+		let e = /^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$/;
+		return (e.test(y));
+	}
 	onUpdate = (name, val) => {
-		console.log("name="+name)
 		let y = {};
 		if (name == "firstname")
 			y.firstname = val;
