@@ -22,8 +22,6 @@ type State = {
 class RegisterPage extends Component<Props, State> {
 	constructor() {
 		super();
-<<<<<<< HEAD
-=======
 		this.state = {
 			firstname: "",
 			lastname: "",
@@ -31,7 +29,6 @@ class RegisterPage extends Component<Props, State> {
 			email: "",
 			username: ''
 		}
->>>>>>> iffigues
 	}
 	
 	isEmail = (y) => {
@@ -67,10 +64,7 @@ class RegisterPage extends Component<Props, State> {
 	}
 	componentDidUpdate(prevProps) {
 
-<<<<<<< HEAD
-=======
 	}
->>>>>>> iffigues
 	grapValue = (data) => {
 		var b = {};
 		b.gender = data.get('gender');
@@ -79,7 +73,7 @@ class RegisterPage extends Component<Props, State> {
 		b.email = data.get('email');
 		b.username = data.get('username');
 		b.password = data.get('password');
-		console.log("ici la DATA =>>> " + b);
+		console.log(b);
 		return (b);
 	}
 	state = {
@@ -89,12 +83,8 @@ class RegisterPage extends Component<Props, State> {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const data = new FormData(event.target);
-<<<<<<< HEAD
-		fetch('http://gopiko.fr:8081/register', {
-=======
 		console.log(data.get("gender"));
 		fetch('http://gopiko.fr:3000/register', {
->>>>>>> iffigues
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -103,17 +93,7 @@ class RegisterPage extends Component<Props, State> {
 			body: JSON.stringify({gender:data.get('gender')}),
 		});
 	}
-
 	render() {
-<<<<<<< HEAD
-		const { classes, history, onSubmit } = this.props;
-		const { locationForm } = this.state;
-
-		const correctForm = locationForm ? (
-			<LocationRegister onClick={() => { history.push('/login') }} />
-		) : (
-			<InfoRegister onClick={() => this.setState({ locationForm: true })} />
-=======
 		const { classes, history } = this.props;
 		const { locationForm } = this.state;
 
@@ -125,7 +105,6 @@ class RegisterPage extends Component<Props, State> {
 				this.setState({ locationForm: true }); 
 				console.log("true="+this.isName(this.state.firstname));
 			}} onUpdate={this.onUpdate} />
->>>>>>> iffigues
 		);
 
 		return (
