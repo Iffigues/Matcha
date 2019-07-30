@@ -20,76 +20,6 @@ type State = {
 	email: string,
 };
 class InfoRegister extends Component<Props, State> {
-<<<<<<< HEAD
-  state = {
-    firstname: '',
-    lastname: '',
-    username: '',
-    password: '',
-    email: '',
-  };
-  render() {
-    const { classes, onClick } = this.props;
-
-    return (
-      <div className={classes.container}>
-        <div className={classes.inputRadioWrapper}>
-          <div className={classes.eachRadioWrapper}>I AM</div>
-          <div className={classes.eachRadioWrapper}>
-            <input id="woman" type="radio" name="gender" value="woman" />
-            <span />
-            <label htmlFor="woman">A WOMAN</label>
-          </div>
-          <div className={classes.eachRadioWrapper}>
-            <input id="man" type="radio" name="gender" value="male" />
-            <span />
-            <label htmlFor="man">A MAN</label>
-          </div>
-        </div>
-        <div className={classes.inputWrapper}>
-          <InputForm
-            type="text"
-	    name="firstname"
-            placeholder="First Name"
-            onChange={e => this.setState({ firstname: e.target.value })}
-          />
-          <InputForm
-            type="text"
-            placeholder="Last Name"
-	    name="lastname"
-            onChange={e => this.setState({ lastname: e.target.value })}
-          />
-        </div>
-        <div className={classes.inputWrapper}>
-          <InputForm
-            type="text"
-            placeholder="Username"
-	    name="username"
-            onChange={e => this.setState({ username: e.target.value })}
-          />
-          <InputForm
-            type="password"
-            placeholder="Password"
-	    name="password"
-            onChange={e => this.setState({ password: e.target.value })}
-          />
-        </div>
-        <div className={`${classes.inputWrapper} ${classes.inputEmail}`}>
-          <InputForm
-            type="email"
-            placeholder="Email"
-	    name="email"
-            onChange={e => this.setState({ email: e.target.value })}
-            style={{
-              width: '370px',
-            }}
-          />
-        </div>
-        <ButtonForm text="CONTINUE" onClick={onClick} />
-      </div>
-    );
-  }
-=======
 	constructor(props) {
 		super(props);
 
@@ -172,7 +102,6 @@ class InfoRegister extends Component<Props, State> {
 			</div>
 		);
 	}
->>>>>>> iffigues
 }
 
 const styles = {
