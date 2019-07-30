@@ -23,18 +23,32 @@ class RegisterPage extends Component<Props, State> {
 	constructor() {
 		super();
 		this.state = {
-			sval: "" 
+			firstname: "",
+			lastname: "",
+			username: "",
+			email: "",
+			username: ''
 		}
 	}
 	
 	onUpdate = (name, val) => {
 		console.log("name="+name)
-		this.setState({
-			l: val
-		});
+		let y = {};
+		if (name == "firstname")
+			y.firstname = val;
+		if (name == "lastname")
+			y.lastname = val;
+		if (name == "email")
+			y.email = val;
+		if (name == "username")
+			y.username = val;
+		if (name == "password")
+			y.password = val;
+		this.setState(y);
 		//console.log(this.state)
 	}
 	componentDidUpdate(prevProps) {
+		console.log(this.state.firstname);
 	}
 	grapValue = (data) => {
 		var b = {};
