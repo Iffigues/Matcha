@@ -7,7 +7,8 @@ import coupleSand from '../images/photos_selected/Register-Page/couple-hug-beach
 import certification from '../images/photos_selected/Register-Page/certified.png';
 import geometricHeart from '../images/photos_selected/Register-Page/geometric-heart.jpg';
 import InfoRegister from './InfoRegister';
-import LocationRegister from './LocationRegister'
+import LocationRegister from './LocationRegister';
+import ErrorMess from './error.js';
 import ButtonForm from '../components/ButtonForm';
 
 type Props = {
@@ -17,21 +18,24 @@ type Props = {
 
 type State = {
 	locationForm: boolean,
+	or: boolean
 };
 
 class RegisterPage extends Component<Props, State> {
 	constructor() {
 		super();
 		this.state = {
+			or: false,
 			firstname: "",
 			lastname: "",
 			password: "",
 			email: "",
 			username: '',
-			gender: ''
+			gender: '',
+			error: ''
 		}
 	}
-	
+
 	isEmail = (y) => {
 		let e = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return (e.test(y));
@@ -116,20 +120,27 @@ class RegisterPage extends Component<Props, State> {
 		const correctForm = locationForm ? (
 			<LocationRegister onClick={(e) => {
 				e.preventDefault();
-				this.handleSubmit(e)
+				this.handleSubmit(e);
 				history.push('/login') }} 
-				onUpdate={this.onUpdate}/>
+			onUpdate={this.onUpdate}/>
 		) : (
 			<InfoRegister onClick={(e) =>{
 				e.preventDefault()
 				if (this.checking()){
 					this.setState({ locationForm: true }); 
+				} else {
+					alert("trtrrt");
+					this.setState({or: true, error:'rrr'})
 				}
 			}}
 			onUpdate={this.onUpdate}
 			/>
 		);
-
+		const onError = this.state.or ? (
+			<ErrorMess error={this.state.error} />
+		) : (
+			<ErrorMess error={this.state.error} />
+		);
 		return (
 			<div className={classes.container}>
 			<div className={classes.infoContainer}>
@@ -150,6 +161,7 @@ class RegisterPage extends Component<Props, State> {
 			</div>
 			<div className={classes.registerContainer} />
 			<div className={classes.darkBox}>
+			{onError}
 			<form className={classes.registerFormWrapper}>
 			<div className={classes.registerTitle}>
 			More ways to meet people who worth it !
