@@ -48,12 +48,12 @@ class InfoRegister extends Component<Props, State> {
 			<div className={classes.inputRadioWrapper}>
 			<div className={classes.eachRadioWrapper}>I AM</div>
 			<div className={classes.eachRadioWrapper}>
-			<input id="woman" type="radio" name="gender" value="woman" />
+			<input id="woman" type="radio" name="gender" value="woman" onChange={this.update}/>
 			<span />
 			<label htmlFor="woman">A WOMAN</label>
 			</div>
 			<div className={classes.eachRadioWrapper}>
-			<input id="man" type="radio" name="gender" value="male" />
+			<input id="man" type="radio" name="gender" value="male" onChange={this.update}/>
 			<span />
 			<label htmlFor="man">A MAN</label>
 			</div>

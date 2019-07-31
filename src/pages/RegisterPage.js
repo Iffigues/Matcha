@@ -27,7 +27,8 @@ class RegisterPage extends Component<Props, State> {
 			lastname: "",
 			password: "",
 			email: "",
-			username: ''
+			username: '',
+			gender: ''
 		}
 	}
 	
@@ -76,6 +77,8 @@ class RegisterPage extends Component<Props, State> {
 			y.username = val;
 		if (name === "password")
 			y.password = val;
+		if (name === "gender")
+			y.gender = val;
 		this.setState(y);
 	}
 	componentDidUpdate(prevProps) {
@@ -83,12 +86,12 @@ class RegisterPage extends Component<Props, State> {
 	}
 	grapValue = (data) => {
 		var b = {};
-		b.gender = data.get('gender');
-		b.lastname = data.get('lastname');
-		b.firstname = data.get('firstname');
-		b.email = data.get('email');
-		b.username = data.get('username');
-		b.password = data.get('password');
+		b.gender = this.state.gender;
+		b.lastname = this.state.lastname;
+		b.firstname = this.state.firstname;
+		b.email = this.state.email;
+		b.username = this.state.username;
+		b.password = this.state.password;
 		return (b);
 	}
 	state = {
@@ -96,16 +99,14 @@ class RegisterPage extends Component<Props, State> {
 	};
 
 	handleSubmit = (event) => {
-		event.preventDefault();
-		const data = new FormData(event.target);
-		console.log(data.get("gender"));
-		fetch('http://gopiko.fr:3000/register', {
+		//const data = new FormData(event.target);
+		fetch('http://gopiko.fr:8080/register', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({gender:data.get('gender')}),
+			body: JSON.stringify(this.grapValue()),
 		});
 	}
 	render() {
@@ -113,7 +114,11 @@ class RegisterPage extends Component<Props, State> {
 		const { locationForm } = this.state;
 
 		const correctForm = locationForm ? (
-			<LocationRegister onClick={() => { history.push('/login') }} onUpdate={this.onUpdate}/>
+			<LocationRegister onClick={(e) => {
+				e.preventDefault();
+				this.handleSubmit(e)
+				history.push('/login') }} 
+				onUpdate={this.onUpdate}/>
 		) : (
 			<InfoRegister onClick={(e) =>{
 				e.preventDefault()
