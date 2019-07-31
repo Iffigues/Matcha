@@ -89,7 +89,6 @@ class RegisterPage extends Component<Props, State> {
 		b.email = data.get('email');
 		b.username = data.get('username');
 		b.password = data.get('password');
-		console.log(b);
 		return (b);
 	}
 	state = {
@@ -117,10 +116,13 @@ class RegisterPage extends Component<Props, State> {
 			<LocationRegister onClick={() => { history.push('/login') }} onUpdate={this.onUpdate}/>
 		) : (
 			<InfoRegister onClick={(e) =>{
+				e.preventDefault()
 				if (this.checking()){
 					this.setState({ locationForm: true }); 
 				}
-			}} onUpdate={this.onUpdate} />
+			}}
+			onUpdate={this.onUpdate}
+			/>
 		);
 
 		return (
@@ -141,7 +143,7 @@ class RegisterPage extends Component<Props, State> {
 			</div>
 			</div>
 			</div>
-			<div className={classes.registerContainer} onSubmit={this.handleSubmit}/>
+			<div className={classes.registerContainer} />
 			<div className={classes.darkBox}>
 			<form className={classes.registerFormWrapper}>
 			<div className={classes.registerTitle}>
