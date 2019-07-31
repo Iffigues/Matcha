@@ -55,17 +55,19 @@ class RegisterPage extends Component<Props, State> {
 	}
 
 	checking = () => {
-		let y = 1;
 		if (!this.isName(this.state.firstname+" "+this.state.lastname)) {
-			y = 0;
+			this.state.error = "lastname or firstname not good";
+			return (0);
 		}
 		if (!this.isPwd(this.state.password) || !this.isLogin(this.state.username)) {
-			y = 0;
+			this.state.error = "username or password invalid";
+			return(0);
 		}
 		if (!this.isEmail(this.state.email)) {
-			y = 0;
+			this.state.error = "email invalid";
+			return (0);
 		}
-		return (y);
+		return (1);
 
 	}
 
@@ -129,8 +131,7 @@ class RegisterPage extends Component<Props, State> {
 				if (this.checking()){
 					this.setState({ locationForm: true }); 
 				} else {
-					alert("trtrrt");
-					this.setState({or: true, error:'rrr'})
+					this.setState({or: true})
 				}
 			}}
 			onUpdate={this.onUpdate}
