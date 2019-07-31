@@ -9,6 +9,8 @@ const reg = require('./register.js');
 const query = require('./query');
 const jwt = require('jsonwebtoken');
 const withAuth = require('./middleware');
+const profile = require('./profile');
+
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
@@ -41,6 +43,10 @@ app.get('/validate/:log/:id', function (req, res) {
 
 app.get('/connected', withAuth, function (req, res) {
 	res.sendStatus(202);
+})
+
+app.post('/profile', withAuth, function(req, res) {
+		mg.query(profile.profile, {}, res);
 })
 
 app.post('/login', function (req, res) {
