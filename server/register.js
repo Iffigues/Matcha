@@ -3,6 +3,9 @@ const sendmail = require('sendmail')();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const Validateur = require("./validateur.js");
+const express = require('express');
+const  router = express.Router();
+const con = require('dt.js');
 
 const googleMapsClient = require('@google/maps').createClient({
 	key: 'your API key here'
@@ -46,26 +49,29 @@ function sendmai(token, username){
 	});
 }
 
-function register(db, tab, res, client) {
-	let b = 202;
-	let r = {};
-	bcrypt.hash(tab.pwd, saltRounds, (err, hash) => {
-		r = user(tab, hash);
-		const collection = db.collection('user');
-		if (!r.i) {
-			b = 404;
-		}
-		if (r.i)
-			collection.findOne({$or:[{login: r.res.login}, {email: r.res.email}]}, function(err, docs){
-				if (!docs) {
-					collection.insertOne(r.res, function(err, rest) {
-						sendmai(r.res.token, r.res.login);
-					});
-				}
-			});
-	});
-	res.writeHeader(b,{"Content-Type":"application/json"});
-	res.end(JSON.stringify(r.res));
+function table(req) {
+	let b = {};
+	b.user = req.body.username;
+	b.pwd = req.body.password;
+	b.email = req.body.email;
+	b.firstname = req.body.firstname;
+	b.lastname = req.body.lastname;
+	b.gender = req.body.gender;
+	return (b);
 }
 
-module.exports.register = register;
+router.post("/", function login(req, res) {
+	i = table(req);
+	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
+		con.connect(function(err) {
+			const f = `
+				
+			`;
+			con.query(sql, function (err, result) {
+			});
+		});
+	});
+
+});
+
+module.exports.register = router;
