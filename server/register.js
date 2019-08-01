@@ -5,7 +5,12 @@ const saltRounds = 10;
 const Validateur = require("./validateur.js");
 const express = require('express');
 const  router = express.Router();
-const con = require('dt.js');
+const con = require('./dt.js');
+
+router.use(function timeLog(req, res, next) {
+	  console.log('Time: ', Date.now());
+	  next();
+});
 
 const googleMapsClient = require('@google/maps').createClient({
 	key: 'your API key here'
@@ -74,4 +79,4 @@ router.post("/", function login(req, res) {
 
 });
 
-module.exports.register = router;
+module.exports = router;

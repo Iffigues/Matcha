@@ -26,6 +26,7 @@ app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Headers", "*,Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
+
 app.use('/register', reg);
 
 app.get('/validate/:log/:id', function (req, res) {

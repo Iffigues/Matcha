@@ -6,20 +6,28 @@ const con = require('./dt.js');
 const express = require('express');
 const  router = express.Router();
 
+router.use(function timeLog(req, res, next) {
+	  console.log('Time: ', Date.now());
+	  next();
+});
+
 router.post("/", function login(req, res) {
 	con.connect(function(err) {
-		let user = req.body.username;
 		let pwd = req.body.password;
 		let email = req.body.email;
-		let firstname = req.body.firstname;
-		let lastname = req.body.lastname;
-		let gender = req.body.gender;
-		var sql = `INSERT INTO customers (firstname, lastname, password, username, gender) VALUES ()`;
-		con.query(sql, function (err, result) {
-			    if (err) throw err;
-			    console.log("1 record inserted");
+		var sql = `SELECT * FROM user WHERE email = ?)`;
+	con.query(sql, [email] ,function (err, result) {
+		if (err) throw err;
+		let toke = new tok();
+		const payload = { docs };
+		const token = jwt.sign(payload, 'my-secret', {
+			expiresIn: '1h'
 		});
-	});
-}
+		res.cookie('token', token, { httpOnly: true })
+			.sendStatus(200);
 
-module.exports.login = router;
+	});
+	});
+});
+
+module.exports = router;
