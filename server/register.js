@@ -7,15 +7,6 @@ const express = require('express');
 const  router = express.Router();
 const con = require('./dt.js');
 
-router.use(function timeLog(req, res, next) {
-	  console.log('Time: ', Date.now());
-	  next();
-});
-
-const googleMapsClient = require('@google/maps').createClient({
-	key: 'your API key here'
-});
-
 function verif(data) {
 	let valid = new Validateur();
 	if (!valid.isName(data.firstname+" "+data.lastname))
@@ -75,10 +66,10 @@ router.post("/", function (req, res) {
 			const f = `INSERT INTO user (firstname, lastname, password, email, username, gender) VALUES (?, ?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.gender], function (err, result, fields) {
 				const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
-				console.log(err);
-				con.query(lol, [result.insertId, y.token], function (err, result, field) {
-					console.log(err);
-				});
+				if (result && !err)
+					con.query(lol, [result.insertId, y.token], function (err, result, field) {
+						console.log(err);
+					});
 			});
 		});
 	});

@@ -6,13 +6,8 @@ const con = require('./dt.js');
 const express = require('express');
 const  router = express.Router();
 
-router.use(function timeLog(req, res, next) {
-	  console.log('Time: ', Date.now());
-	  next();
-});
-
 router.post("/", function (req, res) {
-	con.connect(function(err) {
+	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.email;
 		var sql = `SELECT * FROM user WHERE email = ?)`;
@@ -23,9 +18,7 @@ router.post("/", function (req, res) {
 		const token = jwt.sign(payload, 'my-secret', {
 			expiresIn: '1h'
 		});
-		res.cookie('token', token, { httpOnly: true })
-			.sendStatus(200);
-
+		res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 	});
 	});
 });
