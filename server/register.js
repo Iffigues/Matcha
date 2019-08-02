@@ -39,6 +39,7 @@ function user(tab, hash) {
 	user.email = tab.email;
 	user.active = 0;
 	user.token = token.generate();
+	user.gender = 1;
 	return verif(user);
 }
 
@@ -56,7 +57,7 @@ function sendmai(token, username){
 
 function table(req) {
 	let b = {};
-	b.user = req.body.username;
+	b.login = req.body.username;
 	b.pwd = req.body.password;
 	b.email = req.body.email;
 	b.firstname = req.body.firstname;
@@ -65,14 +66,19 @@ function table(req) {
 	return (b);
 }
 
-router.post("/", function login(req, res) {
+router.post("/", function (req, res) {
 	i = table(req);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
+		let r = user(i, hash);
+		let y  = r.res;
 		con.connect(function(err) {
-			const f = `
-				
-			`;
-			con.query(sql, function (err, result) {
+			const f = `INSERT INTO user (firstname, lastname, password, email, username, gender) VALUES (?, ?, ?, ?, ?, ?)`;
+			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.gender], function (err, result, fields) {
+				const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
+				console.log(err);
+				con.query(lol, [result.insertId, y.token], function (err, result, field) {
+					console.log(err);
+				});
 			});
 		});
 	});

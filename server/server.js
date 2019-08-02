@@ -29,16 +29,11 @@ app.use(function(req, res, next) {
 
 app.use('/register', reg);
 
-app.get('/validate/:log/:id', function (req, res) {
-	let id =  req.params.id;
-	let log = req.params.log;
-	mg.query(val.accept, {id: id, log: log}, res);
-})
+app.get('/validate', val)
 
 app.get('/connected', withAuth, function (req, res) {
 	res.sendStatus(202);
 })
-
 app.post('/profile', withAuth, function(req, res) {
 		mg.query(profile.profile, {}, res);
 })

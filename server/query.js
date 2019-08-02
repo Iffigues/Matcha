@@ -11,7 +11,7 @@ router.use(function timeLog(req, res, next) {
 	  next();
 });
 
-router.post("/", function login(req, res) {
+router.post("/", function (req, res) {
 	con.connect(function(err) {
 		let pwd = req.body.password;
 		let email = req.body.email;
@@ -19,7 +19,7 @@ router.post("/", function login(req, res) {
 	con.query(sql, [email] ,function (err, result) {
 		if (err) throw err;
 		let toke = new tok();
-		const payload = { docs };
+		const payload = { result };
 		const token = jwt.sign(payload, 'my-secret', {
 			expiresIn: '1h'
 		});
