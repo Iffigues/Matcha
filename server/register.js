@@ -65,11 +65,13 @@ router.post("/", function (req, res) {
 		con.connect(function(err) {
 			const f = `INSERT INTO user (firstname, lastname, password, email, username, gender) VALUES (?, ?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.gender], function (err, result, fields) {
-				const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
-				if (result && !err)
-					con.query(lol, [result.insertId, y.token], function (err, result, field) {
-						console.log(err);
+				if (result && !err) {
+					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
+					const id = result.insertId;
+					con.query(lol, [id, y.token], function (err, results, field) {
+						sendmai(y.token, id);
 					});
+				}
 			});
 		});
 	});
