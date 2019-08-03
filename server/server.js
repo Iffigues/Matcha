@@ -14,9 +14,9 @@ const profile = require('./profile');
 
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-	genid: function(req) {
+/*	genid: function(req) {
 		    return genuuid() // use UUIDs for session IDs
-	},
+	},*/
 	secret: 'keyboard cat',
 	resave: false,
 	saveUninitialized: true,
