@@ -11,18 +11,13 @@ const query = require('./query');
 const jwt = require('jsonwebtoken');
 const withAuth = require('./middleware');
 const profile = require('./profile');
-
-app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1) 
 app.use(session({
-/*	genid: function(req) {
-		    return genuuid() // use UUIDs for session IDs
-	},*/
 	secret: 'keyboard cat',
 	resave: false,
 	saveUninitialized: true,
 	cookie: { secure: true, maxAge: 60000 }
 }))
-
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -31,9 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' })) 
 app.use(bodyParser.text({ type: 'text/html' }))
-
 app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "*,Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
