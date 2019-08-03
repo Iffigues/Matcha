@@ -4,12 +4,24 @@ const path = require('path');
 const app = express();
 const cookieParser = require('cookie-parser');
 const mg = require('./mongo.js');
+const session = require('express-session')
 const val = require("./accept.js");
 const reg = require('./register.js');
 const query = require('./query');
 const jwt = require('jsonwebtoken');
 const withAuth = require('./middleware');
 const profile = require('./profile');
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+	genid: function(req) {
+		    return genuuid() // use UUIDs for session IDs
+	},
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: true, maxAge: 60000 }
+}))
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
