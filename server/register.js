@@ -39,10 +39,8 @@ function sendmai(token, username){
 		from: 'no-reply@yourdomain.com',
 		to: 'iffigues@vivaldi.net',
 		subject: 'test sendmail',
-		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:3000/?token="+token+"</a></body></html>",
+		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>",
 	}, function(err, reply) {
-		console.log(err && err.stack);
-		console.dir(reply);
 	});
 }
 
@@ -68,6 +66,7 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
+					console.log(id);
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id);
 					});

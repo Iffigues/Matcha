@@ -1,14 +1,15 @@
 const con = require('./dt.js');
 const express = require('express');
 const  router = express.Router();
-router.post("/:id/:tok", function (req, res) {
-	let tok = req.body.tok;
-	let user = req.body.id;
+
+router.get("/:id/:tok", function (req, res) {
+	let tok = req.params.tok;
+	let user = req.params.id;
 	con.connect(function(err) {
 		const f = `DELETE FROM verif WHERE userId = ? AND tok = ?`;
 		con.query(f, [user, tok], function (err, result) {
-			const c = `UPDATE user SET valide=1 WHERE id=?`;
-			if (result && !err)
+			const c = `UPDATE user SET active=1 WHERE id=?`;
+			if (result.affectedRows && !err)
 				con.query(c, [user], function (err, result) {
 				});
 		});
