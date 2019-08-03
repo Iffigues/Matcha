@@ -10,16 +10,16 @@ router.post("/", function (req, res) {
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.email;
-		var sql = `SELECT * FROM user WHERE email = ?)`;
-	con.query(sql, [email] ,function (err, result) {
-		if (err) throw err;
-		let toke = new tok();
-		const payload = { result };
-		const token = jwt.sign(payload, 'my-secret', {
-			expiresIn: '1h'
+		var sql = `SELECT * FROM user WHERE email = ?`;
+		con.query(sql, [email] ,function (err, result) {
+			if (err) throw err;
+			let toke = new tok();
+			const payload = { result };
+			const token = jwt.sign(payload, 'my-secret', {
+				expiresIn: '1h'
+			});
+			res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 		});
-		res.cookie('token', token, { httpOnly: true }).sendStatus(200);
-	});
 	});
 });
 
