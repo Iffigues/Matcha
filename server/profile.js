@@ -8,7 +8,6 @@ const router = express.Router();
 const middle = require('./middleware.js');
 router.use(middle);
 router.get("/:id", function (req, res)) {
-	
 });
 
 router.post("/:id", function (req, res) {
