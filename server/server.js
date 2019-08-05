@@ -11,13 +11,22 @@ const query = require('./query');
 const jwt = require('jsonwebtoken');
 const withAuth = require('./middleware');
 const profile = require('./profile');
+var MemoryStore =session.MemoryStore;
 app.set('trust proxy', 1) 
 app.use(session({
+	name: 'app.id',
 	secret: 'keyboard cat',
-	resave: false,
+	resave: true,
+	store: new MemoryStore(),
 	saveUninitialized: true,
 	cookie: { secure: true, maxAge: 60000 }
 }))
+app.use(function (req, res, next) {
+	if (!req.session.login)
+		req.session.login = {};
+	req.session.login['co'] = (req.session.login['co'] || 0);
+	next();
+})
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: true })); 

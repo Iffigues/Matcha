@@ -18,7 +18,9 @@ router.post("/", function (req, res) {
 			if (err) throw err;
 			let toke = new tok();
 			const payload = {result};
-			req.session.log = 1;
+			req.session.login['co'] = 1;
+			console.log(req);
+			//req.session.save();
 			const token = jwt.sign(payload, 'my-secret', {
 				expiresIn: '1h'
 			});
