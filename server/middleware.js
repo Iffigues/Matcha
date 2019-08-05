@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const secret = 'my-secret';
 const withAuth = function(req, res, next) {
-	if (!req.session.login) {
+	if (!req.session.log) {
 		res.status(401).send("not connected");
 		return ;
 	}

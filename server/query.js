@@ -7,6 +7,9 @@ const express = require('express');
 const  router = express.Router();
 
 router.post("/", function (req, res) {
+	if (req.session.log) {
+		return ;
+	}
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.email;
@@ -14,8 +17,8 @@ router.post("/", function (req, res) {
 		con.query(sql, [email] ,function (err, result) {
 			if (err) throw err;
 			let toke = new tok();
-			const payload = { result };
-			req.session.views = 1;
+			const payload = {result};
+			req.session.log = 1;
 			const token = jwt.sign(payload, 'my-secret', {
 				expiresIn: '1h'
 			});
