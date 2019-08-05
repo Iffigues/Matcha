@@ -10,11 +10,11 @@ const withAuth = function(req, res, next) {
 	if (!token) {
 		res.status(401).send('Unauthorized: No token provided');
 	} else {
-		jwt.verify(token, secret, function(err, decoded) {
+		jwt.verify(token, "my-secret", function(err, decoded) {
 			if (err) {
 				res.status(401).send('Unauthorized: Invalid token');
 			} else {
-				res.token = jwt.sign(jwt.decode(token), SECRET, { expiresIn: 300 })
+				res.token = jwt.sign(jwt.decode(token), "my-secret", {})
 				next();
 			}
 		});

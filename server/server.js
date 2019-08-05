@@ -19,7 +19,7 @@ app.use(session({
 	resave: true,
 	store: new MemoryStore(),
 	saveUninitialized: true,
-	cookie: { secure: true, maxAge: 60000 }
+	cookie: { secure: false, maxAge: 60000 }
 }))
 app.use(function (req, res, next) {
 	if (!req.session.login)
