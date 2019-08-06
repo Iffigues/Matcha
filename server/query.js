@@ -5,7 +5,7 @@ const tok = require('./tok');
 const con = require('./dt.js');
 const express = require('express');
 const  router = express.Router();
-
+const mid = require("./middleware.js");
 router.post("/", function (req, res) {
 	if (req.session.log) {
 		return ;
@@ -26,6 +26,10 @@ router.post("/", function (req, res) {
 			res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 		});
 	});
+});
+
+router.get("/logout/:token", mid, function(err, res){
+	req.session.destroy();
 });
 
 module.exports = router;
