@@ -1,17 +1,11 @@
-function genre() {
-}
-function pref() {
-}
-function email() {
-}
-function username() {
-}
-function firstname() {
-}
-function lastname() {
-}
-function password() {
-}
+const email = require("./profile/email.js");
+const genre = require("./profile/genre.js");
+const pref = require("./profile/pref.js");
+const password = require("./profile/password.js");
+const username = require("./profile/username.js");
+const lastname = require("./profile/lastname.js");
+const firstname = require("./profile/firstname.js");
+
 function funcP() {
 	let b = {};
 	b.genre = genre;
