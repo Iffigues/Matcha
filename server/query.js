@@ -13,17 +13,27 @@ router.post("/", function (req, res) {
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.email;
-		var sql = `SELECT * FROM user WHERE email = ?`;
-		con.query(sql, [email] ,function (err, result) {
+		var sql = `SELECT * FROM user WHERE email = ? LIMIT 1`;
+		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
-			let toke = new tok();
-			const payload = {result};
-			req.session.login['co'] = 1;
-			req.session.save();
-			const token = jwt.sign(payload, 'my-secret', {
-				expiresIn: '1h'
-			});
-			res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+			let rr = result[0];
+			if (rr.active) {
+				bcrypt.compare(pwd, rr.password, (err, ress) => {
+					if (err) throw err;
+					console.log(ress)
+					if (ress === true) {
+						let toke = new tok();
+						const payload = { rr };
+						req.session.login['co'] = 1;
+						console.log(req.session);
+						req.session.save();
+						const token = jwt.sign(payload, 'my-secret', {
+							expiresIn: '1h'
+						});
+						res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+					}
+				}
+				)};
 		});
 	});
 });

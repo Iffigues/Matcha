@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const secret = 'my-secret';
 const withAuth = function(req, res, next) {
 	if (!req.session.login['co']) {
+		console.log(req.session);
 		res.status(401).send("Merde");
 		return ;
 	}

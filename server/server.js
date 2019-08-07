@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const app = express();
 const cookieParser = require('cookie-parser');
-const mg = require('./mongo.js');
 const session = require('express-session')
 const val = require("./accept.js");
 const reg = require('./register.js');
