@@ -19,11 +19,12 @@ function sel(c) {
 
 function counter(c) {
 	let r = "";
+	if (c) {
 	let b = c.length;
-	if (c)
 	for (let i = 0; i < b; i++) {
 		r = r + ",";
 		r = r+"1";
+	}
 	}
 	return r;
 }
