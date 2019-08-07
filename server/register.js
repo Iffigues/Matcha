@@ -7,6 +7,7 @@ const express = require('express');
 const  router = express.Router();
 const con = require('./dt.js');
 const gender = require('./profile/genre.js');
+const pref = require('./profile/pref.js');
 
 function verif(data) {
 	let valid = new Validateur();
@@ -31,7 +32,8 @@ function user(tab, hash) {
 	user.email = tab.email;
 	user.active = 0;
 	user.token = token.generate();
-	user.gender = 1;
+	user.gender = tab.gender;
+	user.pref = tab.pref;
 	return verif(user);
 }
 
@@ -53,6 +55,7 @@ function table(req) {
 	b.firstname = req.body.firstname;
 	b.lastname = req.body.lastname;
 	b.gender = req.body.gender;
+	b.pref = req.body.pref;
 	return (b);
 }
 
@@ -61,13 +64,16 @@ router.post("/", function (req, res) {
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
 		let r = user(i, hash);
 		let y  = r.res;
+
 		con.connect(function(err) {
-			const f = `INSERT INTO user (firstname, lastname, password, email, username, gender) VALUES (?, ?, ?, ?, ?, ?)`;
-			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.gender], function (err, result, fields) {
+			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
+			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					console.log(gender(1, y.gender));
+					con.query(pref(1, y.pref), id, function (err, res,fi) {
+						if (err) throw err;
+					});
 					con.query(gender(1, y.gender), id, function (err, res, fi) {
 						if (err) throw err;
 					})
