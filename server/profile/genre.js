@@ -44,8 +44,8 @@ function up(c) {
 
 function types(a, c) {
 	if (a)
-		return ("INSERT INTO user_genre "+sel(c) +") VALUES ("+counter(c)+")");
-	return ("UPDATE user_genre SET "+up(c));
+		return ("INSERT INTO user_genre ( userId, "+sel(c) +") VALUES (?, "+counter(c)+")");
+	return ("UPDATE user_genre SET "+up(c) + "userId = ?");
 }
 
 function genre(a,c) {
