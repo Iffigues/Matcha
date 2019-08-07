@@ -6,6 +6,7 @@ const Validateur = require("./validateur.js");
 const express = require('express');
 const  router = express.Router();
 const con = require('./dt.js');
+const gender = require('./profile/genre.js');
 
 function verif(data) {
 	let valid = new Validateur();
@@ -66,7 +67,10 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					console.log(id);
+					console.log(gender(1, y.gender));
+					con.query(gender(1, y.gender), id, function (err, res, fi) {
+						if (err) throw err;
+					})
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id);
 					});
