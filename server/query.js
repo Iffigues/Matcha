@@ -13,19 +13,18 @@ router.post("/", function (req, res) {
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.email;
-		var sql = `SELECT * FROM user WHERE email = ? LIMIT 1`;
+		var sql = `SELECT * FROM user, user_pref, user_genre WHERE user.email = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
 			if (rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
 					if (err) throw err;
-					console.log(ress)
 					if (ress === true) {
 						let toke = new tok();
 						const payload = { rr };
 						req.session.login['co'] = 1;
-						console.log(req.session);
+						req.session.user = rr;
 						req.session.save();
 						const token = jwt.sign(payload, 'my-secret', {
 							expiresIn: '1h'
