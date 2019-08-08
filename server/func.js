@@ -17,3 +17,5 @@ function funcP() {
 	b.password = password;
 	return (b);
 }
+
+module.exports = funcP;

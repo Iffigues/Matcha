@@ -1,3 +1,5 @@
+const g = require('./genre.js');
+
 function genre() {
 }
 
