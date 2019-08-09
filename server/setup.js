@@ -67,7 +67,14 @@ function createUser(use) {
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 	)`,function (err, res) {
 		if (err) throw err;
-	});	
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS user_geo (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		lat double,
+		lon double
+	)`,function(err,res){
+		if (err) throw err;
+	})
 }
 
 con.connect(function(err) {
