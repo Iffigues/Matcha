@@ -8,7 +8,6 @@ function createUser(use) {
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
 		username  VARCHAR(155) UNIQUE NOT NULL,
-		gender int,
 		active boolean DEFAULT 0
 	)`, function (err, res) {
 		if (err) throw err;

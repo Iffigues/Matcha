@@ -8,7 +8,7 @@ const func = require('./func.js');
 const router = express.Router();
 const middle = require('./middleware.js');
 router.use(middle);
-router.get("/:id", function (req, res) {
+router.get("/", function (req, res) {
 	res.writeHeader(202, {"Content-Type": "application/json"});
 	res.end(JSON.stringify(req.session.user));
 
