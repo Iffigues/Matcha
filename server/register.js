@@ -83,12 +83,12 @@ router.post("/", function (req, res) {
 					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
 						if (err) throw err;
 					});
-					res.statut(200).send("good job");
+					res.status(200).send("good job");
 				}
 			});
 		});
 		} else {
-			res.statut(400).send("bad bad job");
+			res.status(400).send("bad bad job");
 		}
 	});
 

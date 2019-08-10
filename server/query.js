@@ -8,21 +8,58 @@ const  router = express.Router();
 const mid = require("./middleware.js");
 const faker = require('faker');
 const randomToken = require('random-token');
+const sendmail = require('sendmail')();
 
-router.post("/revover", function(req, res) {
-	let f = `INSERT INTO recover (userId, tok, password) VALUE ((SELECT id FROM user WHERE email = ?),?,?)`;
+function sendmai(token, username){
+	sendmail({
+		from: 'no-reply@yourdomain.com',
+		to: 'iffigues@vivaldi.net',
+		subject: 'test sendmail',
+		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>",
+	}, function(err, reply) {
+	});
+}
+
+
+router.post("/recover", function(req, res) {
+	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
+	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
 	let email = req.body.email;
 	let tok = randomToken(16);
 	let pass = faker.fake("{{internet.password}}");
 	con.connect(function(err) {
-		con.query(f,[emil, tok, pass], function(err, res, field) {
-			
+		bcrypt.hash(pass, saltRounds, function(err, hash) {
+			con.query(f,[email, tok, hash], function(err, res, field) {
+				if (!err) {
+					sendmai(tok, pass);
+				} else {
+					con.query(y, [tok,hash,email], function (err, res) {
+						console.log(err);
+						sendmai(tok, pass);
+					});
+				}
+
+			});
 		});
 	});
 });
 
-router.get("/recover/:tok" function(req, res) {
-	
+router.get("/recover/:toki", function(req, res) {
+	let ff = `UPDATE user SET password = (SELECT password FROM recover WHERE tok = ?) WHERE id = (SELECT userId FROM recover WHERE tok = ?)`;
+	let f = ` UPDATE user b, recover p SET b.password = p.password WHERE p.tok = ?`;
+	let tok = req.params.toki;
+	console.log(tok);
+	con.connect(function(err) {
+		con.query(f, [tok], function (err, res, fields) {
+			console.log(res);
+			console.log(err);
+			if (res.affectedRows == 1) {
+				con.query(`DELETE FROM recover WHERE tok = ?`,[tok], function(err, res){
+					console.log(err);
+				})
+			}
+		});
+	});
 });
 
 router.post("/", function (req, res) {
