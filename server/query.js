@@ -6,6 +6,25 @@ const con = require('./dt.js');
 const express = require('express');
 const  router = express.Router();
 const mid = require("./middleware.js");
+const faker = require('faker');
+const randomToken = require('random-token');
+
+router.post("/revover", function(req, res) {
+	let f = `INSERT INTO recover (userId, tok, password) VALUE ((SELECT id FROM user WHERE email = ?),?,?)`;
+	let email = req.body.email;
+	let tok = randomToken(16);
+	let pass = faker.fake("{{internet.password}}");
+	con.connect(function(err) {
+		con.query(f,[emil, tok, pass], function(err, res, field) {
+			
+		});
+	});
+});
+
+router.get("/recover/:tok" function(req, res) {
+	
+});
+
 router.post("/", function (req, res) {
 	if (req.session.log) {
 		return ;
@@ -37,7 +56,7 @@ router.post("/", function (req, res) {
 	});
 });
 
-router.get("/logout/:token", mid, function(err, res){
+router.get("/logout", mid, function(err, res){
 	req.session.destroy();
 });
 
