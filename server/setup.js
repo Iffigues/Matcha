@@ -22,7 +22,7 @@ function createUser(use) {
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS user_genre (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userId int,
+		userId int NOT NULL UNIQUE,
 		woman boolean DEFAULT 0,
 		man boolean DEFAULT 0,
 		agender boolean DEFAULT 0,
@@ -50,7 +50,7 @@ function createUser(use) {
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS user_pref (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userID int,
+		userID int NOT NULL UNIQUE,
 		asexual boolean DEFAULT 0,
 		bisexual boolean DEFAULT 0,
 		demisexual boolean DEFAULT 0,
@@ -70,13 +70,21 @@ function createUser(use) {
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS user_geo (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userId int,
+		userId int NOT NULL UNIQUE,
 		lat double,
 		lon double,
-		FOREIGN KEY (userId) REFERENCEA user(id) ON DELETE CASCADE
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 	)`,function(err,res){
 		if (err) throw err;
-	})
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS recover (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL UNIQUE,
+		tok VARCHAR(155) NOT NULL UNIQUE,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function (err, res) {
+		if (err) throw err;
+	});
 }
 
 con.connect(function(err) {
