@@ -70,8 +70,10 @@ function createUser(use) {
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS user_geo (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int,
 		lat double,
-		lon double
+		lon double,
+		FOREIGN KEY (userId) REFERENCEA user(id) ON DELETE CASCADE
 	)`,function(err,res){
 		if (err) throw err;
 	})

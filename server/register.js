@@ -64,6 +64,7 @@ router.post("/", function (req, res) {
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
 		let r = user(i, hash);
 		let y  = r.res;
+		if (r.i) {
 		con.connect(function(err) {
 			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
@@ -79,9 +80,16 @@ router.post("/", function (req, res) {
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id);
 					});
+					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
+						if (err) throw err;
+					});
+					res.statut(200).send("good job");
 				}
 			});
 		});
+		} else {
+			res.statut(400).send("bad bad job");
+		}
 	});
 
 });

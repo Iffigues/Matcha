@@ -66,6 +66,9 @@ function rr() {
 					});
 					con.query(haha, id, function (err, res) {
 					});
+					con.query(`INSERT INTO user_geo (userId,lat,lon) VALUES (?,?,?)`, [id, c[5],c[6]], function (err, res) {
+						if (err) throw err;
+					});
 				}
 			});
 		}
