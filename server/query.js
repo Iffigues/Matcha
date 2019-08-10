@@ -73,6 +73,9 @@ router.post("/", function (req, res) {
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
+			for (var key in rr) 
+				if (key == 'password') 
+					rr.splice(key, 1);
 			if (rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
 					if (err) throw err;
