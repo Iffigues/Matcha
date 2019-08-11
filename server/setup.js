@@ -48,6 +48,7 @@ function createUser(use) {
 		deer boolean DEFAULT 0,
 		bat boolean DEFAULT 0,
 		insect boolean DEFAULT 0,
+		fish boolean DEFAULT 0
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 	)`, function (err, res) {
 		if (err) throw err;
