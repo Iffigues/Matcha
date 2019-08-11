@@ -23,7 +23,7 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user_genre (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userId int NOT NULL UNIQUE,
-		sexe ENUM (1,2),
+		sexe ENUM (1,2) NOT NULL,
 		fox  boolean DEFAULT 0,
 		wolf boolean DEFAULT 0,
 		dog boolean DEFAULT 0,
@@ -56,7 +56,7 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user_pref (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userID int NOT NULL UNIQUE,
-		sexe enum (1,2),
+		sexe enum (1,2) NOT NULL,
 		fox  boolean DEFAULT 0,
 		wolf boolean DEFAULT 0,
 		dog boolean DEFAULT 0,

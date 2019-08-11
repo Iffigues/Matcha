@@ -1,0 +1,24 @@
+url = gopiko.fr
+port: 8080
+register:
+	url: /register
+	method: POST
+	fields:
+		username, password, email, firstname, lastname
+login:
+	url: /login
+	method: post
+	field: 
+		username, password
+logout:
+	url: /logout
+	method: get
+
+connected:
+	url: /connected
+	method: get
+
+profile:
+	url: /profile
+	method: post
+

@@ -68,8 +68,8 @@ router.post("/", function (req, res) {
 	}
 	con.connect(function (err) {
 		let pwd = req.body.password;
-		let email = req.body.email;
-		var sql = `SELECT * FROM user, user_pref, user_genre WHERE user.email = ? LIMIT 1`;
+		let email = req.body.username;
+		var sql = `SELECT * FROM user, user_pref, user_genre WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
