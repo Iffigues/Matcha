@@ -4,7 +4,9 @@ register:
 	url: /register
 	method: POST
 	fields:
-		username, password, email, firstname, lastname
+		username, password, email, firstname, lastname, sexe
+	return: good: 200
+		error: 400 with message error
 login:
 	url: /login
 	method: post
