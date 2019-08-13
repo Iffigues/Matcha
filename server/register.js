@@ -79,9 +79,9 @@ router.post("/", function (req, res) {
 					con.query(gender(0,1, y.pref), [id, r.sexe], function (err, res,fi) {
 						if (err) throw err;
 					});
-					/*con.query(gender(1, 1, y.gender), [id, r.sexe], function (err, res, fi) {
+					con.query(gender(1, 1, y.gender), [id, r.sexe], function (err, res, fi) {
 						if (err) throw err;
-					})*/
+					})
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id);
 					});
