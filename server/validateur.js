@@ -25,7 +25,12 @@ class Validate {
 			(typeof value === 'string' && value.trim().length === 0)
 		);
 	}
-	isName (name) {
+    isName (name) {
+	if (name.length === 0)
+	    return false;
+	    if (!/[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž]+/.test(name))
+	    return false;
+	return true
 		return(this.name.test(name));
 	}
 	isEmail (email) {
