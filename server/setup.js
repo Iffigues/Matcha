@@ -5,6 +5,7 @@ function createUser(use) {
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		firstname VARCHAR(155) NOT NULL,
 		lastname  VARCHAR(155) NOT NULL,
+		birthdate DATE,
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
 		username  VARCHAR(155) UNIQUE NOT NULL,
