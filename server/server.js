@@ -8,6 +8,7 @@ const val = require("./accept.js");
 const reg = require('./register.js');
 const query = require('./query');
 const jwt = require('jsonwebtoken');
+const tag = require("./tag.js");
 const withAuth = require('./middleware');
 const profile = require('./profile');
 var MemoryStore =session.MemoryStore;
@@ -43,6 +44,7 @@ app.use('/register', reg);
 app.use('/validate', val);
 app.use('/login', query);
 app.use('/profile', profile);
+app.use('/tag', tag);
 app.get('/connected', withAuth, function (req, res) {
 	res.sendStatus(202);
 })
