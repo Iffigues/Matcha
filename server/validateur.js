@@ -3,7 +3,7 @@ class Validate {
 		this.name = /^[a-z ,.'-]+$/i;
 		this.email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		this.password = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
-		this.username = /^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$/;
+		this.username = /^(?!.*__.*)(?!.*\.\..*)[a-z0-9A-Z_.]+$/;
 	}
 	hasUp(str) {
 		return (/[A-Z]/.test(str));
@@ -39,15 +39,10 @@ class Validate {
 		return true;
 		return (this.password.test(pwd));
 	}
-	isLogin (login) {
-
-		if (login === 0)
-			return false;
-		else if (login.length < 4)
-			return false;
-		else if (!/[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž]+/.test(login))
-			return false;
-		return true;
+    isLogin (login) {
+	if (!/[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž]+/.test(login))
+	    return false;
+	return true;
 		return (this.username.test(login));
 	}
 }
