@@ -65,7 +65,6 @@ function table(req) {
 
 router.post("/", function (req, res) {
 	i = table(req);
-	console.log(req.body);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
 		let r = user(i, hash);
 		let y  = r.res;
@@ -76,6 +75,7 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
+					console.log(gender(0,1,y.pref));
 					con.query(gender(0,1, y.pref), [id, r.sexe], function (err, res,fi) {
 						if (err) throw err;
 					});
@@ -90,6 +90,7 @@ router.post("/", function (req, res) {
 					});
 					res.status(200).send(JSON.stringify("good job"));
 				}	else {
+					console.log(err);
 					res.status(400).send(JSON.stringify("something is bad"));
 				}
 			});

@@ -51,11 +51,11 @@ function types(y,a, c) {
 	else
 		r = "user_pref";
 	if (a)
-		return ("INSERT INTO "+r+" ( userId, sexe,"+sel(c) +") VALUES (?,?,"+counter(c)+")");
+		return ("INSERT INTO "+r+" ( userId, sexe"+sel(c) +") VALUES (?,?"+counter(c)+")");
 	return ("UPDATE "+r+" SET "+up(c)+" WHERE userId = ?");
 }
 
 function genre(a,c, y) {
-	return (types(y, a, c));
+	return (types(a,c,y));
 }
 module.exports = genre;
