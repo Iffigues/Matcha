@@ -26,11 +26,7 @@ function counter(c) {
 
 
 function getg() {
-	return ["woman", "man", "agender", "androgynous", "bigender", "genderfluid", "genderqueer", "gendernonconforming", "hijra", "intersex", "cisman", "ciswoman", "nonbinary", "pangender", "transfeminine", "transgender", "transman", "transmasculine", "transexual", "transwoman", "twospirit"];
-}
-
-function getf() {
-	return (["asexual", "bisexual", "demisexual", "gay", "homoflexible", "heteroflexible", "lesbian", "pansexual", "queer", "questioning", "sapiosexual", "straight", "moreorientations"]);
+	return ["fox", "wolf", "dog", "dragon", "cat", "rabbit", "horse", "skunk", "otter", "bear", "coyotte", "hyena", "bird", "rat", "kangaroo", "gryphon", "ferret", "dinosaur", "squirrel", "jackal", "deer", "bat", "insect", "fish"];
 }
 
 function getGenre(tar,bb) {
@@ -59,12 +55,17 @@ function rr() {
 				if (result && !err) {
 					let id = result.insertId;
 					let gs= getGenre(getg());
-					let gc = getGenre(getf());
-					let gg = "INSERT INTO user_genre (userId"+sel(gs, gs) +") VALUES (?"+counter(gs)+")";
-					let haha = "INSERT INTO user_pref (userId"+sel(gc, gc)+") VALUES (?"+counter(gc)+")";
+					let fff = getRandomInt(2) + 1;
+					let fer = getRandomInt(3) + 1;
+					let gg = "INSERT INTO user_genre (userId, sexe "+sel(gs, gs) +") VALUES (?,"+fff.toString()+counter(gs)+")";
+					let haha = "INSERT INTO user_pref (userId,sexe "+sel(gs, gs)+") VALUES (?,"+fer.toString()+counter(gs)+")";
+					console.log(gg);
+					console.log(haha);
 					con.query(gg, id, function (err, res) {
+						if (err) throw err;
 					});
 					con.query(haha, id, function (err, res) {
+						if (err) throw err;
 					});
 					con.query(`INSERT INTO user_geo (userId,lat,lon) VALUES (?,?,?)`, [id, c[5],c[6]], function (err, res) {
 						if (err) throw err;

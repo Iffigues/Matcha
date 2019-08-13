@@ -65,6 +65,7 @@ function table(req) {
 
 router.post("/", function (req, res) {
 	i = table(req);
+	console.log(req.body);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
 		let r = user(i, hash);
 		let y  = r.res;
@@ -78,21 +79,23 @@ router.post("/", function (req, res) {
 					con.query(gender(0,1, y.pref), [id, r.sexe], function (err, res,fi) {
 						if (err) throw err;
 					});
-					con.query(gender(1, 1, y.gender), [id, r.sexe], function (err, res, fi) {
+					/*con.query(gender(1, 1, y.gender), [id, r.sexe], function (err, res, fi) {
 						if (err) throw err;
-					})
+					})*/
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id);
 					});
 					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
 						if (err) throw err;
 					});
-					res.status(200).send("good job");
+					res.status(200).send(JSON.stringify("good job"));
+				}	else {
+					res.status(400).send(JSON.stringify("something is bad"));
 				}
 			});
 		});
 		} else {
-			res.status(400).send(r.res);
+			res.status(400).send(JSON.stringify(r.res));
 		}
 	});
 

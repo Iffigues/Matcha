@@ -5,6 +5,18 @@ class Validate {
 		this.password = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$/;
 		this.username = /^(?!.*__.*)(?!.*\.\..*)[a-z0-9_.]+$/;
 	}
+	hasUp(str) {
+		return (/[A-Z]/.test(str));
+	}
+	hasLo (str) {
+		return (/[a-z]/.test(str));
+	}
+	spec (str) {
+		return !/.*[!A-Za-z0-9]+.*/.test(str)
+	}
+	hasLowerCase(str) {
+		return (/[0-9]/.test(str));
+	}
 	isEmpty(value) {
 		return (
 			value === undefined ||
@@ -20,9 +32,21 @@ class Validate {
 		return (this.email.test(email));
 	}
 	isPwd (pwd) {
+		if (pwd.length < 8)	
+			return false;
+		if (!this.hasUp(pwd) || !this.hasLo(pwd) || !this.hasLowerCase(pwd) || this.spec(pwd))
+			return false;
+		return true;
 		return (this.password.test(pwd));
 	}
 	isLogin (login) {
+
+		if (login === 0)
+			return false;
+		else if (login.length < 4)
+			return false;
+		return true;
+
 		return (this.username.test(login));
 	}
 }
