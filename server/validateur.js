@@ -45,8 +45,9 @@ class Validate {
 			return false;
 		else if (login.length < 4)
 			return false;
+		else if (!/[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž]+/.test(login))
+			return false;
 		return true;
-
 		return (this.username.test(login));
 	}
 }
