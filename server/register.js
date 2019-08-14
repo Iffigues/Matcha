@@ -12,16 +12,16 @@ const pref = require('./profile/pref.js');
 function verif(data) {
 	let valid = new Validateur();
 	if (!valid.isName(data.firstname+" "+data.lastname))
-		return ({i:0, res:"invalide  firstname or lastname"});
+		return ({code:1, msg:"invalide  firstname or lastname"});
 	if (!valid.isEmail(data.email))
-		return ({i:0, res: "invalide email"});
+		return ({code:1, msg: "invalide email"});
 	if (!valid.isPwd(data.pwd))
-		return ({i:0, res: "invalide password"});
+		return ({code:1, msg: "invalide password"});
 	if (!valid.isLogin(data.login))
-		return ({i:0, res: "invalide username"});
+		return ({code:1, msg: "invalide username"});
 	if (!data.sexe)
-		return({i:0, res: "invalide sexe"});
-	return ({i:1,res:data});
+		return({code:1, msg: "invalide sexe"});
+	return ({code:0,msg:data});
 }
 
 function user(tab, hash) {
@@ -68,7 +68,7 @@ function errno(err) {
 	b.code = 0;
 	if (err.errno == 1062) {
 		b.code = 1;
-		b.mess =  "le "+err.sqlMessage.split("'")[3]+" "+err.sqlMessage.split("'")[1]+" existent deja";	
+		b.msg =  "le "+err.sqlMessage.split("'")[3]+" "+err.sqlMessage.split("'")[1]+" existent deja";	
 	}
 	return b;
 }
@@ -77,8 +77,9 @@ router.post("/", function (req, res) {
 	i = table(req);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
 		let r = user(i, hash);
-		let y  = r.res;
-		if (r.i) {
+		let y  = r.msg;
+		console.log(r);
+		if (!r.code) {
 		con.connect(function(err) {
 			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
