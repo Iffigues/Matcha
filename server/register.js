@@ -11,14 +11,26 @@ const pref = require('./profile/pref.js');
 
 function verif(data) {
 	let valid = new Validateur();
-	if (!valid.isName(data.firstname+" "+data.lastname))
+	if (!valid.isName(data.firstname+" "+data.lastname)) {
 		return ({code:1, msg:"invalide  firstname or lastname"});
-	if (!valid.isEmail(data.email))
+	} else {
+		data.firstname = data.firstname.trim();
+		data.lastname = data.lastname.trim();
+	}
+
+	if (!valid.isEmail(data.email)) {
 		return ({code:1, msg: "invalide email"});
-	if (!valid.isPwd(data.pwd))
+	} else {
+		data.email = data.email.trim();
+	}
+	if (!valid.isPwd(data.pwd)) {
 		return ({code:1, msg: "invalide password"});
-	if (!valid.isLogin(data.login))
+	} 
+	if (!valid.isLogin(data.login)) {
 		return ({code:1, msg: "invalide username"});
+	} else {
+		data.login = data.login.trim();
+	}
 	if (!data.sexe)
 		return({code:1, msg: "invalide sexe"});
 	return ({code:0,msg:data});
@@ -52,11 +64,11 @@ function sendmai(token, username){
 
 function table(req) {
 	let b = {};
-	b.login = req.body.username;
-	b.pwd = req.body.password;
-	b.email = req.body.email;
-	b.firstname = req.body.firstname;
-	b.lastname = req.body.lastname;
+	b.login = req.body.username.trim();
+	b.pwd = req.body.password.trim();
+	b.email = req.body.email.trim();
+	b.firstname = req.body.firstname.trim();
+	b.lastname = req.body.lastname.trim();
 	b.sexe = req.body.sexe;
 	b.gender = req.body.gender;
 	b.pref = req.body.pref;
@@ -86,10 +98,10 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					con.query(gender(0,1, y.pref), [id, r.sexe], function (err, res,fi) {
+					con.query(gender(0,1, y.pref), [id, y.sexe], function (err, res,fi) {
 						if (err) throw err;
 					});
-					con.query(gender(1, 1, y.gender), [id, r.sexe], function (err, res, fi) {
+					con.query(gender(1, 1, y.gender), [id, y.sexe], function (err, res, fi) {
 						if (err) throw err;
 					})
 					con.query(lol, [id, y.token], function (err, results, field) {
@@ -98,7 +110,7 @@ router.post("/", function (req, res) {
 					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
 						if (err) throw err;
 					});
-					res.status(200).send(JSON.stringify({code:0, msg:"good job"}));
+					res.status(200).send(JSON.stringify({code:0, msg:"le compte vient d être creer, un message de confirmation vient d être envoyér"}));
 				}	else {
 					res.status(400).send(JSON.stringify(errno(err)));
 				}

@@ -25,7 +25,7 @@ function sendmai(token, username){
 router.post("/recover", function(req, res) {
 	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
 	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
-	let email = req.body.email;
+	let email = req.body.email.trim();
 	let tok = randomToken(16);
 	let valid = new Validateur();
 	if (!valid.isEmail) {
@@ -74,13 +74,23 @@ router.get("/recover/:toki", function(req, res) {
 	});
 });
 
+function ver(a){
+	 let valid = new Validateur();
+		if (!valid.isLogin(a))
+			return (0);
+	return (1);
+}
+
 router.post("/", function (req, res) {
 	if (req.session.log) {
 		return ;
 	}
 	con.connect(function (err) {
 		let pwd = req.body.password;
-		let email = req.body.username;
+		let email = req.body.username.trim();
+		if(!verif(email)) {
+			res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
+		}
 		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
@@ -99,12 +109,12 @@ router.post("/", function (req, res) {
 						});
 						res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 					} else {
-						res.status(404).send("bad password");
+						res.status(404).send(JSON.stringify({code:2,msg:"bad password"}));
 					}
 				})
 
 			}else{
-				res.status(404).send("not found");
+				res.status(404).send(JSON.stringify({err:3,msg:"not found"}));
 			}
 		});
 	});
