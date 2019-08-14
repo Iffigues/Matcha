@@ -75,7 +75,7 @@ router.get("/recover/:toki", function(req, res) {
 });
 
 function ver(a){
-	 let valid = new Validateur();
+	 let valid = new valide();
 		if (!valid.isLogin(a))
 			return (0);
 	return (1);
@@ -88,26 +88,31 @@ router.post("/", function (req, res) {
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.username.trim();
-		if(!verif(email)) {
+		if(!ver(email)) {
 			res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
 		}
 		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
+			if (!rr.active) {
+				res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter lee compte"}));
+				return ;
+			}
 			if (rr && rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
 					if (err) throw err;
 					if (ress === true) {
 						let toke = new tok();
 						const payload = { rr };
-						req.session.login['co'] = 1;
+						req.session.co = 1;
 						req.session.user = rr;
 						req.session.save();
 						const token = jwt.sign(payload, 'my-secret', {
-							expiresIn: '1h'
+							expiresIn: 10000
 						});
-						res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+						//res.status(202).send(JSON.stringify({code:0,msg:token}));
+						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}));
 					} else {
 						res.status(404).send(JSON.stringify({code:2,msg:"bad password"}));
 					}

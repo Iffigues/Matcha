@@ -1,5 +1,6 @@
 const faker = require('faker');
 const con = require('./db.js');
+var nodemailer = require('nodemailer');
 
 function getRandomInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
@@ -75,4 +76,24 @@ function rr() {
 		}
 	});
 }
-rr();
+//rr();
+var transporter = nodemailer.createTransport({
+	 service: 'gmail',
+	 auth: {
+		         user: 'denoyelle.boris@gmail.com',
+		         pass: 'Marie1426'
+		     }
+});
+const mailOptions = {
+	  from: 'sender@email.com', // sender address
+	  to: 'iffigues@vivaldi.net', // list of receivers
+	  subject: 'Subject of your email', // Subject line
+	  html: '<p>Your html here</p>'// plain text body
+};
+
+transporter.sendMail(mailOptions, function (err, info) {
+	   if(err)
+		     console.log(err)
+	   else
+		     console.log(info);
+});
