@@ -63,6 +63,16 @@ function table(req) {
 	return (b);
 }
 
+function errno(err) {
+	let b = {};
+	b.code = 0;
+	if (err.errno == 1062) {
+		b.code = 1;
+		b.mess =  "le "+err.sqlMessage.split("'")[3]+" "+err.sqlMessage.split("'")[1]+" existent deja";	
+	}
+	return b;
+}
+
 router.post("/", function (req, res) {
 	i = table(req);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
@@ -75,7 +85,6 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					console.log(gender(0,1,y.pref));
 					con.query(gender(0,1, y.pref), [id, r.sexe], function (err, res,fi) {
 						if (err) throw err;
 					});
@@ -90,8 +99,7 @@ router.post("/", function (req, res) {
 					});
 					res.status(200).send(JSON.stringify("good job"));
 				}	else {
-					console.log(err);
-					res.status(400).send(JSON.stringify("something is bad"));
+					res.status(400).send(JSON.stringify(errno(err)));
 				}
 			});
 		});
