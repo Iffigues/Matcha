@@ -98,7 +98,7 @@ router.post("/", function (req, res) {
 					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
 						if (err) throw err;
 					});
-					res.status(200).send(JSON.stringify("good job"));
+					res.status(200).send(JSON.stringify({code:0, msg:"good job"}));
 				}	else {
 					res.status(400).send(JSON.stringify(errno(err)));
 				}
