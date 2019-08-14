@@ -1,5 +1,5 @@
 function arr() {
-	return ["woman", "man", "agender", "androgynous", "bigender", "genderfluid", "genderqueer", "gendernonconforming", "hijra", "intersex", "cisman", "ciswoman", "nonbinary", "pangender", "transfeminine", "transgender", "transman", "transmasculine", "transexual", "transwoman", "twospirit"];
+	return ["fox", "wolf", "dog", "dragon", "car", "big cats", "rabbit", "horse", "skunk", "otter", "bear", "coyotte", "hyena", "bird", "rat", "kangaroo", "gryphon", "ferret", "dinosaur", "squirrel", "jackal", "deer", "bat", "insect", "fish"];
 }
 
 function sel(c) {
@@ -44,13 +44,18 @@ function up(c) {
 	return r;
 }
 
-function types(a, c) {
+function types(y,a, c) {
+	let r = "";
+	if (y) 
+		r = "user_genre";
+	else
+		r = "user_pref";
 	if (a)
-		return ("INSERT INTO user_genre ( userId"+sel(c) +") VALUES (?"+counter(c)+")");
-	return ("UPDATE user_genre SET "+up(c)+" WHERE userId = ?");
+		return ("INSERT INTO "+r+" ( userId, sexe"+sel(c) +") VALUES (?,?"+counter(c)+")");
+	return ("UPDATE "+r+" SET "+up(c)+" WHERE userId = ?");
 }
 
-function genre(a,c) {
-	return (types(a,c));
+function genre(a,c, y) {
+	return (types(a,c,y));
 }
 module.exports = genre;

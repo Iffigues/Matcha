@@ -19,6 +19,8 @@ function verif(data) {
 		return ({i:0, res: "invalide password"});
 	if (!valid.isLogin(data.login))
 		return ({i:0, res: "invalide username"});
+	if (!data.sexe)
+		return({i:0, res: "invalide sexe"});
 	return ({i:1,res:data});
 }
 
@@ -32,6 +34,7 @@ function user(tab, hash) {
 	user.email = tab.email;
 	user.active = 0;
 	user.token = token.generate();
+	user.sexe = tab.sexe;
 	user.gender = tab.gender;
 	user.pref = tab.pref;
 	return verif(user);
@@ -54,6 +57,7 @@ function table(req) {
 	b.email = req.body.email;
 	b.firstname = req.body.firstname;
 	b.lastname = req.body.lastname;
+	b.sexe = req.body.sexe;
 	b.gender = req.body.gender;
 	b.pref = req.body.pref;
 	return (b);
@@ -71,10 +75,11 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					con.query(pref(1, y.pref), id, function (err, res,fi) {
+					console.log(gender(0,1,y.pref));
+					con.query(gender(0,1, y.pref), [id, r.sexe], function (err, res,fi) {
 						if (err) throw err;
 					});
-					con.query(gender(1, y.gender), id, function (err, res, fi) {
+					con.query(gender(1, 1, y.gender), [id, r.sexe], function (err, res, fi) {
 						if (err) throw err;
 					})
 					con.query(lol, [id, y.token], function (err, results, field) {
@@ -83,12 +88,15 @@ router.post("/", function (req, res) {
 					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
 						if (err) throw err;
 					});
-					res.status(200).send("good job");
+					res.status(200).send(JSON.stringify("good job"));
+				}	else {
+					console.log(err);
+					res.status(400).send(JSON.stringify("something is bad"));
 				}
 			});
 		});
 		} else {
-			res.status(400).send("bad bad job");
+			res.status(400).send(JSON.stringify(r.res));
 		}
 	});
 

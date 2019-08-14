@@ -4,6 +4,7 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		firstname VARCHAR(155) NOT NULL,
+		date DATE,
 		lastname  VARCHAR(155) NOT NULL,
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
@@ -23,13 +24,12 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user_genre (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userId int NOT NULL UNIQUE,
-		sexe ENUM (1,2) NOT NULL,
+		sexe int NOT NULL DEFAULT 0,
 		fox  boolean DEFAULT 0,
 		wolf boolean DEFAULT 0,
 		dog boolean DEFAULT 0,
 		dragon boolean DEFAULT 0,
 		cat boolean DEFAULT 0,
-		big cats boolean DEFAULT 0,
 		rabbit boolean DEFAULT 0,
 		horse boolean DEFAULT 0,
 		skunk boolean DEFAULT 0,
@@ -48,7 +48,7 @@ function createUser(use) {
 		deer boolean DEFAULT 0,
 		bat boolean DEFAULT 0,
 		insect boolean DEFAULT 0,
-		fish boolean DEFAULT 0
+		fish boolean DEFAULT 0,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 	)`, function (err, res) {
 		if (err) throw err;
@@ -56,13 +56,12 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user_pref (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userID int NOT NULL UNIQUE,
-		sexe enum (1,2) NOT NULL,
+		sexe int DEFAULT 0,
 		fox  boolean DEFAULT 0,
 		wolf boolean DEFAULT 0,
 		dog boolean DEFAULT 0,
 		dragon boolean DEFAULT 0,
 		cat boolean DEFAULT 0,
-		big cats boolean DEFAULT 0,
 		rabbit boolean DEFAULT 0,
 		horse boolean DEFAULT 0,
 		skunk boolean DEFAULT 0,
@@ -81,7 +80,7 @@ function createUser(use) {
 		deer boolean DEFAULT 0,
 		bat boolean DEFAULT 0,
 		insect boolean DEFAULT 0,
-		fish boolean DEFAULT 0
+		fish boolean DEFAULT 0,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 	)`,function (err, res) {
 		if (err) throw err;
@@ -101,6 +100,29 @@ function createUser(use) {
 		tok VARCHAR(155) NOT NULL UNIQUE,
 		password VARCHAR(155) NOT NULL,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function (err, res) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS bio (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL UNIQUE,
+		bio LONGTEXT,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function (err, re) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS tag (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		tag VARCHAR(30) NOT NULL UNIQUE
+	)`, function (err, res)  {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS tag_user (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		tagId int NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE
 	)`, function (err, res) {
 		if (err) throw err;
 	});

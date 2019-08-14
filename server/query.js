@@ -9,6 +9,7 @@ const mid = require("./middleware.js");
 const faker = require('faker');
 const randomToken = require('random-token');
 const sendmail = require('sendmail')();
+const valide = require("./validateur.js");
 
 function sendmai(token, username){
 	sendmail({
@@ -26,19 +27,30 @@ router.post("/recover", function(req, res) {
 	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
 	let email = req.body.email;
 	let tok = randomToken(16);
+	let valid = new Validateur();
+	if (!valid.isEmail) {
+		res.status(400).send("bad email");
+		return ;
+	}
 	let pass = faker.fake("{{internet.password}}");
 	con.connect(function(err) {
+		if (err) {
+			res.status(500).send("internal error");
+			return;
+		}
 		bcrypt.hash(pass, saltRounds, function(err, hash) {
+			if (err) {
+				res.satus(500).send("internal error");
+			}
 			con.query(f,[email, tok, hash], function(err, res, field) {
 				if (!err) {
 					sendmai(tok, pass);
 				} else {
 					con.query(y, [tok,hash,email], function (err, res) {
-						console.log(err);
 						sendmai(tok, pass);
 					});
 				}
-
+				res.status(200).send("yipiii");
 			});
 		});
 	});
@@ -69,14 +81,11 @@ router.post("/", function (req, res) {
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.username;
-		var sql = `SELECT * FROM user, user_pref, user_genre WHERE user.username = ? LIMIT 1`;
+		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
-			for (var key in rr) 
-				if (key == 'password') 
-					rr.splice(key, 1);
-			if (rr.active) {
+			if (rr && rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
 					if (err) throw err;
 					if (ress === true) {
@@ -89,15 +98,21 @@ router.post("/", function (req, res) {
 							expiresIn: '1h'
 						});
 						res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+					} else {
+						res.status(404).send("bad password");
 					}
-				}
-				)};
+				})
+
+			}else{
+				res.status(404).send("not found");
+			}
 		});
 	});
 });
 
 router.get("/logout", mid, function(err, res){
 	req.session.destroy();
+	res.status(202).send("ok");
 });
 
 module.exports = router;
