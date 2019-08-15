@@ -35,12 +35,12 @@ router.post("/recover", function(req, res) {
 	let pass = faker.fake("{{internet.password}}");
 	con.connect(function(err) {
 		if (err) {
-			res.status(500).send("internal error");
+			res.status(500).send(JSON.stringify({code:1,msg: "internal error"}));
 			return;
 		}
 		bcrypt.hash(pass, saltRounds, function(err, hash) {
 			if (err) {
-				res.satus(500).send("internal error");
+				res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
 			}
 			con.query(f,[email, tok, hash], function(err, res, field) {
 				if (!err) {
@@ -50,7 +50,7 @@ router.post("/recover", function(req, res) {
 						sendmai(tok, pass);
 					});
 				}
-				res.status(200).send("yipiii");
+				res.status(200).send(JSON.stringify(code:1, msg:"un email viens de vous être envoyer"));
 			});
 		});
 	});
