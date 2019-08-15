@@ -9,6 +9,7 @@ function createUser(use) {
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
 		username  VARCHAR(155) UNIQUE NOT NULL,
+		role ENUM ("user","admin"),
 		active boolean DEFAULT 0
 	)`, function (err, res) {
 		if (err) throw err;
@@ -124,6 +125,14 @@ function createUser(use) {
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
 		FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE
 	)`, function (err, res) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS img (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		path varchar(155) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function(err, res) {
 		if (err) throw err;
 	});
 }

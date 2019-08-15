@@ -31,8 +31,9 @@ router.get("/new/:id", function (req, res) {
 router.get("/all", function (req, res) {
 	let f = `SELECT tag FROM tag`;
 	con.connect(function (err) {
-		con.query(f,function (err, res) {
+		con.query(f,function (err, result) {
 			if (err) throw err;
+			res.status(200).send(JSON.stringify({code: 0,msg:result}));
 		});
 	});
 });
