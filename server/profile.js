@@ -6,19 +6,20 @@ const con = require('./dt.js');
 const express = require('express');
 const func = require('./func.js');
 const router = express.Router();
+var jwtDecode = require('jwt-decode');
 const middle = require('./middleware.js');
-router.use(middle);
-router.get("/", function (req, res) {
-	res.writeHeader(202, {"Content-Type": "application/json"});
-	let f  =  `SELECT * FROM user
-	INNER JOIN user_pref ON user_pref.userId = ?
-	INNER JOIN user_genre ON user_genre.userId = ?
-	INNER JOIN bio ON bio.userId = ?
-	INNER JOIN DISTINCT tab.tag ON tag.userId = ?
-	INNER JOIN user_geo ON user_geo.userId = ?
-	`;
 
-	res.end(JSON.stringify(req.session.user));
+router.use(middle);
+
+router.get("/", function (req, res) {
+	let f  =  `SELECT * FROM user WHERE id = ?`;
+	con.connect(function (err) {
+		var dd = jwtDecode(req.token);
+		var d = dd.rr.id;
+		con.query(f,[d], function (err, result) {
+			res.status(200).send(JSON.stringify({code:0, msg:result}));
+		});
+	});
 
 });
 router.post("/:id", function (req, res) {

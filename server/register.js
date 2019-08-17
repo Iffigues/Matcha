@@ -98,15 +98,8 @@ router.post("/", function (req, res) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					con.query(gender(0,1, y.pref), [id, y.sexe], function (err, res,fi) {
-					});
-					con.query(gender(1, 1, y.gender), [id, y.sexe], function (err, res, fi) {
-					})
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id, y.email);
-					});
-					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
-						if (err) throw err;
 					});
 					res.status(200).send(JSON.stringify({code:0, msg:"le compte vient d être creer, un message de confirmation vient d être envoyér"}));
 				}	else {

@@ -57,7 +57,7 @@ app.use('/login', query);
 app.use('/profile', profile);
 app.use('/tag',cors(), tag);
 app.use('/img', img);
-app.get('/connected', cors(), withAuth, function (req, res) {
+app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
 app.listen(process.env.PORT || 8080);
