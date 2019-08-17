@@ -99,10 +99,8 @@ router.post("/", function (req, res) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
 					con.query(gender(0,1, y.pref), [id, y.sexe], function (err, res,fi) {
-						if (err) throw err;
 					});
 					con.query(gender(1, 1, y.gender), [id, y.sexe], function (err, res, fi) {
-						if (err) throw err;
 					})
 					con.query(lol, [id, y.token], function (err, results, field) {
 						sendmai(y.token, id);

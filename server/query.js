@@ -50,7 +50,7 @@ router.post("/recover", function(req, res) {
 						sendmai(tok, pass);
 					});
 				}
-				res.status(200).send(JSON.stringify(code:1, msg:"un email viens de vous être envoyer"));
+				res.status(200).send(JSON.stringify({code:1, msg:"un email viens de vous être envoye"}));
 			});
 		});
 	});
@@ -75,9 +75,9 @@ router.get("/recover/:toki", function(req, res) {
 });
 
 function ver(a){
-	 let valid = new valide();
-		if (!valid.isLogin(a))
-			return (0);
+	let valid = new valide();
+	if (!valid.isLogin(a))
+		return (0);
 	return (1);
 }
 
@@ -95,8 +95,9 @@ router.post("/", function (req, res) {
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
-			if (!rr.active) {
-				res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter lee compte"}));
+			console.log(rr);
+			if (!rr || !rr.active) {
+				res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
 				return ;
 			}
 			if (rr && rr.active) {
@@ -104,14 +105,11 @@ router.post("/", function (req, res) {
 					if (err) throw err;
 					if (ress === true) {
 						let toke = new tok();
+						rr.date = Date.now();
 						const payload = { rr };
-						req.session.co = 1;
-						req.session.user = rr;
-						req.session.save();
 						const token = jwt.sign(payload, 'my-secret', {
-							expiresIn: 10000
+							expiresIn: 1000000
 						});
-						//res.status(202).send(JSON.stringify({code:0,msg:token}));
 						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}));
 					} else {
 						res.status(404).send(JSON.stringify({code:2,msg:"bad password"}));
@@ -125,9 +123,12 @@ router.post("/", function (req, res) {
 	});
 });
 
-router.get("/logout", mid, function(err, res){
-	req.session.destroy();
-	res.status(202).send("ok");
+router.get("/logout", mid, function(req, res){
+	const payload = {rr:"forbidden"};
+	const token = jwt.sign(payload, 'my-secret', {
+		expiresIn: 0
+	});
+	res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}))
 });
 
 module.exports = router;

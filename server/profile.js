@@ -10,6 +10,14 @@ const middle = require('./middleware.js');
 router.use(middle);
 router.get("/", function (req, res) {
 	res.writeHeader(202, {"Content-Type": "application/json"});
+	let f  =  `SELECT * FROM user
+	INNER JOIN user_pref ON user_pref.userId = ?
+	INNER JOIN user_genre ON user_genre.userId = ?
+	INNER JOIN bio ON bio.userId = ?
+	INNER JOIN DISTINCT tab.tag ON tag.userId = ?
+	INNER JOIN user_geo ON user_geo.userId = ?
+	`;
+
 	res.end(JSON.stringify(req.session.user));
 
 });

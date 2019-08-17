@@ -11,6 +11,16 @@ const jwt = require('jsonwebtoken');
 const tag = require("./tag.js");
 const withAuth = require('./middleware');
 const profile = require('./profile');
+const img = require("./img.js");
+var cors = require('cors')
+app.use(cors());
+
+app.options('*', cors());
+app.get('*', cors());
+app.post('*', cors());
+app.del('*', cors());
+app.options('*', cors());
+
 var MemoryStore =session.MemoryStore;
 app.set('trust proxy', 1) 
 app.use(session({
@@ -33,16 +43,21 @@ app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' })) 
 app.use(bodyParser.text({ type: 'text/html' }))
 app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "*,Origin, X-Requested-With, Content-Type, Accept");
+	/*res.header("Access-Control-Allow-Origin", "*");
+	res.header('Access-Control-Allow-Credentials', 'true');
+	 res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");*/
+	cors();
 	next();
 });
+
 app.use('/register', reg);
 app.use('/validate', val);
 app.use('/login', query);
 app.use('/profile', profile);
-app.use('/tag', tag);
-app.get('/connected/:token', withAuth, function (req, res) {
+app.use('/tag',cors(), tag);
+app.use('/img', img);
+app.get('/connected', cors(), withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
 app.listen(process.env.PORT || 8080);

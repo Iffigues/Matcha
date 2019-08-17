@@ -114,17 +114,11 @@ function createUser(use) {
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS tag (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		tag VARCHAR(30) NOT NULL UNIQUE
-	)`, function (err, res)  {
-		if (err) throw err;
-	});
-	use.query(`CREATE TABLE IF NOT EXISTS tag_user (
-		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userId int NOT NULL,
-		tagId int NOT NULL,
+		tag VARCHAR(30) NOT NULL,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
-		FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE
-	)`, function (err, res) {
+		UNIQUE KEY tag (tag,userId)
+	)`, function (err, res)  {
 		if (err) throw err;
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS img (
