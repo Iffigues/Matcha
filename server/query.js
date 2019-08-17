@@ -25,7 +25,7 @@ function sendmai(token, username){
 router.post("/recover", function(req, res) {
 	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
 	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
-	let email = req.body.email;
+	let email = req.body.email.trim();
 	let tok = randomToken(16);
 	let valid = new Validateur();
 	if (!valid.isEmail) {
@@ -35,12 +35,12 @@ router.post("/recover", function(req, res) {
 	let pass = faker.fake("{{internet.password}}");
 	con.connect(function(err) {
 		if (err) {
-			res.status(500).send("internal error");
+			res.status(500).send(JSON.stringify({code:1,msg: "internal error"}));
 			return;
 		}
 		bcrypt.hash(pass, saltRounds, function(err, hash) {
 			if (err) {
-				res.satus(500).send("internal error");
+				res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
 			}
 			con.query(f,[email, tok, hash], function(err, res, field) {
 				if (!err) {
@@ -50,7 +50,7 @@ router.post("/recover", function(req, res) {
 						sendmai(tok, pass);
 					});
 				}
-				res.status(200).send("yipiii");
+				res.status(200).send(JSON.stringify({code:1, msg:"un email viens de vous être envoye"}));
 			});
 		});
 	});
@@ -74,45 +74,61 @@ router.get("/recover/:toki", function(req, res) {
 	});
 });
 
+function ver(a){
+	let valid = new valide();
+	if (!valid.isLogin(a))
+		return (0);
+	return (1);
+}
+
 router.post("/", function (req, res) {
 	if (req.session.log) {
 		return ;
 	}
 	con.connect(function (err) {
 		let pwd = req.body.password;
-		let email = req.body.username;
+		let email = req.body.username.trim();
+		if(!ver(email)) {
+			res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
+		}
 		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
+			console.log(rr);
+			if (!rr || !rr.active) {
+				res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
+				return ;
+			}
 			if (rr && rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
 					if (err) throw err;
 					if (ress === true) {
 						let toke = new tok();
+						rr.date = Date.now();
 						const payload = { rr };
-						req.session.login['co'] = 1;
-						req.session.user = rr;
-						req.session.save();
 						const token = jwt.sign(payload, 'my-secret', {
-							expiresIn: '1h'
+							expiresIn: 1000000
 						});
-						res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}));
 					} else {
-						res.status(404).send("bad password");
+						res.status(404).send(JSON.stringify({code:2,msg:"bad password"}));
 					}
 				})
 
 			}else{
-				res.status(404).send("not found");
+				res.status(404).send(JSON.stringify({err:3,msg:"not found"}));
 			}
 		});
 	});
 });
 
-router.get("/logout", mid, function(err, res){
-	req.session.destroy();
-	res.status(202).send("ok");
+router.get("/logout", mid, function(req, res){
+	const payload = {rr:"forbidden"};
+	const token = jwt.sign(payload, 'my-secret', {
+		expiresIn: 0
+	});
+	res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}))
 });
 
 module.exports = router;

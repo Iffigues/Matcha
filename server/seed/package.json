@@ -9,6 +9,7 @@
   "author": "boris",
   "license": "ISC",
   "dependencies": {
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "nodemailer": "^6.3.0"
   }
 }

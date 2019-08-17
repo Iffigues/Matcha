@@ -9,6 +9,12 @@ function createUser(use) {
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
 		username  VARCHAR(155) UNIQUE NOT NULL,
+		bio 	LONGTEXT,
+		lat 	double,
+		lng 	double,
+		sexe	int DEFAULT 1,
+		pref	int DEFAULT 3,
+		role ENUM ("user","admin") DEFAULT "user",
 		active boolean DEFAULT 0
 	)`, function (err, res) {
 		if (err) throw err;
@@ -21,79 +27,6 @@ function createUser(use) {
 			if (err) throw err;
 		});
 	});
-	use.query(`CREATE TABLE IF NOT EXISTS user_genre (
-		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userId int NOT NULL UNIQUE,
-		sexe int NOT NULL DEFAULT 0,
-		fox  boolean DEFAULT 0,
-		wolf boolean DEFAULT 0,
-		dog boolean DEFAULT 0,
-		dragon boolean DEFAULT 0,
-		cat boolean DEFAULT 0,
-		rabbit boolean DEFAULT 0,
-		horse boolean DEFAULT 0,
-		skunk boolean DEFAULT 0,
-		otter boolean DEFAULT 0,
-		bear boolean DEFAULT 0,
-		coyotte boolean DEFAULT 0,
-		hyena boolean DEFAULT 0,
-		bird boolean DEFAULT 0,
-		rat boolean DEFAULT 0,
-		kangaroo boolean DEFAULT 0,
-		gryphon boolean DEFAULT 0,
-		ferret boolean DEFAULT 0,
-		dinosaur boolean DEFAULT 0,
-		squirrel boolean DEFAULT 0,
-		jackal boolean DEFAULT 0,
-		deer boolean DEFAULT 0,
-		bat boolean DEFAULT 0,
-		insect boolean DEFAULT 0,
-		fish boolean DEFAULT 0,
-		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
-	)`, function (err, res) {
-		if (err) throw err;
-	});
-	use.query(`CREATE TABLE IF NOT EXISTS user_pref (
-		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userID int NOT NULL UNIQUE,
-		sexe int DEFAULT 0,
-		fox  boolean DEFAULT 0,
-		wolf boolean DEFAULT 0,
-		dog boolean DEFAULT 0,
-		dragon boolean DEFAULT 0,
-		cat boolean DEFAULT 0,
-		rabbit boolean DEFAULT 0,
-		horse boolean DEFAULT 0,
-		skunk boolean DEFAULT 0,
-		otter boolean DEFAULT 0,
-		bear boolean DEFAULT 0,
-		coyotte boolean DEFAULT 0,
-		hyena boolean DEFAULT 0,
-		bird boolean DEFAULT 0,
-		rat boolean DEFAULT 0,
-		kangaroo boolean DEFAULT 0,
-		gryphon boolean DEFAULT 0,
-		ferret boolean DEFAULT 0,
-		dinosaur boolean DEFAULT 0,
-		squirrel boolean DEFAULT 0,
-		jackal boolean DEFAULT 0,
-		deer boolean DEFAULT 0,
-		bat boolean DEFAULT 0,
-		insect boolean DEFAULT 0,
-		fish boolean DEFAULT 0,
-		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
-	)`,function (err, res) {
-		if (err) throw err;
-	});
-	use.query(`CREATE TABLE IF NOT EXISTS user_geo (
-		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userId int NOT NULL UNIQUE,
-		lat double,
-		lon double,
-		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
-	)`,function(err,res){
-		if (err) throw err;
-	});
 	use.query(`CREATE TABLE IF NOT EXISTS recover (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userId int NOT NULL UNIQUE,
@@ -103,28 +36,30 @@ function createUser(use) {
 	)`, function (err, res) {
 		if (err) throw err;
 	});
-	use.query(`CREATE TABLE IF NOT EXISTS bio (
-		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userId int NOT NULL UNIQUE,
-		bio LONGTEXT,
-		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
-	)`, function (err, re) {
-		if (err) throw err;
-	});
 	use.query(`CREATE TABLE IF NOT EXISTS tag (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		tag VARCHAR(30) NOT NULL UNIQUE
+		userId int NOT NULL,
+		tag VARCHAR(30) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		UNIQUE KEY tag (tag,userId)
 	)`, function (err, res)  {
 		if (err) throw err;
 	});
-	use.query(`CREATE TABLE IF NOT EXISTS tag_user (
+	use.query(`CREATE TABLE IF NOT EXISTS img (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		userId int NOT NULL,
-		tagId int NOT NULL,
-		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
-		FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE
-	)`, function (err, res) {
+		path varchar(155) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function(err, res) {
 		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS furry (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		name VARCHAR(155) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		UNIQUE KEY name (name, userId)
+	)`, function (err, res) {
 	});
 }
 
