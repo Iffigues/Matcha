@@ -52,10 +52,10 @@ function user(tab, hash) {
 	return verif(user);
 }
 
-function sendmai(token, username){
+function sendmai(token, username, mail){
 	sendmail({
 		from: 'no-reply@yourdomain.com',
-		to: 'iffigues@vivaldi.net',
+		to: mail,
 		subject: 'test sendmail',
 		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>",
 	}, function(err, reply) {
@@ -103,7 +103,7 @@ router.post("/", function (req, res) {
 					con.query(gender(1, 1, y.gender), [id, y.sexe], function (err, res, fi) {
 					})
 					con.query(lol, [id, y.token], function (err, results, field) {
-						sendmai(y.token, id);
+						sendmai(y.token, id, y.email);
 					});
 					con.query(`iNSERT INTO user_geo (userId,lat,lon) VALUES (?,0,0)`, [id],function (err, res) {
 						if (err) throw err;
