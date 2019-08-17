@@ -18,7 +18,7 @@ app.use(cors());
 app.options('*', cors());
 app.get('*', cors());
 app.post('*', cors());
-app.del('*', cors());
+app.delete('*', cors());
 app.options('*', cors());
 
 var MemoryStore =session.MemoryStore;
