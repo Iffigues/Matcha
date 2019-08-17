@@ -12,8 +12,8 @@ function createUser(use) {
 		bio 	LONGTEXT,
 		lat 	double,
 		lng 	double,
-		sexe	int,
-		pref	int,
+		sexe	int DEFAULT 1,
+		pref	int DEFAULT 3,
 		role ENUM ("user","admin") DEFAULT "user",
 		active boolean DEFAULT 0
 	)`, function (err, res) {
