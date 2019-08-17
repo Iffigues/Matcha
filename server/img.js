@@ -59,13 +59,29 @@ router.post("/upload", function (req, res) {
 
 const fs = require('fs')
 
-router.post("/update", function(res, req) {
-	let f = `UPDATE img SET path = ?`
+router.post("/update", function(req, res) {
+	let f = `UPDATE img SET path = ? Where id = ?`
 	let r = `SELECT path FROM img WHERE id = ?`;
 	let gg = req.body.id;
 	con.connect(function (err) {
 		con.query(r, [gg], function (err, result) {
-		console.log(result);	
+			if (!err   && result) {
+				let yy = result[0].path;
+				upload(req, res, (err) => {
+					if (!err) {
+						con.query(f, [req.file.path, gg], function (err, resul) {
+							if (!err) {
+								fs.unlink(yy, (err) => {
+									  if (err) {
+										      console.error(err)
+									}
+								})
+								res.status(200).send(JSON.stringify({code:0, msg: req.file.path}));
+							}
+						});
+					}
+				});
+			}
 		});
 	});
 });
