@@ -14,6 +14,7 @@ function createUser(use) {
 		lng 	double,
 		sexe	int DEFAULT 1,
 		pref	int DEFAULT 3,
+		profile int,
 		role ENUM ("user","admin") DEFAULT "user",
 		active boolean DEFAULT 0
 	)`, function (err, res) {
@@ -60,6 +61,18 @@ function createUser(use) {
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
 		UNIQUE KEY name (name, userId)
 	)`, function (err, res) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS furry_pref (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		furryId int NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (furryId) REFERENCES furry(id) ON DELETE CASCADE,
+		UNIQUE KEY furrys (userId, furryId)
+		
+	)`, function (err, res) {
+		if (err) throw err;
 	});
 }
 
