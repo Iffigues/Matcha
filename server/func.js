@@ -8,6 +8,7 @@ const pref = require("./profile/pref.js");
 const lng = require("./profile/lng.js");
 const lat = require("./profile/lat.js");
 const bio = require("./profile/bio.js");
+const img = require("./profile/img.js");
 
 function funcP() {
 	let b = {};
@@ -15,6 +16,7 @@ function funcP() {
 	b.lat = lat;
 	b.sexe = ssexe;
 	b.pref = pref;
+	b.img = img;
 	b.bio = b.bio;
 	b.email = email;
 	b.username = username;
