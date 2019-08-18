@@ -60,16 +60,17 @@ router.post("/upload", function (req, res) {
 const fs = require('fs')
 
 router.post("/update", function(req, res) {
-	let f = `UPDATE img SET path = ? Where id = ?`
-	let r = `SELECT path FROM img WHERE id = ?`;
+	let f = `UPDATE img SET path = ? Where id = ? AND userId = ?`
+	let r = `SELECT path FROM img WHERE id = ? AND userID = ?`;
 	let gg = req.body.id;
+	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
-		con.query(r, [gg], function (err, result) {
+		con.query(r, [gg, decoded.rr.id], function (err, result) {
 			if (!err   && result) {
 				let yy = result[0].path;
 				upload(req, res, (err) => {
 					if (!err) {
-						con.query(f, [req.file.path, gg], function (err, resul) {
+						con.query(f, [req.file.path, gg, decoded.rr.id], function (err, resul) {
 							if (!err) {
 								fs.unlink(yy, (err) => {
 									  if (err) {
@@ -82,6 +83,25 @@ router.post("/update", function(req, res) {
 					}
 				});
 			}
+		});
+	});
+});
+
+router.delete("/", function (req, res) {
+	var decoded = jwtDecode(req.token);
+	let f = 'DELETE FROM img WHERE id = ? AND userId = ?';
+	let ff = `SELECT path FROM img WHERE id = ? AND userId = ?`;
+	con.connect(function (err) {
+		con.query(ff, [req.body.id, decoded.rr.id], function (err, results) {
+			if (!err && results) {
+				fs.unlink(results[0].path, (err) => {
+					if (err)
+						console.log(err);
+				})
+			}
+		});
+		con.query(f,[req.body.id, decoded.rr.id], function (err, result) {
+			res.status(200).send(JSON.stringify({code:0, msg:"image suprime"}));
 		});
 	});
 });

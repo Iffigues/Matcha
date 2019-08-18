@@ -13,9 +13,11 @@ const withAuth = require('./middleware');
 const profile = require('./profile');
 const img = require("./img.js");
 const furry = require("./furry.js");
-var cors = require('cors')
-app.use(cors());
+const suj = require("./suj.js");
 
+var cors = require('cors')
+var con =  require("./dt.js");
+app.use(cors());
 app.options('*', cors());
 app.get('*', cors());
 app.post('*', cors());
@@ -58,7 +60,8 @@ app.use('/login', query);
 app.use('/profile', profile);
 app.use('/tag',cors(), tag);
 app.use('/img', img);
-app.use("furry", furry);
+app.use("/furry", furry);
+app.use("/suj", suj);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
