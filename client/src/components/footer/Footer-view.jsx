@@ -3,9 +3,9 @@ import './Footer.css';
 
 function Footer() {
   return (
-	<footer class="footer">
-		<div class="container">
-			<span class="text-muted">Matcha © 2019</span>
+	<footer className="footer">
+		<div className="container">
+			<span className="text-muted">Matcha © 2019</span>
 		</div>
 	</footer>
   );
