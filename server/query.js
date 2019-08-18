@@ -82,9 +82,6 @@ function ver(a){
 }
 
 router.post("/", function (req, res) {
-	if (req.session.log) {
-		return ;
-	}
 	con.connect(function (err) {
 		let pwd = req.body.password;
 		let email = req.body.username.trim();

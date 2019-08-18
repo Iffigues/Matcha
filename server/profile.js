@@ -39,10 +39,46 @@ router.get("/", function (req, res) {
 	});
 
 });
-router.post("/:id", function (req, res) {
+
+function getTab() {
+	return ["lastname", "firstname", "bio", "date", "lat", "lng", "pref", "sexe", "email", "password"];
+}
+
+
+function look(tab, r) {
+	for (var i = 0; i < r.length; i++) {
+		if (!tab.include(r[i]))
+			return 0;
+	}
+	return 1;
+};
+
+function hard(obj, r, f, o, tab) {
+	let b = {};
+	b.code = 0;
+	look(tab, r)
+	for (var i in r) {
+		let u = r[i];
+		if (o)
+			f = f + `,`;
+		f = f+u+`=`+"'"+obj[u]+"'";
+		o = 1;
+	}
+	b.sql =  f + ` WHERE id = ?`;
+	return b;
+}
+
+router.post("/", function (req, res) {
 	let act = req.params.id;
-	var pointer = func();
-	if (pointer[act])
-		pointer[act](req,res);
+	let jj = req.body.obj;
+	var decoded = jwtDecode(req.token);
+	let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab());
+	console.log(y.sql)
+	con.connect(function (err) {
+		con.query(y.sql, [decoded.rr.id], function (err, result) {
+			console.log(err);
+			res.status(200).send(JSON.stringify({code:0, msg:"good job"}));
+		});
+	});
 });
 module.exports = router;
