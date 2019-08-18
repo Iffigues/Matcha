@@ -1,1 +1,1 @@
-export { default } from './Footer-view.js';
+export { default } from './Footer-view.jsx';
