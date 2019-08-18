@@ -16,7 +16,7 @@ function builder(err, result) {
 	let p = {};
 	b.code = 0;
 	p.email = result.email;
-	p.lastname = result.lsatname;
+	p.lastname = result.lastname;
 	p.firstname = result.firstname;
 	p.date = result.date;
 	p.lng = result.lng;
@@ -25,6 +25,7 @@ function builder(err, result) {
 	p.pref = result.pref;
 	p.username = result.username;
 	b.profile = p;
+	console.log(p);
 	return b;
 }
 
@@ -37,26 +38,28 @@ router.get("/", function (req, res) {
 			res.status(200).send(JSON.stringify(builder(err, result[0])));
 		});
 	});
-
 });
 
 function getTab() {
-	return ["lastname", "firstname", "bio", "date", "lat", "lng", "pref", "sexe", "email", "password"];
+	return ["lastname", "firstname", "bio", "date", "lat", "lng", "pref", "sexe", "email", "password", "profile"];
 }
 
 
 function look(tab, r) {
+	let tt = {};
+	tt.code = 0;
 	for (var i = 0; i < r.length; i++) {
-		if (!tab.include(r[i]))
-			return 0;
+		if (!tab.include(r[i])) {
+			tt.code = 1;
+			tt.msg = "valeur inexistante "+r[i];
+		}
 	}
-	return 1;
+	return tt;
 };
 
 function hard(obj, r, f, o, tab) {
-	let b = {};
-	b.code = 0;
-	look(tab, r)
+	let b = look(tab, r)
+	if (b.code == 0) {
 	for (var i in r) {
 		let u = r[i];
 		if (o)
@@ -65,20 +68,26 @@ function hard(obj, r, f, o, tab) {
 		o = 1;
 	}
 	b.sql =  f + ` WHERE id = ?`;
+	}
 	return b;
 }
 
 router.post("/", function (req, res) {
 	let act = req.params.id;
 	let jj = req.body.obj;
+	if (jj) {
 	var decoded = jwtDecode(req.token);
 	let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab());
-	console.log(y.sql)
+	if (y.code == 0) {
 	con.connect(function (err) {
 		con.query(y.sql, [decoded.rr.id], function (err, result) {
 			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, msg:"good job"}));
 		});
 	});
+	} else {
+	}
+	} else {
+	}
 });
 module.exports = router;
