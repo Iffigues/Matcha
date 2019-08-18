@@ -74,7 +74,7 @@ function hard(obj, r, f, o, tab) {
 
 router.post("/", function (req, res) {
 	let act = req.params.id;
-	let jj = req.body.obj;
+	let jj = req.body;
 	if (jj) {
 	var decoded = jwtDecode(req.token);
 	let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab());
