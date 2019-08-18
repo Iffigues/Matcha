@@ -11,7 +11,7 @@ const middle = require('./middleware.js');
 
 router.use(middle);
 
-function builder(err, result, result1, result2) {
+function builder(err, result, result1, result2, ips) {
 	let b = {}
 	let p = {};
 	b.code = 0;
@@ -29,6 +29,7 @@ function builder(err, result, result1, result2) {
 	b.profile = p;
 	b.tag  = result1;
 	b.photo = result2;
+	b.ip = ips;
 	console.log(p);
 	return b;
 }
@@ -44,7 +45,7 @@ router.get("/", function (req, res) {
 			con.query(ff, [d], function (err, result1) {
 				con.query(fff, [d], function (err, result2) {
 						console.log(err);
-						res.status(200).send(JSON.stringify(builder(err, result[0], result1, result2)));
+						res.status(200).send(JSON.stringify(builder(err, result[0], result1, result2, req.ip)));
 				});
 			})
 		});
@@ -52,7 +53,7 @@ router.get("/", function (req, res) {
 });
 
 function getTab() {
-	return ["lastname", "firstname", "bio", "birthdate", "lat", "lng", "preferences", "sexe", "email", "password", "profile","confirm", "username"];
+	return ["lastname", "firstname", "bio", "birthdate", "lat", "lng", "preferences", "sexe", "email", "password","confirm", "username"];
 }
 
 
@@ -98,8 +99,6 @@ function hard(obj, r, f, o, tab, id) {
 		for (var i in r) {
 			let u = r[i];
 			let haha = hh(obj[u], u, obj, id);
-			console.log("hrehehehe->");
-			console.log(typeof haha);
 			if (r[i] != "confirm" || r[i] != "password") {
 				if (o)
 					f = f + `,`;
@@ -107,7 +106,6 @@ function hard(obj, r, f, o, tab, id) {
 				 	let vv = haha.split("/");
 					haha = vv[02]+'-'+vv[1]+'-'+vv[0]
 				}
-				console.log("haha="+haha)
 				f = f+u+`=`+"'"+haha+"'";
 				o = 1;
 			}
@@ -120,15 +118,12 @@ function hard(obj, r, f, o, tab, id) {
 router.post("/", function (req, res) {
 	let act = req.params.id;
 	let jj = req.body;
-	console.log("jj=");
-	console.log(jj);
 	if (jj) {
 		var decoded = jwtDecode(req.token);
 		let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab(), decoded.rr.id);
 		if (y.code == 0) {
 			con.connect(function (err) {
 				con.query(y.sql, [decoded.rr.id], function (err, result) {
-					console.log(y.sql);
 					res.status(200).send(JSON.stringify({code:0, msg:"Vos donnees ont ete changer"}));
 				});
 			});
@@ -138,4 +133,20 @@ router.post("/", function (req, res) {
 	} else {
 	}
 });
+
+router.post("/profilephoto", function (err, res) {
+	let f = `SELECT * FROM img WHERE userId = ? AND id = ?`;
+	let ff = `UPDATE user SET profile = ? WHERE id= ?`;
+	var decoded = jwtDecoded(req.token);
+	con.connect(function (err) {
+		con.query(f, [decoded.rr.id, req,body.profilephoto], function (err, result) {
+			if (!err && result) {
+				con.query(ff, [req.body.profilephoto, decoded.rr.id], function (err, result1) {
+						res.status(200).send(JSON.stringify({code:0, msg:""}));
+				});
+			}
+		});
+	});
+});
+
 module.exports = router;

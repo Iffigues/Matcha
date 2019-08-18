@@ -14,8 +14,8 @@ const profile = require('./profile');
 const img = require("./img.js");
 const furry = require("./furry.js");
 var cors = require('cors')
+var con =  require("./dt.js");
 app.use(cors());
-
 app.options('*', cors());
 app.get('*', cors());
 app.post('*', cors());
