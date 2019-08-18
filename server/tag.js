@@ -42,4 +42,16 @@ router.get("/all", function (req, res) {
 		});
 	});
 });
+
+router.delete("/:name", function (req, res) {
+	let f = `DELETE FROM tag WHERE name = ? AND userId = ?`;
+	let name = req.params.name;
+	var decoded = jwtDecode(req.token);
+	con.connect(function (err) {
+		con.query(f, [name, decoded.rr.id], function (err, res) {
+			res.status(200).send(JSON.stringify({code:0, msg:"tag supprimer"}));
+		});
+	});
+});
+
 module.exports = router;

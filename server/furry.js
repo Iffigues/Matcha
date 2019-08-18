@@ -49,11 +49,33 @@ router.post("/pref", function (req, res) {
 });
 
 router.get("/pref", function(req, res) {
-	let f = `SELECT furry.name FROM furry, furry_pref WHERE furry_pref.userId = ? `;
+	let f = `SELECT * FROM furry, furry_pref WHERE furry_pref.userId = ? `;
 	var decoded = jwtDecode(req.token);
 	con.connect(function(err) {
 		con.qquery(f, [decoded.rr.idd], function (err, st) {
 			res.status(200).send(JSON.stringify({code:0, pref:st}));
+		});
+	});
+});
+
+router.delete("/:name", function (req, res) {
+	let name = req.params.name;
+	let f = `DELETE FROM furry WHERE name = ? AND userId = ?`;
+	var decoded = jwtDecode(req.token);
+	con.connect(function (err) {
+		con.query(f,[name, decoded.r.id], function (err, result) {
+			res.status(200).send(JSON.stringify({code: 0, msg:"furrysupprimer"}));
+		});
+	});
+});
+
+router.delete("/pref/:id", function (req, res) {
+	let name = req.params.ID;
+	let f = `DELETE FROM furry_PREF WHERE userId = ? AND furryId = ?`;
+	var decoded = jwtDecode(req.token);
+	con.connect(function (err) {
+		con.query(f,[decoded.r.id, name], function (err, result) {
+			res.status(200).send(JSON.stringify({code: 0, msg:"furrysupprimer"}));
 		});
 	});
 });
