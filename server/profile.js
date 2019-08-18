@@ -53,7 +53,12 @@ function look(tab, r) {
 		if (!tab.includes(r[i])) {
 			tt.code = 1;
 			tt.msg = "valeur inexistante "+r[i];
-			console.log(tt.msg);
+			return tt;
+		}
+		if (r[i] == "password" &&  r["confirm"] != r[i]) {
+			tt.code = 1
+			tt.msg = "mauvais password";
+			return tt;
 		}
 	}
 	return tt;
@@ -83,9 +88,6 @@ function hard(obj, r, f, o, tab) {
 		for (var i in r) {
 			let u = r[i];
 			let haha = hh(obj[u], u, obj);
-			if (haha === false) {
-				return ({code:1, msg:"bad password"});
-			}
 			if (r != "confirm") {
 				if (o)
 					f = f + `,`;
