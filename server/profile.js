@@ -75,22 +75,16 @@ function look(tab, r, obj) {
 	return tt;
 };
 
-async function hh(ee, uu, obj, id) {
+function hh(ee, uu, obj, id) {
 	let ff = ee;
 	if (uu = "password") {
 		if (obj['confirm'] == obj["password"]) {
-			const hashedPassword = await new Promise((resolve, reject) => {
 				bcrypt.hash(ee, saltRounds, function(err, hash) {
-					if (err) reject(err)
 					con.query(`UPDATE user SET password = ? WHERE id = ?`,[hash, id], function (err, res)  {
-						console.log(err);
+						return ;
 					});
-					resolve(hash)
+					
 				});
-			})
-			console.log("hihihi->");
-			console.log(typeof hashedPassword);
-			return (hashedPassword);
 		} else {
 			return (false);
 		}
@@ -106,7 +100,7 @@ function hard(obj, r, f, o, tab, id) {
 			let haha = hh(obj[u], u, obj, id);
 			console.log("hrehehehe->");
 			console.log(typeof haha);
-			if (r[i] != "confirm" && r[i] != "password") {
+			if (r[i] != "confirm" || r[i] != "password") {
 				if (o)
 					f = f + `,`;
 				f = f+u+`=`+"'"+haha+"'";
