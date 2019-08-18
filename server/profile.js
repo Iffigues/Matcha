@@ -9,13 +9,13 @@ const router = express.Router();
 var jwtDecode = require('jwt-decode');
 const middle = require('./middleware.js');
 
-
 router.use(middle);
 
 function builder(err, result, result1, result2) {
 	let b = {}
 	let p = {};
 	b.code = 0;
+	p.bio = result.bio;
 	p.email = result.email;
 	p.lastname = result.lastname;
 	p.firstname = result.firstname;
@@ -28,13 +28,13 @@ function builder(err, result, result1, result2) {
 	p.username = result.username;
 	b.profile = p;
 	b.tag  = result1;
-	b.img = result2;
+	b.photo = result2;
 	console.log(p);
 	return b;
 }
 
 router.get("/", function (req, res) {
-	let f  =  `SELECT * FROM user WHERE id = ?`;
+	let f  =  `SELECT *, DATE_FORMAT(birthdate, "%d/%m/%Y") AS birthdate FROM user WHERE id = ?`;
 	let ff = `SELECT tag FROM tag WHERE userId=? GROUP BY tag`;
 	let fff = `SELECT path FROM img WHERE userId=?`;
 	con.connect(function (err) {
@@ -103,6 +103,11 @@ function hard(obj, r, f, o, tab, id) {
 			if (r[i] != "confirm" || r[i] != "password") {
 				if (o)
 					f = f + `,`;
+				if (u == "birthdate") {
+				 	let vv = haha.split("/");
+					haha = vv[02]+'-'+vv[1]+'-'+vv[0]
+				}
+				console.log("haha="+haha)
 				f = f+u+`=`+"'"+haha+"'";
 				o = 1;
 			}
