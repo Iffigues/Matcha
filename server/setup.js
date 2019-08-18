@@ -4,7 +4,7 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		firstname VARCHAR(155) NOT NULL,
-		date DATE,
+		birthdate DATE,
 		lastname  VARCHAR(155) NOT NULL,
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
@@ -13,7 +13,7 @@ function createUser(use) {
 		lat 	double,
 		lng 	double,
 		sexe	int DEFAULT 1,
-		pref	int DEFAULT 3,
+		preferences int DEFAULT 3,
 		profile int,
 		role ENUM ("user","admin") DEFAULT "user",
 		active boolean DEFAULT 0
