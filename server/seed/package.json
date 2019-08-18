@@ -1,0 +1,15 @@
+{
+  "name": "seed",
+  "version": "1.0.0",
+  "description": "profile faker made by boris",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "boris",
+  "license": "ISC",
+  "dependencies": {
+    "faker": "^4.1.0",
+    "nodemailer": "^6.3.0"
+  }
+}

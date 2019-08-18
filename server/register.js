@@ -6,18 +6,34 @@ const Validateur = require("./validateur.js");
 const express = require('express');
 const  router = express.Router();
 const con = require('./dt.js');
+const gender = require('./profile/genre.js');
+const pref = require('./profile/pref.js');
 
 function verif(data) {
 	let valid = new Validateur();
-	if (!valid.isName(data.firstname+" "+data.lastname))
-		return ({i:0, res:"invalide  firstname or lastname"});
-	if (!valid.isEmail(data.email))
-		return ({i:0, res: "invalide email"});
-	if (!valid.isPwd(data.pwd))
-		return ({i:0, res: "invalide password"});
-	if (!valid.isLogin(data.login))
-		return ({i:0, res: "invalide username"});
-	return ({i:1,res:data});
+	if (!valid.isName(data.firstname+" "+data.lastname)) {
+		return ({code:1, msg:"invalide  firstname or lastname"});
+	} else {
+		data.firstname = data.firstname.trim();
+		data.lastname = data.lastname.trim();
+	}
+
+	if (!valid.isEmail(data.email)) {
+		return ({code:1, msg: "invalide email"});
+	} else {
+		data.email = data.email.trim();
+	}
+	if (!valid.isPwd(data.pwd)) {
+		return ({code:1, msg: "invalide password"});
+	} 
+	if (!valid.isLogin(data.login)) {
+		return ({code:1, msg: "invalide username"});
+	} else {
+		data.login = data.login.trim();
+	}
+	if (!data.sexe)
+		return({code:1, msg: "invalide sexe"});
+	return ({code:0,msg:data});
 }
 
 function user(tab, hash) {
@@ -30,14 +46,16 @@ function user(tab, hash) {
 	user.email = tab.email;
 	user.active = 0;
 	user.token = token.generate();
-	user.gender = 1;
+	user.sexe = tab.sexe;
+	user.gender = tab.gender;
+	user.pref = tab.pref;
 	return verif(user);
 }
 
-function sendmai(token, username){
+function sendmai(token, username, mail){
 	sendmail({
 		from: 'no-reply@yourdomain.com',
-		to: 'iffigues@vivaldi.net',
+		to: mail,
 		subject: 'test sendmail',
 		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>",
 	}, function(err, reply) {
@@ -46,33 +64,52 @@ function sendmai(token, username){
 
 function table(req) {
 	let b = {};
-	b.login = req.body.username;
-	b.pwd = req.body.password;
-	b.email = req.body.email;
-	b.firstname = req.body.firstname;
-	b.lastname = req.body.lastname;
+	b.login = req.body.username.trim();
+	b.pwd = req.body.password.trim();
+	b.email = req.body.email.trim();
+	b.firstname = req.body.firstname.trim();
+	b.lastname = req.body.lastname.trim();
+	b.sexe = req.body.sexe;
 	b.gender = req.body.gender;
+	b.pref = req.body.pref;
 	return (b);
+}
+
+function errno(err) {
+	let b = {};
+	b.code = 0;
+	if (err.errno == 1062) {
+		b.code = 1;
+		b.msg =  "le "+err.sqlMessage.split("'")[3]+" "+err.sqlMessage.split("'")[1]+" existent deja";	
+	}
+	return b;
 }
 
 router.post("/", function (req, res) {
 	i = table(req);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
 		let r = user(i, hash);
-		let y  = r.res;
+		let y  = r.msg;
+		console.log(r);
+		if (!r.code) {
 		con.connect(function(err) {
-			const f = `INSERT INTO user (firstname, lastname, password, email, username, gender) VALUES (?, ?, ?, ?, ?, ?)`;
-			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.gender], function (err, result, fields) {
+			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
+			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
-					console.log(id);
 					con.query(lol, [id, y.token], function (err, results, field) {
-						sendmai(y.token, id);
+						sendmai(y.token, id, y.email);
 					});
+					res.status(200).send(JSON.stringify({code:0, msg:"le compte vient d être creer, un message de confirmation vient d être envoyér"}));
+				}	else {
+					res.status(400).send(JSON.stringify(errno(err)));
 				}
 			});
 		});
+		} else {
+			res.status(400).send(JSON.stringify(r.res));
+		}
 	});
 
 });

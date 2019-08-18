@@ -4,11 +4,18 @@ function createUser(use) {
 	use.query(`CREATE TABLE IF NOT EXISTS user (
 		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		firstname VARCHAR(155) NOT NULL,
+		date DATE,
 		lastname  VARCHAR(155) NOT NULL,
 		password  VARCHAR(155) NOT NULL,
 		email     VARCHAR(155) NOT NULL UNIQUE,
 		username  VARCHAR(155) UNIQUE NOT NULL,
-		gender int,
+		bio 	LONGTEXT,
+		lat 	double,
+		lng 	double,
+		sexe	int DEFAULT 1,
+		pref	int DEFAULT 3,
+		profile int,
+		role ENUM ("user","admin") DEFAULT "user",
 		active boolean DEFAULT 0
 	)`, function (err, res) {
 		if (err) throw err;
@@ -21,54 +28,52 @@ function createUser(use) {
 			if (err) throw err;
 		});
 	});
-	use.query(`CREATE TABLE IF NOT EXISTS user_genre (
-		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userId int,
-		woman boolean DEFAULT 0,
-		man boolean DEFAULT 0,
-		agender boolean DEFAULT 0,
-		androgynous boolean DEFAULT 0,
-		bigender boolean DEFAULT 0,
-		genderfluid boolean DEFAULT 0,
-		genderqueer boolean DEFAULT 0,
-		gendernonconforming boolean DEFAULT 0,
-		hijra boolean DEFAULT 0,
-		intersex boolean DEFAULT 0,
-		cisman boolean DEFAULT 0,
-		ciswoman boolean DEFAULT 0,
-		nonbinary boolean DEFAULT 0,
-		pangender boolean DEFAULT 0,
-		transfeminine boolean DEFAULT 0,
-		transgender boolean DEFAULT 0,
-		transman boolean DEFAULT 0,
-		transmasculine boolean DEFAULT 0,
-		transexual boolean DEFAULT 0,
-		transwoman boolean DEFAULT 0,
-		twospirit boolean DEFAULT 0,
+	use.query(`CREATE TABLE IF NOT EXISTS recover (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL UNIQUE,
+		tok VARCHAR(155) NOT NULL UNIQUE,
+		password VARCHAR(155) NOT NULL,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 	)`, function (err, res) {
 		if (err) throw err;
 	});
-	use.query(`CREATE TABLE IF NOT EXISTS user_pref (
-		id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userID int,
-		asexual boolean DEFAULT 0,
-		bisexual boolean DEFAULT 0,
-		demisexual boolean DEFAULT 0,
-		gay boolean DEFAULT 0,
-		homoflexible boolean DEFAULT 0,
-		heteroflexible boolean DEFAULT 0,
-		lesbian boolean DEFAULT 0,
-		pansexual boolean DEFAULT 0,
-		queer boolean DEFAULT 0,
-		questioning boolean DEFAULT 0,
-		sapiosexual boolean DEFAULT 0,
-		straight boolean DEFAULT 0,
-		moreorientations boolean DEFAULT 0,
-		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
-	)`,function (err, res) {
+	use.query(`CREATE TABLE IF NOT EXISTS tag (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		tag VARCHAR(30) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		UNIQUE KEY tag (tag,userId)
+	)`, function (err, res)  {
 		if (err) throw err;
-	});	
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS img (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		path varchar(155) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function(err, res) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS furry (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		name VARCHAR(155) NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		UNIQUE KEY name (name, userId)
+	)`, function (err, res) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS furry_pref (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		furryId int NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (furryId) REFERENCES furry(id) ON DELETE CASCADE,
+		UNIQUE KEY furrys (userId, furryId)
+		
+	)`, function (err, res) {
+		if (err) throw err;
+	});
 }
 
 con.connect(function(err) {
@@ -76,8 +81,8 @@ con.connect(function(err) {
 	con.query("CREATE DATABASE IF NOT EXISTS matcha", function (err, result) {
 		if (err) throw err;
 		con.changeUser({database : 'matcha'}, function(err) {
-			  if (err) throw err;
-				createUser(con);
+			if (err) throw err;
+			createUser(con);
 		});
 	});
 })
