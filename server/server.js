@@ -14,6 +14,7 @@ const profile = require('./profile');
 const img = require("./img.js");
 const furry = require("./furry.js");
 const suj = require("./suj.js");
+const map = require("./map.js");
 
 var cors = require('cors')
 var con =  require("./dt.js");
@@ -62,6 +63,7 @@ app.use('/tag',cors(), tag);
 app.use('/img', img);
 app.use("/furry", furry);
 app.use("/suj", suj);
+app.use("/map", map);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
