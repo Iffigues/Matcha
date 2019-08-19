@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 var jwtDecode = require('jwt-decode');
 const middle = require('./middleware.js');
+const val = require('./validateur.js');
 
 router.use(middle);
 
@@ -56,6 +57,19 @@ function getTab() {
 }
 
 
+function protect(u) {
+	let tt = {};
+	let valid = new val();
+	tt.code = 0;
+	if ((u == "lastname" || u == "firstname") && !valid.isName(u))
+		retun ({code: 1, msg:"nom ou prenom invalide"})
+	if (u == "username" && !valid.isLogin(u))
+		return ({code:1, msg:"username invalide"});
+	if (u == "email" && !val.isEmail(u))
+		return ({code:1, msg:"email invalide"});
+	return tt;
+}
+
 function look(tab, r, obj) {
 	let tt = {};
 	tt.code = 0;
@@ -64,12 +78,15 @@ function look(tab, r, obj) {
 			tt.code = 1;
 			tt.msg = "valeur inexistante "+r[i];
 			return tt;
-		}
-		if (r[i] == "password" &&  obj["confirm"] != obj["password"]) {
+		} else if (r[i] == "password" &&  obj["confirm"] != obj["password"]) {
 			tt.code = 1
 			console.log(r[i]);
 			tt.msg = "mauvais password";
 			return tt;
+		} else {
+			let u = protect(r[u]);
+			if (u.code)
+				return u;
 		}
 	}
 	return tt;
