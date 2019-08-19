@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const tok = require('./tok');
 const con = require('./dt.js');
 const express = require('express');
-const func = require('./func.js');
 const router = express.Router();
 var jwtDecode = require('jwt-decode');
 const middle = require('./middleware.js');

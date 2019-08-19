@@ -7,7 +7,6 @@ var jwtDecode = require('jwt-decode');
 router.use(middles);
 
 router.get("/",function (req, res) {
-	// api = AIzaSyBS2V8xJYNTWhfEFaW7SW0mvOJfoZ1mmI8
 	let g = `SELECT * FROM user WHERE id = ?`;
 	var decoded = jwtDecode(req.token);
 	let f = `SELECT *, 3956 * 2 * ASIN(SQRT(POWER(SIN((? - abs(lat)) * pi()/180 / 2),2) + COS(? * pi()/180 ) * COS(abs(lat) *pi()/180) * POWER(SIN((? - lng) *pi()/180 / 2), 2) ))  as distance, tag.tag, tag.userId FROM user LEFT JOIN tag as tag ON tag.userId = user.id WHERE sexe = ? AND preferences = ?  having distance < 100000000`;
