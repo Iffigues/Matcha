@@ -17,6 +17,7 @@ const suj = require("./suj.js");
 const map = require("./map.js");
 const chat = require("./chat.js");
 const notif = require("./notif.js");
+const like = require("./like.js");
 var cors = require('cors')
 var con =  require("./dt.js");
 
@@ -66,7 +67,8 @@ app.use("/furry", furry);
 app.use("/suj", suj);
 app.use("/map", map);
 app.use("/chat", chat);
-app.use("/notif", notif)
+app.use("/notif", notif);
+app.use("/like", like);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
