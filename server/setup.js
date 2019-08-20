@@ -17,6 +17,8 @@ function createUser(use) {
 		profilephoto  int,
 		popularite int DEFAULT 0,
 		role ENUM ("user","admin") DEFAULT "user",
+		visite DATE,
+		completed boolean DEFAULT false,
 		active boolean DEFAULT 0
 	)`, function (err, res) {
 		if (err) throw err;
