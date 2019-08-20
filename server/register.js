@@ -6,8 +6,6 @@ const Validateur = require("./validateur.js");
 const express = require('express');
 const  router = express.Router();
 const con = require('./dt.js');
-const gender = require('./profile/genre.js');
-const pref = require('./profile/pref.js');
 
 function verif(data) {
 	let valid = new Validateur();

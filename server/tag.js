@@ -24,13 +24,13 @@ router.post("/new", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	let f = `INSERT INTO tag (tag, userId) VALUES (?,?)`;
 	con.connect(function (err) {
-		con.query(f,[tag, decoded.rr.id], function(err, result, fields) {
-			console.log(err);
-			if (err)
-				res.status(400).send(JSON.stringify({code:1, msg:"something was bad"}));
-			else
-				res.status(200).send(JSON.stringify({code:0, msg:"le tag a bien ete creer"}));
-		});
+				con.query(f,[tag, decoded.rr.id], function(err, result, fields) {
+					console.log(err);
+					if (err)
+						res.status(400).send(JSON.stringify({code:1, msg:"something was bad"}));
+					else
+						res.status(200).send(JSON.stringify({code:0, msg:"le tag a bien ete creer"}));
+				});
 	});
 });
 
@@ -43,12 +43,14 @@ router.get("/all", function (req, res) {
 	});
 });
 
-router.delete("/:name", function (req, res) {
-	let f = `DELETE FROM tag WHERE name = ? AND userId = ?`;
-	let name = req.params.name;
+router.delete("/", function (req, res) {
+	let f = `DELETE FROM tag WHERE userId = ? AND tag = ?`;
+	let name = req.body.name;
 	var decoded = jwtDecode(req.token);
+	console.log("name = "+name);
 	con.connect(function (err) {
-		con.query(f, [name, decoded.rr.id], function (err, res) {
+		con.query(f, [decoded.rr.id, name], function (err, result) {
+			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, msg:"tag supprimer"}));
 		});
 	});
