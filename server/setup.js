@@ -79,8 +79,11 @@ function createUser(use) {
 	});
 	use.query(`CREATE TABLE IF NOT EXISTS likes (
 		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		userOne int DEFAULT 0,
-		userTwo int DEFAULT 0
+		userOne int NOT NULL,
+		userTwo int NOT NULL,
+		accept int DEFAULT 0,
+		FOREIGN KEY (userOne) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (userTwo) REFERENCES user(id) ON DELETE CASCADE
 	)`, function (err, res) {
 		if (err) throw err;
 	});
