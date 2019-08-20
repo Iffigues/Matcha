@@ -53,4 +53,17 @@ router.get("/accept", function (req, res) {
 	});
 });
 
+router.post("/unlike", function (req, res) {
+	con.connect(function (err) {
+		let f = "UPDATE likes SET accept = 2 WHERE (userTwo = ? AND userOne = ?) OR (userOne = ? AND userTwo = ?)";
+		var decoded = jwtDecode(req.token);
+		let cc = decoded.rr.id;
+		var o = req.body.user;
+		con.query(f, [cc,o,o,cc] , function (err, resu) {
+			console.log(err);
+			res.status(200).send(JSON.stringify({code:0, msg:resu}));
+		});
+	});
+})
+
 module.exports = router;
