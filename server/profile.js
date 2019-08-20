@@ -11,33 +11,43 @@ const val = require('./validateur.js');
 
 router.use(middle);
 
+function ffe(e) {
+}
+
+function tte(e) {
+	let hh = [];
+	for (var i in e) {
+		console.log(i);
+		console.log(e[i].tag);
+		hh.push(e[i].tag);
+	}
+	return (hh);
+}
+
 function builder(err, result, result1, result2, ips) {
 	let b = {}
-	let p = {};
 	b.code = 0;
-	p.bio = result.bio;
-	p.email = result.email;
-	p.lastname = result.lastname;
-	p.firstname = result.firstname;
-	p.birthdate = result.birthdate;
-	p.lng = result.lng;
-	p.lat = result.lat;
-	p.sexe = result.sexe;
-	p.profile = result.profile;
-	p.pref = result.pref;
-	p.username = result.username;
-	b.profile = p;
-	b.tag  = result1;
-	b.photo = result2;
+	b.bio = result.bio;
+	b.email = result.email;
+	b.lastname = result.lastname;
+	b.firstname = result.firstname;
+	b.birthdate = result.birthdate;
+	b.lng = result.lng;
+	b.lat = result.lat;
+	b.sexe = result.sexe;
+	b.profile = result.profilephoto;
+	b.pref = result.pref;
+	b.username = result.username;
+	b.tags  = tte(result1);
+	b.photos = result2;
 	b.ip = ips;
-	console.log(p);
 	return b;
 }
 
 router.get("/", function (req, res) {
 	let f  =  `SELECT *, DATE_FORMAT(birthdate, "%d/%m/%Y") AS birthdate FROM user WHERE id = ?`;
 	let ff = `SELECT tag FROM tag WHERE userId=? GROUP BY tag`;
-	let fff = `SELECT path FROM img WHERE userId=?`;
+	let fff = `SELECT * FROM img WHERE userId=?`;
 	con.connect(function (err) {
 		var dd = jwtDecode(req.token);
 		var d = dd.rr.id;
@@ -84,7 +94,7 @@ function look(tab, r, obj) {
 			tt.msg = "mauvais password";
 			return tt;
 		} else {
-			let u = protect(r[u]);
+			let u = protect(r[i]);
 			if (u.code)
 				return u;
 		}

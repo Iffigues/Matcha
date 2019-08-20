@@ -38,7 +38,7 @@ router.get("/all", function (req, res) {
 	let f = `SELECT tag AS name, COUNT(tag) AS nbr FROM tag GROUP BY tag ORDER BY nbr DESC`;
 	con.connect(function (err) {
 		con.query(f,function (err, result) {
-			res.status(200).send(JSON.stringify({code: 0, tags:result}));
+			res.status(200).send(JSON.stringify({code: 0, tag:result}));
 		});
 	});
 });

@@ -14,7 +14,7 @@ function createUser(use) {
 		lng 	double,
 		sexe	int DEFAULT 1,
 		preferences int DEFAULT 3,
-		profile int,
+		profilephoto  int,
 		popularite int DEFAULT 0,
 		role ENUM ("user","admin") DEFAULT "user",
 		active boolean DEFAULT 0
