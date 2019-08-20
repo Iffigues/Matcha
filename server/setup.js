@@ -75,6 +75,13 @@ function createUser(use) {
 	)`, function (err, res) {
 		if (err) throw err;
 	});
+	use.query(`CREATE TABLE IF NOT EXISTS likes (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userOne int DEFAULT 0,
+		userTwo int DEFAULT 0
+	)`, function (err, res) {
+		if (err) throw err;
+	});
 }
 
 con.connect(function(err) {
