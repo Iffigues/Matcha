@@ -14,7 +14,7 @@ router.get("/",function (req, res) {
 	LEFT JOIN tag as tag ON tag.userId = user.id 
 	LEFT JOIN  img as img ON img.userId = user.id 
 	INNER JOIN likes as likes ON likes.userOne = user.id
-	WHERE sexe = ? AND preferences = ?   
+	WHERE sexe = ? AND preferences = ? OR preferences = 0   
 	GROUP BY user.username having distance < 100000000`;
 	con.connect(function (err) {
 		con.query(g, [decoded.rr.id], function (err, result) {
