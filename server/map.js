@@ -30,13 +30,18 @@ router.get("/", function (req, res){
 	});
 })
 
-router.get("/reverse", function (req, res) {
+router.post("/reverse", function (req, res) {
 	let lng = req.body.lng;
 	let lat = req.body.lat;
-	geocoder.reverse({lat:lat, lon:lng}, function(err, res) {
-		console.log(req);  
-		console.log(res);
-	});
+	con.connect(function (err) {
+		geocoder.reverse({lat:lat, lon:lng}, function(err, resi) { 
+			console.log(err);
+			console.log(resi);
+			let haha = resi[0];
+			let f = "UPDATE user SET lat = ? , lng = ? WHERE id = ?";
+			res.status(200).send(JSON.stringify({code:0, haha}));
+		});
+	})
 });
 
 module.exports =  router;
