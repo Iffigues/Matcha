@@ -17,9 +17,9 @@ function TagsInput(props) {
 							})}
 						</h5>
 						<h5 className="mt-1">
-{/*							{props.profile.tags.map((value, key) => {
-								return (<span key={key} className="badge badge-secondary mr-1" onClick={props.onClickRemove}>{value.name}</span>);
-							})}*/}
+							{props.userTags.map((value, key) => {
+								return (<span key={key} className="badge badge-secondary mr-1">{value} <button type="button" value={value} onClick={props.onRemoveTagClick}>x</button></span>);
+							})}
 						</h5>
 					</div>
 					<div className="col-sm-1">

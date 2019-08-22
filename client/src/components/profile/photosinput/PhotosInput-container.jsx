@@ -58,7 +58,7 @@ class PhotosInputContainer extends React.Component {
 	}
 
 	render() {
-		return <PhotosInput onChange={this.handleChange} onClickAdd={this.handleClickAdd} onClickRemove={this.handleClickRemove}/>;
+		return <PhotosInput onChange={this.handleChange} onClickAdd={this.handleClickAdd} onClickRemove={this.handleClickRemove} photos={this.props.photos}/>;
 	}
 }
 
