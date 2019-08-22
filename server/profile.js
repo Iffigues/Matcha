@@ -44,6 +44,7 @@ function builder(err, result, result1, result2, ips, fufu) {
 	b.username = result.username;
 	b.tags  = tte(result1);
 	b.photos = result2;
+	b.city = result.city;
 	b.furries = ttes(fufu);
 	b.ip = ips;
 	return b;
@@ -70,7 +71,7 @@ router.get("/", function (req, res) {
 });
 
 function getTab() {
-	return ["lastname", "firstname", "bio", "birthdate", "lat", "lng", "preferences", "sexe", "email", "password","confirm", "username"];
+	return ["city","lastname", "firstname", "bio", "birthdate", "lat", "lng", "preferences", "sexe", "email", "password","confirm", "username"];
 }
 
 
