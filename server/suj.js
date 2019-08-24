@@ -28,8 +28,6 @@ async function lol (g, res, me, type) {
 					oui = oui + 1;
 			}
 			const rows2 = await query('SELECT * FROM likes WHERE likes.userOne = ? AND likes.userTwo = ?', [g[n].id, me.id]);
-			if (rows2[0])
-				ye = 8;
 			profile.push({
 				user:g[n],
 				tag: rows,
@@ -40,11 +38,24 @@ async function lol (g, res, me, type) {
 				like: rows2
 			});
 		}
-		if (type == "all")
+		if (type == "all") {
+			let profiles = profile;
 			res.status(200).send(JSON.stringify({code:0, profile}));
-		if (type == "sugestion") {
+		}
+		if (type == "suggestion") {
+			let i = 10;
+
 			profile.sort((a, b) => (a.match <  b.match) ? 1 : -1);
-			res.status(200).send(JSON.stringify({code:0, profile}));
+			let profiles = [];
+			while  (profiles.length < 100 && i) {
+				let profil =  profile.filter(function(profile) {
+					return profile.match > i && !profiles.includes(profile);
+				});
+				profiles.push(profil);
+				i--;
+			}
+			profiles =  profiles.reduce((acc, val) => acc.concat(val), []);
+			res.status(200).send(JSON.stringify({code:0, profiles}));
 		}
 	} finally {
 	}
@@ -66,7 +77,7 @@ router.get("/:id",function (req, res) {
 		`;
 	var decoded = jwtDecode(req.token);
 	let f = `SELECT 
-		user.id, user.firstname, user.lastname, user.email, user.birthdate, user.city, user.username, user.popularite, img.path,
+	user.id, user.firstname, user.lastname, user.email, user.birthdate, user.city, user.username, user.popularite, img.path,
 		3956 * 2 * ASIN(SQRT(POWER(SIN((? - abs(lat)) * pi()/180 / 2),2) + COS(? * pi()/180 ) * COS(abs(lat) *pi()/180) * POWER(SIN((? - lng) *pi()/180 / 2), 2) ))  as distance,
 		DATE_FORMAT(user.birthdate, "%d-%m-%Y") AS birthdate
 	FROM user 
@@ -79,7 +90,7 @@ router.get("/:id",function (req, res) {
 				let yy = [];
 				let d = result[0];
 				con.query(f, [d.lat, d.lng, d.lng, d.sexe, d.preferences], function (err, result1)  {
-						lol(result1, res, d, id);
+					lol(result1, res, d, id);
 				});
 			}
 		})
