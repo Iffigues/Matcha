@@ -64,7 +64,7 @@ app.use('/profile', profile);
 app.use('/tag',cors(), tag);
 app.use('/img', img);
 app.use("/furry", furry);
-app.use("/suj", suj);
+app.use("/search", suj);
 app.use("/map", map);
 app.use("/chat", chat);
 app.use("/notif", notif);
