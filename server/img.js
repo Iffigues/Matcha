@@ -18,15 +18,15 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({
-	  limits: { 
-		     //    fileSize: 5 * 1024 * 1024,  // 5 MB upload limit
-		          files: 1                    // 1 file
-		      },
+	limits: { 
+		//    fileSize: 5 * 1024 * 1024,  // 5 MB upload limit
+		files: 1                    // 1 file
+	},
 	fileFilter: function (req, file, cb){
 		if (accepted_extensions.some(ext => file.originalname.endsWith("." + ext))) {
 			return cb(null, true);
 		} else {
-		return cb(new Error('Only ' + accepted_extensions.join(", ") + ' files are allowed!'));
+			return cb(new Error('Only ' + accepted_extensions.join(", ") + ' files are allowed!'));
 		}
 	},
 	storage: storage,
@@ -41,17 +41,17 @@ router.post("/upload", function (req, res) {
 			let r = result[0]['nbr'];
 			if (r < 5) {
 				upload(req, res, (err) => {
-			 		if(!err) {
+					if(!err) {
 						var decoded = jwtDecode(req.token);
 						con.query(ff, [decoded.rr.id, req.file.path],  function (err, ress) {
-						return res.status(200).send(JSON.stringify({code:0, msg:ress}));
+							return res.status(200).send(JSON.stringify({code:0, msg:"photos bien prise"}));
 						});
 					} else {
-						return res.status(400).send(JSON.stringify({code:0, msg:'something was bad'}));
+						return res.status(400).send(JSON.stringify({code:1, msg:'something was bad'}));
 					}
 				})
 			} else {
-				return (res.status(400).send(JSON.stringify({code:0, msg:"vous avez dejas 5 images"})));
+				return (res.status(400).send(JSON.stringify({code:1, msg:"vous avez dejas 5 images"})));
 			}
 		});
 	});
@@ -73,8 +73,8 @@ router.post("/update", function(req, res) {
 						con.query(f, [req.file.path, gg, decoded.rr.id], function (err, resul) {
 							if (!err) {
 								fs.unlink(yy, (err) => {
-									  if (err) {
-										      console.error(err)
+									if (err) {
+										console.error(err)
 									}
 								})
 								res.status(200).send(JSON.stringify({code:0, msg: req.file.path}));
@@ -87,20 +87,35 @@ router.post("/update", function(req, res) {
 	});
 });
 
-router.delete("/", function (req, res) {
+router.delete("/:id", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	let f = 'DELETE FROM img WHERE id = ? AND userId = ?';
 	let ff = `SELECT path FROM img WHERE id = ? AND userId = ?`;
 	con.connect(function (err) {
-		con.query(ff, [req.body.id, decoded.rr.id], function (err, results) {
-			if (!err && results) {
+		con.query(ff, [req.params.id, decoded.rr.id], function (err, results) {
+			console.log(err);
+			if (!err && results && results[0].path) {
 				fs.unlink(results[0].path, (err) => {
 					if (err)
 						console.log(err);
 				})
+				con.query(`SELECT * FROM user WHERE id = ?`, decoded.rr.id, function (err, rt) {
+					console.log(err);
+					if (rt[0].profilephoto == req.params.id) {
+						con.query("SELECT * FROM img WHERE userId = ?", decoded.rr.id, function (err, rz) {
+							let rrr = 0;
+							if (!err && rz[0])
+								rrr = rz[0].id;
+							con.query("UPDATE user SET profilephoto = ? WHERE id = ?",  [rrr, decoded.rr.id], function (err, rst){
+								console.log(err);
+							});
+						})
+					}
+				});
 			}
 		});
-		con.query(f,[req.body.id, decoded.rr.id], function (err, result) {
+		con.query(f,[req.params.id, decoded.rr.id], function (err, result) {
+			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, msg:"image suprime"}));
 		});
 	});

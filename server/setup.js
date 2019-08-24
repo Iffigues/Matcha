@@ -12,11 +12,14 @@ function createUser(use) {
 		bio 	LONGTEXT,
 		lat 	double,
 		lng 	double,
+		ville	VARCHAR(255),
 		sexe	int DEFAULT 1,
 		preferences int DEFAULT 3,
 		profilephoto  int,
 		popularite int DEFAULT 0,
 		role ENUM ("user","admin") DEFAULT "user",
+		visite DATE,
+		completed boolean DEFAULT false,
 		active boolean DEFAULT 0
 	)`, function (err, res) {
 		if (err) throw err;
@@ -72,6 +75,16 @@ function createUser(use) {
 		FOREIGN KEY (furryId) REFERENCES furry(id) ON DELETE CASCADE,
 		UNIQUE KEY furrys (userId, furryId)
 		
+	)`, function (err, res) {
+		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS likes (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userOne int NOT NULL,
+		userTwo int NOT NULL,
+		accept int DEFAULT 0,
+		FOREIGN KEY (userOne) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (userTwo) REFERENCES user(id) ON DELETE CASCADE
 	)`, function (err, res) {
 		if (err) throw err;
 	});

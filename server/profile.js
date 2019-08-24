@@ -16,15 +16,19 @@ function ffe(e) {
 
 function tte(e) {
 	let hh = [];
-	for (var i in e) {
-		console.log(i);
-		console.log(e[i].tag);
+	for (var i in e)
 		hh.push(e[i].tag);
-	}
 	return (hh);
 }
 
-function builder(err, result, result1, result2, ips) {
+function ttes(e) {
+	let hh = [];
+	for (var i in e) 
+		hh.push(e[i].name);
+	return (hh);
+}
+
+function builder(err, result, result1, result2, ips, fufu) {
 	let b = {}
 	b.code = 0;
 	b.bio = result.bio;
@@ -35,11 +39,13 @@ function builder(err, result, result1, result2, ips) {
 	b.lng = result.lng;
 	b.lat = result.lat;
 	b.sexe = result.sexe;
-	b.profile = result.profilephoto;
+	b.profilephoto = result.profilephoto;
 	b.pref = result.pref;
 	b.username = result.username;
 	b.tags  = tte(result1);
 	b.photos = result2;
+	b.city = result.city;
+	b.furries = ttes(fufu);
 	b.ip = ips;
 	return b;
 }
@@ -48,14 +54,16 @@ router.get("/", function (req, res) {
 	let f  =  `SELECT *, DATE_FORMAT(birthdate, "%d/%m/%Y") AS birthdate FROM user WHERE id = ?`;
 	let ff = `SELECT tag FROM tag WHERE userId=? GROUP BY tag`;
 	let fff = `SELECT * FROM img WHERE userId=?`;
+	let rre = `SELECT * FROM furry WHERE userId = ?`;
 	con.connect(function (err) {
 		var dd = jwtDecode(req.token);
 		var d = dd.rr.id;
 		con.query(f,[d], function (err, result) {
 			con.query(ff, [d], function (err, result1) {
 				con.query(fff, [d], function (err, result2) {
-						console.log(err);
-						res.status(200).send(JSON.stringify(builder(err, result[0], result1, result2, req.ip)));
+					con.query(rre,[d], function (err, repp) {
+						res.status(200).send(JSON.stringify(builder(err, result[0], result1, result2, req.ip, repp)));
+					})
 				});
 			})
 		});
@@ -63,7 +71,7 @@ router.get("/", function (req, res) {
 });
 
 function getTab() {
-	return ["lastname", "firstname", "bio", "birthdate", "lat", "lng", "preferences", "sexe", "email", "password","confirm", "username"];
+	return ["city","lastname", "firstname", "bio", "birthdate", "lat", "lng", "preferences", "sexe", "email", "password","confirm", "username"];
 }
 
 
@@ -106,12 +114,12 @@ function hh(ee, uu, obj, id) {
 	let ff = ee;
 	if (uu = "password") {
 		if (obj['confirm'] == obj["password"]) {
-				bcrypt.hash(ee, saltRounds, function(err, hash) {
-					con.query(`UPDATE user SET password = ? WHERE id = ?`,[hash, id], function (err, res)  {
-						return ;
-					});
-					
+			bcrypt.hash(ee, saltRounds, function(err, hash) {
+				con.query(`UPDATE user SET password = ? WHERE id = ?`,[hash, id], function (err, res)  {
+					return ;
 				});
+
+			});
 		} else {
 			return (false);
 		}
@@ -129,7 +137,7 @@ function hard(obj, r, f, o, tab, id) {
 				if (o)
 					f = f + `,`;
 				if (u == "birthdate") {
-				 	let vv = haha.split("/");
+					let vv = haha.split("/");
 					haha = vv[02]+'-'+vv[1]+'-'+vv[0]
 				}
 				f = f+u+`=`+"'"+haha+"'";
@@ -160,15 +168,18 @@ router.post("/", function (req, res) {
 	}
 });
 
-router.post("/profilephoto", function (err, res) {
+router.post("/profilephoto", function (req, res) {
 	let f = `SELECT * FROM img WHERE userId = ? AND id = ?`;
-	let ff = `UPDATE user SET profile = ? WHERE id= ?`;
-	var decoded = jwtDecoded(req.token);
+	let ff = `UPDATE user SET profilephoto = ? WHERE id= ?`;
+	var id = req.body.profilePhoto
+	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
-		con.query(f, [decoded.rr.id, req,body.profilephoto], function (err, result) {
+		con.query(f, [decoded.rr.id, id], function (err, result) {
+			console.log(err);
 			if (!err && result) {
-				con.query(ff, [req.body.profilephoto, decoded.rr.id], function (err, result1) {
-						res.status(200).send(JSON.stringify({code:0, msg:""}));
+				con.query(ff, [id, decoded.rr.id], function (err, result1) {
+					console.log(err);
+					res.status(200).send(JSON.stringify({code:0, msg:"photo de profile changer"}));
 				});
 			}
 		});
