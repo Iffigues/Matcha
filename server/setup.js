@@ -88,6 +88,15 @@ function createUser(use) {
 	)`, function (err, res) {
 		if (err) throw err;
 	});
+	use.query(`CREATE TABLE IF NOT EXISTS bloque (
+		id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		userId int NOT NULL,
+		bloqueId int NOT NULL,
+		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (bloqueId) REFERENCES user(id) ON DELETE CASCADE
+	)`, function (err, res) {
+		if (err) throw err;
+	});
 }
 
 con.connect(function(err) {
