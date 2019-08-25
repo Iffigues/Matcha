@@ -19,6 +19,7 @@ const chat = require("./chat.js");
 const like = require("./like.js");
 const report = require("./report.js");
 const notif = require("./getnotif.js");
+const prof = require("./prof.js");
 var cors = require('cors')
 var con =  require("./dt.js");
 
@@ -72,6 +73,7 @@ app.use("/notif", notif);
 app.use("/like", like);
 app.use("/notif",notif);
 app.use("/report",report);
+app.use("/prof", prof);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
