@@ -44,7 +44,6 @@ async function lol (g, res, me, type) {
 			let li = 0;
 			let ooo= 1;
 			let popu = g[n].popularite;
-			console.log(g[n].distance);
 			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 			for (var e in rows) {
 				const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
@@ -57,7 +56,7 @@ async function lol (g, res, me, type) {
 				if (re[0].d)
 					oui = oui + 1;
 			}
-			const rows2 = await query('SELECT * FROM likes WHERE likes.userOne = ? AND likes.userTwo = ?', [g[n].id, me.id]);
+			const rows2 = await query('SELECT * FROM likes WHERE userOne = ? AND userTwo = ?', [me.id, g[n].id]);
 			if (rows2.length)
 				li = 1;
 			const blok = await query('SELECT* FROM bloque WHERE (userId = ? AND  bloqueId = ?) OR (userId = ? AND bloqueId = ?)',[g[n].id, me.id, me.id , g[n].id]);

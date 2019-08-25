@@ -4,7 +4,7 @@ const  router = express.Router();
 var server = require('http').Server(router);
 const middles = require("./middleware.js");
 var jwtDecode = require('jwt-decode');
-
+const notif = require('./notif.js');
 router.use(middles);
 
 router.get("/new", function (req, res) {
@@ -22,10 +22,16 @@ router.post("/add", function (req, res) {
 	con.connect(function (err) {
 		let f = `INSERT INTO likes (userOne, userTwo) VALUES (?,?)`;
 		var decoded = jwtDecode(req.token);
-		let o = req.body.user;
+		let o = req.body.id;
+		console.log(o);
 		con.query(f, [decoded.rr.id, o], function (err, resu) {
 			console.log(err);
-			res.status(200).send(JSON.stringify({code: 0, msg:resu}));
+			if (!err) {
+				notif(decoded.rr, o, "like", "Vous avez ete liker");
+				res.status(200).send(JSON.stringify({code: 0, msg:resu}));
+			} else {
+				res.status(400).send(JSON.stringify({code:2, msg:"une erreur est survenues"}));
+			}
 		});
 	});
 });
@@ -55,12 +61,11 @@ router.get("/accept", function (req, res) {
 
 router.post("/unlike", function (req, res) {
 	con.connect(function (err) {
-		let f = "UPDATE likes SET accept = 2 WHERE (userTwo = ? AND userOne = ?) OR (userOne = ? AND userTwo = ?)";
+		let f = "UPDATE likes SET accept = 2 WHERE userOne = ? AND userTwo = ?";
 		var decoded = jwtDecode(req.token);
 		let cc = decoded.rr.id;
 		var o = req.body.user;
-		con.query(f, [cc,o,o,cc] , function (err, resu) {
-			console.log(err);
+		con.query(f, [cc,o] , function (err, resu) {
 			res.status(200).send(JSON.stringify({code:0, msg:resu}));
 		});
 	});
