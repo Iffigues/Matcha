@@ -20,6 +20,7 @@ const like = require("./like.js");
 const report = require("./report.js");
 const notif = require("./getnotif.js");
 const prof = require("./prof.js");
+const bloke = require("./bloke.js");
 var cors = require('cors')
 var con =  require("./dt.js");
 
@@ -71,7 +72,7 @@ app.use("/map", map);
 app.use("/chat", chat);
 app.use("/notif", notif);
 app.use("/like", like);
-app.use("/notif",notif);
+app.use("/bloque", bloke);
 app.use("/report",report);
 app.use("/prof", prof);
 app.get('/connected',withAuth, function (req, res) {

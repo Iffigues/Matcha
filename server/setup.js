@@ -94,7 +94,8 @@ function createUser(use) {
 		userId int NOT NULL,
 		bloqueId int NOT NULL,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
-		FOREIGN KEY (bloqueId) REFERENCES user(id) ON DELETE CASCADE
+		FOREIGN KEY (bloqueId) REFERENCES user(id) ON DELETE CASCADE,
+		UNIQUE KEY bloc (userId, bloqueId)
 	)`, function (err, res) {
 		if (err) throw err;
 	});
