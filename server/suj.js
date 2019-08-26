@@ -43,7 +43,7 @@ async function lol (g, res, me, type) {
 			let ye = 0;
 			let li = 0;
 			let ooo= 1;
-			let popu = g[n].popularite;
+			let popu = g[n].popularity;
 			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 			for (var e in rows) {
 				const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
@@ -73,7 +73,7 @@ async function lol (g, res, me, type) {
 				furries: rows1,
 				distance: g[n].distance,
 				furrymatch: oui,
-				match: non + oui + pok(popu + 1, me.popularite + 1)+ ye,
+				match: non + oui + pok(popu + 1, me.popularity + 1)+ ye,
 				like: li
 			}, g[n]));
 		}
@@ -116,11 +116,11 @@ router.get("/:id",function (req, res) {
 		`;
 	var decoded = jwtDecode(req.token);
 	let f = `SELECT 
-	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularite, img.path,
+	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularity, img.path,
 		3956 * 2 * ASIN(SQRT(POWER(SIN((? - abs(lat)) * pi()/180 / 2),2) + COS(? * pi()/180 ) * COS(abs(lat) *pi()/180) * POWER(SIN((? - lng) *pi()/180 / 2), 2) ))  as distance
 	FROM user 
 	LEFT JOIN img as img ON img.id = user.profilephoto
-	WHERE sexe = ? AND preferences = ? OR preferences = 0 AND user.id != ?
+	WHERE sexe = ? AND preferences = ? OR preferences = 0 AND user.id != ? HAVING distance < 10000
 	`;
 	con.connect(function (err) {
 		con.query(g, [decoded.rr.id], function (err, result) {

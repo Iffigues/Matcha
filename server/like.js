@@ -12,7 +12,6 @@ router.get("/new", function (req, res) {
 		let f = `SELECT * FROM likes WHERE userTwo = ? AND accept = 0`;
 		var decoded = jwtDecode(req.token);
 		con.query(f, [decoded.rr.id], function (err, resu) {
-			console.log(err)
 			res.status(200).send(JSON.stringify({code: 0, msg: resu}));
 		});
 	});
@@ -30,7 +29,9 @@ router.post("/add", function (req, res) {
 				notif(decoded.rr, o, "like", "Vous avez ete liker");
 				res.status(200).send(JSON.stringify({code: 0, msg:resu}));
 			} else {
-				res.status(400).send(JSON.stringify({code:2, msg:"une erreur est survenues"}));
+				con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
+					res.status(200).send(JSON.stringify({code:2, msg:"user unliker"}));
+				});
 			}
 		});
 	});

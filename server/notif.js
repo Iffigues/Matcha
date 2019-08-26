@@ -1,6 +1,7 @@
 const con = require('./dt.js');
 
 function notif(me, who, type, mess) {
+	if (me.id != who) {
 	con.connect(function (err){
 		let f = `SELECT COUNT(*) AS d FROM bloque WHERE userId = ? AND bloqueId = ?`;
 		con.query(f, [who, me.id],function (err, res){
@@ -14,6 +15,7 @@ function notif(me, who, type, mess) {
 			}
 		});
 	});
+	}
 }
 
 module.exports = notif;

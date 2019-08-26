@@ -74,7 +74,7 @@ app.use("/notif", notif);
 app.use("/like", like);
 app.use("/bloque", bloke);
 app.use("/report",report);
-app.use("/prof", prof);
+app.use("/user", prof);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })

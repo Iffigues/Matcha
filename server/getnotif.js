@@ -12,7 +12,7 @@ router.get("/nbr", function (req, res) {
 		let f = `SELECT * FROM notif WHERE who = ? AND look = 0 ORDER BY date DESC`;
 		con.query(f, decoded.rr.id, function (err, results) {
 			if (!err) {
-				res.status(200).send(JSON.stringify({code:0, results, nbr:results.length}));
+				res.status(200).send(JSON.stringify({code:0,nbr:results.length}));
 			}
 		});
 	});
