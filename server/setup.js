@@ -16,7 +16,7 @@ function createUser(use) {
 		sexe	int DEFAULT 1,
 		preferences int DEFAULT 3,
 		profilephoto  int,
-		popularite int DEFAULT 0,
+		popularity int DEFAULT 0,
 		role ENUM ("user","admin") DEFAULT "user",
 		visited DATE,
 		completed boolean DEFAULT false,
@@ -94,7 +94,8 @@ function createUser(use) {
 		userId int NOT NULL,
 		bloqueId int NOT NULL,
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
-		FOREIGN KEY (bloqueId) REFERENCES user(id) ON DELETE CASCADE
+		FOREIGN KEY (bloqueId) REFERENCES user(id) ON DELETE CASCADE,
+		UNIQUE KEY bloc (userId, bloqueId)
 	)`, function (err, res) {
 		if (err) throw err;
 	});
@@ -103,7 +104,6 @@ function createUser(use) {
 		type VARCHAR(50),
 		userId int NOT NULL,
 		who	int NOT NULL,
-		message VARCHAR(50),
 		look	boolean DEFAULT 0,
 		date 	TIMESTAMP default now(),
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
