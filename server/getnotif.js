@@ -24,7 +24,7 @@ router.get("/all", function (req, res) {
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id], function(err, resulats) {
 			con.query(`UPDATE notif SET look = 1 WHERE who = ?`, decoded.rr.id, function (err, resu){
-				res.status(200).send(JSON.stringify({code:0, resulats}));
+				res.status(200).send(JSON.stringify({code:0, resu}));
 			})
 		});
 	});

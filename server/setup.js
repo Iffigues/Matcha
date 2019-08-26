@@ -104,7 +104,6 @@ function createUser(use) {
 		type VARCHAR(50),
 		userId int NOT NULL,
 		who	int NOT NULL,
-		message VARCHAR(50),
 		look	boolean DEFAULT 0,
 		date 	TIMESTAMP default now(),
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
