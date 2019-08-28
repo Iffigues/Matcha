@@ -24,8 +24,20 @@ router.post("/add", function (req, res) {
 		let o = req.body.id;
 		con.query(f, [decoded.rr.id, o], function (err, resu) {
 			if (!err) {
-				notif(decoded.rr, o, "like", "Vous avez ete liker");
-				res.status(200).send(JSON.stringify({code: 0, msg:"vs avez ete liker"}));
+				let rrrr = "";
+				let mmm = "";
+				con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`, [o, decoded.rr.id] ,function (errr,bbb){
+					console.log(bbb.length);
+					if (!errr && bbb.length) {
+						rrr= "match";
+						mmm="vs avez ete matcher";
+					} else {
+						rrr = "like";
+						mmm="vs avez ete liker";
+					}
+					notif(decoded.rr, o, rrr, mmm);
+					res.status(200).send(JSON.stringify({code: 0, msg:"mmm"}));
+				});
 			} else {
 				con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
 					res.status(200).send(JSON.stringify({code:0, msg:"user unliker"}));

@@ -23,6 +23,7 @@ const prof = require("./prof.js");
 const bloke = require("./bloke.js");
 const match = require("./match.js");
 const adm = require("./admin/del.js");
+const msg = require("./message.js");
 
 var cors = require('cors')
 var con =  require("./dt.js");
@@ -80,6 +81,7 @@ app.use("/bloque", bloke);
 app.use("/report",report);
 app.use("/user", prof);
 app.use("/match", match);
+app.use("/messages",msg);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })

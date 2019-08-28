@@ -36,7 +36,6 @@ function pok(a, b) {
 
 async function lol (g, res, me, type) {
 	try {
-		console.log(g.length);
 		let profile = [];
 		for (let n in g) {
 			let oui = 0;
@@ -44,9 +43,6 @@ async function lol (g, res, me, type) {
 			let ye = 0;
 			let li = 0;
 			let ooo= 1;
-			if (!g[n].distance) {
-				console.log("fdfddfdfdffsdfs");
-			}
 			let popu = g[n].popularity;
 			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 			for (var e in rows) {

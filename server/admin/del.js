@@ -9,6 +9,7 @@ router.use(middles);
 router.get("/report", function (req, res) {
 	con.connect(function (err){
 		con.query(`SELECT * FROM report ORDER BY date`, function (err, resultats) {
+			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, resultats}));
 		});
 	});
