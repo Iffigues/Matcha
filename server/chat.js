@@ -15,7 +15,7 @@ var users = {};
 
 
 function sender(data, user) {
-	users[data.to.id].socket.emit("greeting", "Hey there, User 2");
+	users[data.to.id].socket.emit("greeting", JSON.stringify(data.messages));
 }
 
 async function lol(data, user) {
