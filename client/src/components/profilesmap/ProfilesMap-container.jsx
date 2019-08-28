@@ -1,29 +1,22 @@
 import React from 'react';
-import Navbar from './Navbar-view.jsx';
+import ProfilesMap from './ProfilesMap-view.jsx';
 
-class NavbarContainer extends React.Component {
+class ProfilesMapContainer extends React.Component {
 
 	constructor() {
 		super();
 		this.state = {
-			notReadNotifs: 0
+			profiles: []
 		}
-		this.handleClick = this.handleClick.bind(this);
-		this.fetchData = this.fetchData.bind(this);
 	}
 
 	componentDidMount() {
-		this.regularlyFetchData();
-	}
-
-	regularlyFetchData() {
 		this.fetchData();
-		setInterval(this.fetchData, 5000);
 	}
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/notif/nbr', {
+		fetch('http://gopiko.fr:8080/search/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -34,8 +27,9 @@ class NavbarContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
+ 						console.log("all profiles");
  						console.log(data);
- 						this.setState({notReadNotifs: data.nbr});
+ 						this.setState({profiles: data.profiles});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -47,22 +41,13 @@ class NavbarContainer extends React.Component {
 		});
 	}
 
-	handleClick(e) {
-		localStorage.removeItem('token');
-		localStorage.removeItem('username');
-		this.props.username = '';
-		this.props.loggedIn = false;
-	}
 
 	render() {
-		return <Navbar
-					username={this.props.username}
-					notReadNotifs={this.state.notReadNotifs}
-
-					onClick={this.handleClick}
+		return <ProfilesMap
+					profiles={this.state.profiles}
 				/>;
 	}
 
 }
 
-export default NavbarContainer;
+export default ProfilesMapContainer;

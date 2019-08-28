@@ -1,0 +1,13 @@
+.leaflet-container {
+	position: fixed;
+    right: 0px;
+    top: 56px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.leaflet-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

@@ -1,1 +1,1 @@
-export { default } from './Suggestions-view.jsx';
+export { default } from './Suggestions-container.jsx';
