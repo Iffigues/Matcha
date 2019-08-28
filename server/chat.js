@@ -13,14 +13,21 @@ const query = util.promisify(con.query).bind(con);
 
 var users = {};
 
+
+function sender(data, user) {
+	users[data.to.id].socket.emit("greeting", "Hey there, User 2");
+}
+
 async function lol(data, user) {
-	if (users[data.username].tab.includes(data.to)) {
-
-
-	} else {
+	if (!users[data.username].tab.includes(data.to.id)) { 
 		const isAllow = await query(`SELECT COUNT(*) as d FROM likes WHERE userOne = ?`,  data.to.id).then((rt) => {
-			
-		});
+		if (!err && rt.length) {
+			users[user.id].tab.push(users[data.to.id]);
+			sender(data, user);
+		}
+	})
+	} else {
+		sender(data, user);
 	}
 }
 
@@ -32,7 +39,7 @@ io.sockets.on('connection', function (socket) {
 		user = jwt.verify(token, "my-secret");
 		if (user) {
 			good = 1;
-			users[user.username] = {socket};
+			users[user.id] = {socket};
 			users[user.username].tab = [];
 		}
 	} catch (e) {
@@ -46,7 +53,7 @@ io.sockets.on('connection', function (socket) {
 			}
 		});
 		socket.on('disconnect', function(){
-			delete users[user.username];
+			delete users[user.id];
 		});
 	}
 });
