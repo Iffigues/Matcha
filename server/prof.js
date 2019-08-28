@@ -37,17 +37,19 @@ function usete(r) {
 	profile.city = r.user[0].city;
 	profile.popularity = r.user[0].popularity;
 	profile.sexe = r.user[0].sexe;
+	profile.lat = r.user[0].lat;
+	profile.lng = r.user[0].lng;
 	profile.profilephoto  = r.user[0].profilephoto;
 	profile.photos = r.images;
 	profile.lastVisite = r.user[0].visited;
 	if (!profile.lastVisite)
-		profile.lastVisite = false;
+		profile.lastVisite = null;
 	profile.connected = isC(profile.lastVisite, Date.now());
 	profile.tags = r.tags.map(x => x.name);
 	profile.furries = r.furry.map(x => x.name);
 	profile.beliked = r.resultat3 && r.resultat3.length > 0;
 	profile.liked = r.you && r.you.length > 0;
-	profile.blocked = r.blocks && r.blocks > 0;
+	profile.blocked = (r.blocks && r.blocks.length > 0);
 	console.log(profile);
 	return profile;
 }
@@ -61,7 +63,7 @@ router.get("/:id", function (req, res) {
 			con.query(`SELECT name FROM furry WHERE userId = ?`, id, function (err, furry) {
 				con.query(`SELECT tag as name FROM tag WHERE userId = ?`,id, function (err, tags) {
 					con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo= ?`,[id, decoded.rr.id], function (err, resultat3){
-						con.query(`SELECT * FROM img WHERE userId =?`,[decoded.rr.id], function (err, images) {
+						con.query(`SELECT * FROM img WHERE userId =?`,[id], function (err, images) {
 							con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`,[decoded.rr.id, id], function (err, you) {
 								con.query(`SELECT * FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, id], function (err, blocks){
 									notif(decoded.rr, id, 'visited',"un utilisateur a vu vorte profile");

@@ -22,15 +22,13 @@ router.post("/add", function (req, res) {
 		let f = `INSERT INTO likes (userOne, userTwo) VALUES (?,?)`;
 		var decoded = jwtDecode(req.token);
 		let o = req.body.id;
-		console.log(o);
 		con.query(f, [decoded.rr.id, o], function (err, resu) {
-			console.log(err);
 			if (!err) {
 				notif(decoded.rr, o, "like", "Vous avez ete liker");
-				res.status(200).send(JSON.stringify({code: 0, msg:resu}));
+				res.status(200).send(JSON.stringify({code: 0, msg:"vs avez ete liker"}));
 			} else {
 				con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
-					res.status(200).send(JSON.stringify({code:2, msg:"user unliker"}));
+					res.status(200).send(JSON.stringify({code:0, msg:"user unliker"}));
 				});
 			}
 		});

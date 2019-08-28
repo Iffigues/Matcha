@@ -19,7 +19,7 @@ function notif(me, who, type, mess) {
 					con.query(`SELECT * FROM notif  WHERE userId = ? AND who = ? AND type = ? ORDER BY date DESC`,[me.id, who, type], function (err,ttt) {
 						let g = `INSERT INTO notif (type, userId, who) VALUES (?,?,?)`;
 						let b = 1;
-						if (ttt) {
+						if (ttt && ttt.length) {
 							let k = ttt[0];
 							if (isC(k.date, Date.now()))
 								b = 0;

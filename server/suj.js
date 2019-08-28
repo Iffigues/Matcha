@@ -36,6 +36,7 @@ function pok(a, b) {
 
 async function lol (g, res, me, type) {
 	try {
+		console.log(g.length);
 		let profile = [];
 		for (let n in g) {
 			let oui = 0;
@@ -43,6 +44,9 @@ async function lol (g, res, me, type) {
 			let ye = 0;
 			let li = 0;
 			let ooo= 1;
+			if (!g[n].distance) {
+				console.log("fdfddfdfdffsdfs");
+			}
 			let popu = g[n].popularity;
 			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 			for (var e in rows) {
@@ -79,7 +83,7 @@ async function lol (g, res, me, type) {
 		}
 		if (type == "all") {
 			let profiles = profile;
-			res.status(200).send(JSON.stringify({code:0, profile}));
+			res.status(200).send(JSON.stringify({code:0, profiles}));
 		}
 		if (type == "suggestions") {
 			let i = 10;
@@ -116,18 +120,22 @@ router.get("/:id",function (req, res) {
 		`;
 	var decoded = jwtDecode(req.token);
 	let f = `SELECT 
-	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularity, img.path,
-		3956 * 2 * ASIN(SQRT(POWER(SIN((? - abs(lat)) * pi()/180 / 2),2) + COS(? * pi()/180 ) * COS(abs(lat) *pi()/180) * POWER(SIN((? - lng) *pi()/180 / 2), 2) ))  as distance
+	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularity, user.lat, user.lng, img.path,
+		111.045*haversine(user.lat,user.lng ,latpoint, longpoint) AS  distance
 	FROM user 
+	 JOIN (
+		      SELECT  ?  AS latpoint,  -? AS longpoint
+	) AS p
 	LEFT JOIN img as img ON img.id = user.profilephoto
-	WHERE sexe = ? AND preferences = ? OR preferences = 0 AND user.id != ? HAVING distance < 10000
+	WHERE sexe = ? AND preferences = ? OR preferences = 0 AND user.id != ?
 	`;
 	con.connect(function (err) {
 		con.query(g, [decoded.rr.id], function (err, result) {
 			if (!err && result) {
 				let yy = [];
 				let d = result[0];
-				con.query(f, [d.lat, d.lng, d.lng, d.sexe, d.preferences, decoded.rr.id], function (err, result1)  {
+				con.query(f, [d.lat, d.lng, d.sexe, d.preferences, decoded.rr.id], function (err, result1)  {
+					console.log(err);
 					lol(result1, res, d, id);
 				});
 			}

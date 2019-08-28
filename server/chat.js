@@ -6,10 +6,17 @@ const middles = require("./middleware.js");
 var jwtDecode = require('jwt-decode');
 var io = require('socket.io').listen(server);
 
+var users = {};
+
 io.sockets.on('connection', function (socket) {
-	socket.on('switchRoom', function(newroom){
-	
+	socket.on('chat', function(data){
+			console.log("hghghg");	
+			console.log(data);
+	});
+	socket.on('connect', function(data){
+		console.log("hghg");
 	});
 });
 
+server.listen(8081)
 module.exports = router;

@@ -22,9 +22,9 @@ router.get("/all", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	let f = `SELECT * FROM notif WHERE who = ? ORDER BY date DESC`;
 	con.connect(function (err) {
-		con.query(f, [decoded.rr.id], function(err, resulats) {
-			con.query(`UPDATE notif SET look = 1 WHERE who = ?`, decoded.rr.id, function (err, resu){
-				res.status(200).send(JSON.stringify({code:0, resu}));
+		con.query(f, [decoded.rr.id], function(err, resultats) {
+			con.query(`UPDATE notif SET look = 1 WHERE who = ?`, decoded.rr.id, function (err, rs){
+				res.status(200).send(JSON.stringify({code:0, resultats}));
 			})
 		});
 	});

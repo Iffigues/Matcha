@@ -18,7 +18,7 @@ function createUser(use) {
 		profilephoto  int,
 		popularity int DEFAULT 0,
 		role ENUM ("user","admin") DEFAULT "user",
-		visited DATE,
+		visited TIMESTAMP DEFAULT now(),
 		completed boolean DEFAULT false,
 		active boolean DEFAULT 0
 		)`, function (err, res) {
@@ -114,10 +114,39 @@ function createUser(use) {
 		id int 	AUTO_INCREMENT PRIMARY KEY,
 		UserId int NOT NULL,
 		who int NOT NULL,
+		date TIMESTAMP DEFAULT now(),
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
 		UNIQUE KEY bloc	 (userId, who)
 	)`,function (err, res) {
 		if (err) throw err;
+	});
+	use.query(`CREATE TABLE IF NOT EXISTS messages (
+			id int  AUTO_INCREMENT PRIMARY KEY,
+			userOne int NOT NULL,
+			userTwo int NOT NULL,
+			message LONGTEXT,
+			date TIMESTAMP DEFAULT now(),
+			look boolean DEFAULT false
+	)`, function (err, res) {
+		if (err) throw err;
+	});
+	use.query(`DROP FUNCTION IF EXISTS haversine`, function (err, res) {
+		if (err) throw err;
+		use.query(`CREATE FUNCTION haversine(
+			        lat1 FLOAT, lon1 FLOAT,
+			        lat2 FLOAT, lon2 FLOAT
+			     ) RETURNS FLOAT
+			    NO SQL DETERMINISTIC
+			BEGIN
+			    RETURN DEGREES(ACOS(
+				                  COS(RADIANS(lat1)) *
+				                  COS(RADIANS(lat2)) *
+				                  COS(RADIANS(lon2) - RADIANS(lon1)) +
+				                  SIN(RADIANS(lat1)) * SIN(RADIANS(lat2))
+				                ));
+			END`,function (err, rt) {
+				if (err) throw err;
+			});
 	});
 }
 
