@@ -43,6 +43,14 @@ router.get("/all", function (req, res) {
 	});
 });
 
+router.get("/adm", function (req, res) {
+	con.connect(function(err){
+		con.query('SELECT * FROM tag GROUP BY tag',function(err, resultats) {
+			res.status(200).send({code: 0, resultats});
+		});
+	});
+});
+
 router.delete("/", function (req, res) {
 	let f = `DELETE FROM tag WHERE userId = ? AND tag = ?`;
 	let name = req.body.name;

@@ -16,7 +16,15 @@ const furry = require("./furry.js");
 const suj = require("./suj.js");
 const map = require("./map.js");
 const chat = require("./chat.js");
-const notif = require("./notif.js");
+const like = require("./like.js");
+const report = require("./report.js");
+const notif = require("./getnotif.js");
+const prof = require("./prof.js");
+const bloke = require("./bloke.js");
+const match = require("./match.js");
+const adm = require("./admin/del.js");
+const msg = require("./message.js");
+
 var cors = require('cors')
 var con =  require("./dt.js");
 
@@ -63,10 +71,17 @@ app.use('/profile', profile);
 app.use('/tag',cors(), tag);
 app.use('/img', img);
 app.use("/furry", furry);
-app.use("/suj", suj);
+app.use("/search", suj);
 app.use("/map", map);
+app.use("/adm", adm);
 app.use("/chat", chat);
-app.use("/notif", notif)
+app.use("/notif", notif);
+app.use("/like", like);
+app.use("/bloque", bloke);
+app.use("/report",report);
+app.use("/user", prof);
+app.use("/match", match);
+app.use("/messages",msg);
 app.get('/connected',withAuth, function (req, res) {
 	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
 })
