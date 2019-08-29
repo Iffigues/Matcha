@@ -25,19 +25,23 @@ function sendmai(token, username){
 router.post("/recover", function(req, res) {
 	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
 	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
+	if (!req.body.email) {
+		return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
+	}
 	let email = req.body.email.trim();
 	let tok = randomToken(16);
 	let valida = new validate();
 	if (!valida.isEmail(email))
 		return res.status(400).send("bad email");
 	let pass = faker.fake("{{internet.password}}");
-	con.connect(function(err) {
-		console.log(err);
-		if (err) 
-			return res.status(500).send(JSON.stringify({code:1,msg: "internals error"}));
+	//con.connect(function(err) {
+		if (0) {
+			res.status(500).send(JSON.stringify({code:1,msg: "internals error"}));
+		} else {
 		bcrypt.hash(pass, saltRounds, function(err, hash) {
-			if (err) 
-				return res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
+			if (err) {
+				res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
+			} else {
 			con.query(f,[email, tok, hash], function(err, result, field) {
 				if (!err) 
 					sendmai(tok, pass);
@@ -45,8 +49,10 @@ router.post("/recover", function(req, res) {
 					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass);});
 				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
 			});
+			}
 		});
-	});
+		}
+//	});
 });
 
 router.get("/recover/:toki", function(req, res) {
@@ -75,11 +81,6 @@ function ver(a){
 }
 
 router.post("/", function (req, res) {
-	/*try {
-		let haha = req.body;
-	} catch (e){
-		return res.status(400).send(JSON.stringify({code:1, msg:"mauvais json"}));
-	}*/
 	con.connect(function (err) {
 		if (!req.body.password || !req.body.username) {
 			return res.status(400).send(JSON.stringify({code:0, msg:"un des champs est vide"}));
