@@ -9,7 +9,7 @@ const mid = require("./middleware.js");
 const faker = require('faker');
 const randomToken = require('random-token');
 const sendmail = require('sendmail')();
-const valide = require("./validateur.js");
+const validate = require("./validateur.js");
 
 function sendmai(token, username){
 	sendmail({
@@ -27,30 +27,23 @@ router.post("/recover", function(req, res) {
 	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
 	let email = req.body.email.trim();
 	let tok = randomToken(16);
-	let valid = new Validateur();
-	if (!valid.isEmail) {
-		res.status(400).send("bad email");
-		return ;
-	}
+	let valida = new validate();
+	if (!valida.isEmail(email))
+		return res.status(400).send("bad email");
 	let pass = faker.fake("{{internet.password}}");
 	con.connect(function(err) {
-		if (err) {
-			res.status(500).send(JSON.stringify({code:1,msg: "internal error"}));
-			return;
-		}
+		console.log(err);
+		if (err) 
+			return res.status(500).send(JSON.stringify({code:1,msg: "internals error"}));
 		bcrypt.hash(pass, saltRounds, function(err, hash) {
-			if (err) {
-				res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
-			}
-			con.query(f,[email, tok, hash], function(err, res, field) {
-				if (!err) {
+			if (err) 
+				return res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
+			con.query(f,[email, tok, hash], function(err, result, field) {
+				if (!err) 
 					sendmai(tok, pass);
-				} else {
-					con.query(y, [tok,hash,email], function (err, res) {
-						sendmai(tok, pass);
-					});
-				}
-				res.status(200).send(JSON.stringify({code:1, msg:"un email viens de vous être envoye"}));
+				else 
+					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass);});
+				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
 			});
 		});
 	});
@@ -75,14 +68,22 @@ router.get("/recover/:toki", function(req, res) {
 });
 
 function ver(a){
-	let valid = new valide();
+	let valid = new validate();
 	if (!valid.isLogin(a))
 		return (0);
 	return (1);
 }
 
 router.post("/", function (req, res) {
+	/*try {
+		let haha = req.body;
+	} catch (e){
+		return res.status(400).send(JSON.stringify({code:1, msg:"mauvais json"}));
+	}*/
 	con.connect(function (err) {
+		if (!req.body.password || !req.body.username) {
+			return res.status(400).send(JSON.stringify({code:0, msg:"un des champs est vide"}));
+		}
 		let pwd = req.body.password;
 		let email = req.body.username.trim();
 		if(!ver(email)) {
