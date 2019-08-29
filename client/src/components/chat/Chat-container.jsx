@@ -32,7 +32,8 @@ class ChatContainer extends React.Component {
 			console.log('receive a message');
 			console.log(data);
 			if (data.message && data.message.content.length > 0) {
-				if (data.message.toId === this.state.currentUser.id && this.state.boxOpen) {
+				if (data.message.fromId === this.state.currentUser.id && this.state.boxOpen) {
+					console.log('ajout message dans box');
 					const messages = this.state.messages.slice();
 					messages.unshift(data.message);
 					this.setState({messages: messages});
