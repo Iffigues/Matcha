@@ -34,11 +34,11 @@ function AdminUsers(props) {
 									<div className="btn-group" role="group">
 										<button	className="btn btn-sm btn-primary"
 												type="button" value={user.id}
-												onClick={props.onRemoveTagClick}
+												onClick={props.onEditUserClick}
 										>Modifier</button>
 										<button	className="btn btn-sm btn-danger"
 												type="button" value={user.id}
-												onClick={props.onRemoveTagClick}
+												onClick={props.onRemoveUserClick}
 										>Suppprimer</button>
 									</div>
 								</td>

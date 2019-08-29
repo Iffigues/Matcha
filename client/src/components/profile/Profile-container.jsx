@@ -110,7 +110,7 @@ class ProfileContainer extends React.Component {
 	handleBlockClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/bloque', {
+		fetch('http://gopiko.fr:8080/blocked', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,

@@ -64,7 +64,7 @@ class AdminTagsContainer extends React.Component {
 		e.preventDefault();
 		const data = {name: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/adm/remove/tag', {
+		fetch('http://gopiko.fr:8080/adm/delete/tag', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,

@@ -261,9 +261,9 @@ function Account(props) {
 				</form>
 				<h2 className="my-4">Utilisateurs bloqués</h2>
 				<ul>
-					{props.blockedUsers.length
+					{props.blockedUsers.length > 0
 						? props.blockedUsers.map((value, key) => {
-							return (<li key={key} className="">{value.firstname} {value.lastname} - <i>{value.username}</i> <button type="button" value={value.id} onClick={props.onRemoveTagClick}>Débloquer</button></li>);
+							return (<li key={key} className="">{value.firstname} {value.lastname} - <i>{value.username}</i> <button className="btn btn-sm btn-danger" type="button" value={value.blockedId} onClick={props.onUnblockClick}>Débloquer</button></li>);
 						})
 						: (<li><i>Aucun</i></li>)
 					}

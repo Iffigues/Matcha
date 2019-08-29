@@ -28,6 +28,20 @@ class ChatContainer extends React.Component {
 
 	componentDidMount() {
 		this.regularlyFetchData();
+		this.state.socket.on('chat', (data) => {
+			console.log('receive a message');
+			console.log(data);
+			if (data.message && data.message.content.length > 0) {
+				if (data.message.toId === this.state.currentUser.id && this.state.boxOpen) {
+					const messages = this.state.messages.slice();
+					messages.unshift(data.message);
+					this.setState({messages: messages});
+				} else {
+					const user = this.state.users.find(u => u.id === data.message.toId);
+					user.unread = (user.unread || 0) + 1;
+				}
+			}
+		});
 	}
 
 	regularlyFetchData() {
@@ -101,8 +115,9 @@ class ChatContainer extends React.Component {
 	}
 
 	handleUserClick(e) {
-		if (this.state.boxOpen)
+		if (this.state.boxOpen) {
 			this.setState({boxOpen: 0});
+		}
 		else {
 			this.setState({boxOpen: 1});
 			this.fetchMessages(this.state.currentUser.id);
@@ -116,23 +131,25 @@ class ChatContainer extends React.Component {
 
 	handleMessageSubmit(e) {
 		e.preventDefault();
-		console.log('envoyé');
 		const form = new FormData(e.target);
 		const message = {};
 		form.forEach(function(value, key){
 			message[key] = value;
 		});
-		message.from = null;
-		message.fromId = null;
-		message.to = this.state.currentUser.username;
-		message.toId = this.state.currentUser.id;
-		const data = {message: message};
-		this.state.socket.emit('chat', data, (d) => {
-			console.log(d);
+		if (message.content.length > 0) {
+			console.log('envoyé');
+			message.from = null;
+			message.fromId = null;
+			message.to = this.state.currentUser.username;
+			message.toId = this.state.currentUser.id;
+			message.date = new Date();
+			const data = {message: message};
+			console.log(data);
+			this.state.socket.emit('chat', data);
 			const messages = this.state.messages.slice();
-			messages.unshift(d);
+			messages.unshift(message);
 			this.setState({messages: messages});
-		})
+		}
 	}
 
 	render() {

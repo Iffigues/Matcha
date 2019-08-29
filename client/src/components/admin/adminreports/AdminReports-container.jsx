@@ -29,7 +29,7 @@ class AdminReportsContainer extends React.Component {
 					if (data.code === 0) {
  						console.log("all reports");
  						console.log(data);
- 						this.setState({reports: data.reports});
+ 						this.setState({reports: data.resultats});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

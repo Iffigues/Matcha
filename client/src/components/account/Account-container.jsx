@@ -46,6 +46,7 @@ class AccountContainer extends React.Component {
 		this.handleAddSuggFurryClick = this.handleAddSuggFurryClick.bind(this);
 		this.handleAddPhotoClick = this.handleAddPhotoClick.bind(this);
 		this.handleRemovePhotoClick = this.handleRemovePhotoClick.bind(this);
+		this.handleUnblockClick = this.handleUnblockClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -103,8 +104,8 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					console.log(data);
 					if (data.code === 0 && data.tags) {
+						console.log(data);
 						this.setState({allTags: data.tags});
 					}
 				}).catch(error => {
@@ -125,8 +126,8 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					console.log(data);
 					if (data.code === 0 && data.furries) {
+						console.log(data);
 						this.setState({allFurries: data.furries});
 					}
 				}).catch(error => {
@@ -147,9 +148,10 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					console.log(data);
-					if (data.code === 0 && data.tags) {
-						//this.setState({blockedUsers: data.users});
+					if (data.code === 0) {
+						console.log('blocked users');
+						console.log(data);
+						this.setState({blockedUsers: data.resultats});
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -838,6 +840,35 @@ class AccountContainer extends React.Component {
 		});
 	}
 
+	handleUnblockClick(e) {
+		const d = {id: parseInt(e.target.value)};
+		const token = localStorage.getItem('token');
+		fetch('http://gopiko.fr:8080/blocked', {
+			method: 'POST',
+			headers: {
+				'x-access-token': token,
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(d)
+		})
+		.then(response => {
+			if (response) {
+				response.json().then(data => { 
+					console.log(data);
+					if (data.code === 0) {
+						this.fetchData();
+					}
+				}).catch(error => {
+					console.log('Il y a eu un problème avec la lecture de la réponse');
+				});
+			} else
+				throw Error('Pas de réponse');
+		}).catch(error => {
+			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
+		});
+	}
+
  	render() {
 		return <Account
 					firstname={this.state.firstname}
@@ -857,6 +888,8 @@ class AccountContainer extends React.Component {
 					suggTags={this.state.suggTags}
 					photos={this.state.photos}
 					profilePhoto={this.state.profilePhoto}
+
+					blockedUsers={this.state.blockedUsers}
 
 					onChange={this.handleChange}
 					onSubmit={this.handleSubmit}
@@ -880,10 +913,10 @@ class AccountContainer extends React.Component {
 					onAddPhotoClick={this.handleAddPhotoClick}
 					onRemovePhotoClick={this.handleRemovePhotoClick}
 
+					onUnblockClick={this.handleUnblockClick}
+
 					errors={this.state.errors}
 					notices={this.state.notices}
-
-					blockedUsers={this.state.blockedUsers}
 				/>;
 	}
 

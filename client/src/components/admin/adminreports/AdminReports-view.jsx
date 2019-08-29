@@ -10,17 +10,20 @@ function AdminReports(props) {
 				<thead>
 					<tr>
 						<th scope="col">#</th>
-						<th scope="col">Signalements</th>
+						<th scope="col">Rapporteur</th>
+						<th scope="col">Signalé</th>
 						<th scope="col">Date</th>
 					</tr>
 				</thead>
 				<tbody>
-					{props.reports.map((value, key) => {
+					{props.reports.map((report, key) => {
+						const date = new Date(report.date).toLocaleString('fr-FR');
 						return (
 							<tr key={key}>
 								<th scope="row">{key}</th>
-								<td>{value}</td>
-								<td>{value}</td>
+								<td>{report.userId}</td>
+								<td>{report.who}</td>
+								<td>{date}</td>
 							</tr>
 						);
 					})}

@@ -10,6 +10,7 @@ class AdminUsersContainer extends React.Component {
 			allUsers: []
 		}
 		this.handleUserChange = this.handleUserChange.bind(this)
+		this.handleRemoveUserClick = this.handleRemoveUserClick.bind(this)
 	}
 
 	componentDidMount() {
@@ -31,7 +32,7 @@ class AdminUsersContainer extends React.Component {
 					if (data.code === 0) {
  						console.log("all users");
  						console.log(data);
- 						this.setState({users: data.profile, allUsers: data.profile});
+ 						this.setState({users: data.profiles, allUsers: data.profiles});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -62,11 +63,42 @@ class AdminUsersContainer extends React.Component {
 		this.setState({users: res});
 	}
 
+	handleRemoveUserClick(e) {
+		e.preventDefault();
+		const data = {id: e.target.value};
+		const token = localStorage.getItem('token');
+		fetch('http://gopiko.fr:8080/adm/delete/user', {
+			method: 'DELETE',
+			headers: {
+				'x-access-token': token,
+				Accept: 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+		.then(response => {
+			if (response) {
+				response.json().then(data => {
+					if (data.code === 0) {
+ 						console.log("all users");
+ 						console.log(data);
+						this.fetchData();
+		 			}
+				}).catch(error => {
+					console.log('Il y a eu un problème avec la lecture de la réponse');
+				});
+			} else
+				throw Error('Pas de réponse');
+		}).catch(error => {
+			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
+		});
+	} 
+
 	render() {
 		return <AdminUsers
 					users={this.state.users}
 
 					onUserChange={this.handleUserChange}
+					onRemoveUserClick={this.handleRemoveUserClick}
 				/>;
 	}
 

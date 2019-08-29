@@ -11,7 +11,7 @@ function Chat(props) {
 				? (<div className="chat-list">
 						<ul>
 							{props.users.map((user, key) => {
-								return <li key={key} value={user.id} onClick={props.onListClick}>{user.username}</li>
+								return <li key={key} value={user.id} onClick={props.onListClick}>{user.username} {user.unread ? user.unread : ''}</li>
 							})}
 						</ul>
 					</div>) : (<div></div>)
@@ -24,14 +24,21 @@ function Chat(props) {
 			{props.boxOpen
 				? (<div className="chat-box">
 						<div className="chat-text">
-{/*							{props.messages.map((message, key) => {
-								if (message.him)
-									return <small className="chat-text-me-date">{message.date}</small>
-											<p className="text-him">{message.text}</p>;
-								else
-									return <p className="text-me">{message.text}</p>;
-							})}*/}
-									<div className="chat-text-him">
+							{props.messages.map((message, key) => {
+								const date = new Date(message.date).toLocaleString('fr-FR');
+								if (message.fromId === props.currentUser.id) {
+									return 	<div key={key} className="chat-text-him">
+												<div className="chat-text-him-body">{message.content}</div>
+												<small className="chat-text-him-date">{date}</small>
+											</div>;
+								} else {
+									return	<div key={key} className="chat-text-me">
+												<div className="chat-text-me-body">{message.content}</div>
+												<small className="chat-text-me-date">{date}</small>
+											</div>;
+								}
+							})}
+									{/*<div className="chat-text-him">
 										<div className="chat-text-him-body">sdklfkdfs dfslkljgk fsdjfd lkdfj gkl</div>
 										<small className="chat-text-him-date">youpi</small>
 									</div>
@@ -58,7 +65,7 @@ function Chat(props) {
 									<div className="chat-text-me">
 										<div className="chat-text-me-body">sdklfkdfs dfslkljgk fsdjfd lkdfj gkl</div>
 										<small className="chat-text-me-date">youpi</small>
-									</div>
+									</div>*/}
 						</div>
 						<form className="row" onSubmit={props.onMessageSubmit}>
 							<div className="col-sm-9">

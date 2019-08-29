@@ -64,7 +64,7 @@ class AdminFurriesContainer extends React.Component {
 		e.preventDefault();
 		const data = {name: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/adm/remove/furries', {
+		fetch('http://gopiko.fr:8080/adm/delete/furries', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,
@@ -76,6 +76,7 @@ class AdminFurriesContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
+					console.log(data);
 					if (data.code === 0)
 						this.fetchData();
 				}).catch(error => {
