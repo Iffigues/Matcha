@@ -17,9 +17,12 @@ var users = {};
 
 async function putbdd(data, user) {
 	let e = 0;
+	let i = 0;
 	if(users[data.message.toId])
 		e = 1;
-	const put = await query(`INSERT INTO messages (userOne, userTwo, message, look) VALUES (?,?,?,?)`,[user.rr.id, data.message.toId, data.message.content, e]).then( (tr, err) => {
+	if (data.message.unread && e)
+		i = 1;
+	const put = await query(`INSERT INTO messages (userOne, userTwo, message, look) VALUES (?,?,?,?)`,[user.rr.id, data.message.toId, data.message.content, i]).then( (tr, err) => {
 		console.log(err);
 		if (users[data.message.toId])
 			users[data.message.toId].emit("chat", data);
@@ -62,6 +65,9 @@ io.sockets.on('connection', function (socket) {
 				} catch (e) {
 					console.log(e);
 				}
+			});
+			socket.on('unread', function (data) {
+				
 			});
 			socket.on('disconnect', function(){
 				console.log(delete users[user.rr.id]);
