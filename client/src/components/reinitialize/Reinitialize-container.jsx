@@ -57,8 +57,6 @@ class ReinitializeContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						console.log("recover");
-						console.log(data);
 						if (data.code === 0) {
 							f.reset();
 							inputs.forEach(function(input) {

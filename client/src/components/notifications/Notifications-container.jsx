@@ -27,8 +27,6 @@ class NotificationsContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
- 						console.log("all notifs");
- 						console.log(data);
  						this.setState({notifications: data.resultats});
 		 			}
 				}).catch(error => {

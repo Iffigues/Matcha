@@ -66,7 +66,6 @@ class AccountContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
-						console.log(data);
 						localStorage.setItem('username', data.username);
 						this.setState({
 							firstname: data.firstname || '',
@@ -105,7 +104,6 @@ class AccountContainer extends React.Component {
 			if (response) {
 				response.json().then(data => { 
 					if (data.code === 0 && data.tags) {
-						console.log(data);
 						this.setState({allTags: data.tags});
 					}
 				}).catch(error => {
@@ -127,7 +125,6 @@ class AccountContainer extends React.Component {
 			if (response) {
 				response.json().then(data => { 
 					if (data.code === 0 && data.furries) {
-						console.log(data);
 						this.setState({allFurries: data.furries});
 					}
 				}).catch(error => {
@@ -149,8 +146,6 @@ class AccountContainer extends React.Component {
 			if (response) {
 				response.json().then(data => { 
 					if (data.code === 0) {
-						console.log('blocked users');
-						console.log(data);
 						this.setState({blockedUsers: data.resultats});
 					}
 				}).catch(error => {
@@ -212,7 +207,6 @@ class AccountContainer extends React.Component {
 		const res = [];
 		if (text) {
 			this.state.allFurries.forEach(furry => {
-				console.log('t:' + furry);
 				if (furry.name.toLowerCase().includes(text) && !this.state.furries.includes(furry.name))
 					res.push(furry);
 			});
@@ -349,7 +343,6 @@ class AccountContainer extends React.Component {
 				if (key === 'password')
 					delete data['username'];
 			});
-			console.log(data);
 			const token = localStorage.getItem('token');
 			fetch('http://gopiko.fr:8080/profile/', {
 				method: 'POST',
@@ -423,8 +416,6 @@ class AccountContainer extends React.Component {
 			});
 			data.customCity = this.state.customCity;
 			const token = localStorage.getItem('token');
-			console.log(data);
-
 			fetch('http://gopiko.fr:8080/map', {
 				method: 'POST',
 				headers: {
@@ -438,7 +429,6 @@ class AccountContainer extends React.Component {
 				if (response) {
 					response.json().then(data => {
 						if (data.code === 0) {
-							console.log('COUCOU');
 							inputs.forEach(function(input) {
 								input.classList.remove('is-invalid');
 								input.classList.remove('is-valid');
@@ -605,7 +595,6 @@ class AccountContainer extends React.Component {
 				.then(response => {
 					if (response) {
 						response.json().then(data => {
-						console.log(data);
 							this.setState({customCity: 0, city: data.city, lng: pos.coords.longitude, lat: pos.coords.latitude});
 						}).catch(error => {
 							console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -739,7 +728,6 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-							console.log(data);
 						if (data.code === 0) {
 							this.setState({errors: [], notices: [data.msg]});
 						} else {
@@ -855,7 +843,6 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					console.log(data);
 					if (data.code === 0) {
 						this.fetchData();
 					}

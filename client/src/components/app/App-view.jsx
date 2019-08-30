@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-// import Footer from '../footer';
 import Navbar from '../navbar';
 import Register from '../register';
 import Reinitialize from '../reinitialize';
@@ -23,7 +22,7 @@ function App(props) {
 			<Router>
 				<RouteChange actions={[props.handleRouteChange]}/>
 				<Navbar username={props.username} loggedIn={props.loggedIn}/>
-				<Chat/>
+				{props.loggedIn ? <Chat/> : <div></div>}
 				<Route path="/login" component={Login}/>
 				<Route path="/reinitialize" component={Reinitialize}/>
 				<Route path="/register" component={Register}/>

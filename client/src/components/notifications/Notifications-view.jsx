@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 
 function Notifications(props) {
-	console.log(props);
 	TimeAgo.addLocale(fr);
 	const timeAgo = new TimeAgo('fr-fr');
 	return (

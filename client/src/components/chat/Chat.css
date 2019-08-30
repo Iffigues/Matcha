@@ -85,7 +85,7 @@
 
 .chat-text {	
 	border: 1px solid lightgrey;
-	width: 400px;
+	width: 100%;
 	height: 360px;
 
 	background-color: white;
@@ -95,7 +95,6 @@
    	display: flex;
 	flex-direction: column-reverse;
 }
-
 
 .chat-text-him {
 	margin: 10px;
@@ -139,3 +138,40 @@
 	float: right;
 }
 
+@media screen and (max-width: 640px) {
+	.chat-main {
+		right: 0px;
+		width: 50%;
+	}
+
+	.chat-user {
+		right: 50%;
+		width: 50%;
+	}
+
+	.chat-list {
+		right: 0px;
+		width: 50%;
+	}
+	
+	.chat-box {
+		right: 0px;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	
+	.chat-text {
+		height: 320px;
+	}
+
+	.chat-input {
+		width: 96%;
+		padding: 0;
+		margin: 0;
+	}
+
+	.chat-submit {
+		width: 100%;
+	}
+}

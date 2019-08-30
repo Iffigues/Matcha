@@ -47,7 +47,6 @@ class ProfileContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
- 						console.log(data);
  						this.setState({
  							firstname: data.profile.firstname,
 							lastname: data.profile.lastname,
@@ -122,7 +121,6 @@ class ProfileContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					console.log(data);
 					if (data.code === 0) {
 						this.fetchData();
 					}

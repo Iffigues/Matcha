@@ -29,17 +29,21 @@ class ChatContainer extends React.Component {
 	componentDidMount() {
 		this.regularlyFetchData();
 		this.state.socket.on('chat', (data) => {
-			console.log('receive a message');
+			console.log('message reçu');
 			console.log(data);
 			if (data.message && data.message.content.length > 0) {
-				if (data.message.fromId === this.state.currentUser.id && this.state.boxOpen) {
+				console.log('message ok');
+				if (this.state.currentUser && data.message.fromId === this.state.currentUser.id && this.state.boxOpen) {
 					console.log('ajout message dans box');
 					const messages = this.state.messages.slice();
 					messages.unshift(data.message);
 					this.setState({messages: messages});
 				} else {
-					const user = this.state.users.find(u => u.id === data.message.toId);
-					user.unread = (user.unread || 0) + 1;
+					data.message.unread = 1;
+					this.state.socket.emit('unread', data);
+					// const user = this.state.users.find(u => u.id === data.message.fromId);
+					// user.unread = (user.unread || 0) + 1;
+					// this.setState({});
 				}
 			}
 		});
@@ -63,8 +67,7 @@ class ChatContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
- 						console.log("all matches");
- 						console.log(data);
+						console.log(data);
  						this.setState({users: data.users});
 		 			}
 				}).catch(error => {
@@ -90,9 +93,8 @@ class ChatContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
- 						console.log("all messages");
- 						console.log(data);
  						this.setState({messages: data.messages});
+ 						this.fetchData();
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -138,13 +140,13 @@ class ChatContainer extends React.Component {
 			message[key] = value;
 		});
 		if (message.content.length > 0) {
-			console.log('envoyé');
 			message.from = null;
 			message.fromId = null;
 			message.to = this.state.currentUser.username;
 			message.toId = this.state.currentUser.id;
 			message.date = new Date();
 			const data = {message: message};
+			console.log('message envoyé :');
 			console.log(data);
 			this.state.socket.emit('chat', data);
 			const messages = this.state.messages.slice();

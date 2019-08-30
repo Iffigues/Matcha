@@ -58,7 +58,6 @@ class SearchContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
-						console.log(data);
 						if (data.profiles.length > 0) {
 	 						const ages = data.profiles.map(p => p.age);
 							const pops = data.profiles.map(p => p.popularity);
@@ -210,7 +209,6 @@ class SearchContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-						console.log(data);
 					if (data.code === 0) {
 						this.fetchData();
 					}

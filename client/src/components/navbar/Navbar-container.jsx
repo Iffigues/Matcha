@@ -34,7 +34,6 @@ class NavbarContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0) {
- 						console.log(data);
  						this.setState({notReadNotifs: data.nbr});
 		 			}
 				}).catch(error => {

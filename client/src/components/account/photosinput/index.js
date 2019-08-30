@@ -1,1 +1,0 @@
-export { default } from './PhotosInput-container.jsx';

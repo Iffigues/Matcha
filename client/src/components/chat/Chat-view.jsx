@@ -2,16 +2,20 @@ import React from 'react';
 import './Chat.css';
 
 function Chat(props) {
+	let unread = props.users.map(x => x.unread);
+	if (unread.length > 0) {
+		unread = unread.reduce((x, y) => x + y);
+	}
 	return (
 		<div className="Chat">
 			<div className="chat-main" onClick={props.onMainClick}>
-				Messagerie
+				Messagerie {unread ? '(' + unread + ')' : ''}
 			</div>
 			{props.listOpen
 				? (<div className="chat-list">
 						<ul>
 							{props.users.map((user, key) => {
-								return <li key={key} value={user.id} onClick={props.onListClick}>{user.username} {user.unread ? user.unread : ''}</li>
+								return <li key={key} value={user.id} onClick={props.onListClick}>{user.username} {user.unread ? '(' + user.unread + ')' : ''}</li>
 							})}
 						</ul>
 					</div>) : (<div></div>)
@@ -69,9 +73,9 @@ function Chat(props) {
 						</div>
 						<form className="row" onSubmit={props.onMessageSubmit}>
 							<div className="col-sm-9">
-								<input name="content" type="text" className="form-control mx-2"/>
+								<input name="content" type="text" className="chat-input form-control mx-2"/>
 							</div>
-							<button value={props.currentUser.id} type="submit" className="btn btn-primary">Envoyer</button>
+								<button value={props.currentUser.id} type="submit" className="chat-submit btn btn-primary">Envoyer</button>
 						</form>
 					</div>) : (<span></span>)
 			}
