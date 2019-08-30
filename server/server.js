@@ -64,6 +64,14 @@ app.use(function(req, res, next) {
 	next();
 });
 
+app.use((err, req, res, next) => {
+	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+		 console.error(err);
+		return res.sendStatus(400);
+	}
+	next();
+});
+
 app.use('/register', reg);
 app.use('/validate', val);
 app.use('/login', query);
@@ -77,7 +85,7 @@ app.use("/adm", adm);
 app.use("/chat", chat);
 app.use("/notif", notif);
 app.use("/like", like);
-app.use("/bloque", bloke);
+app.use("/blocked", bloke);
 app.use("/report",report);
 app.use("/user", prof);
 app.use("/match", match);

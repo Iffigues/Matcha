@@ -8,20 +8,44 @@ var io = require('socket.io').listen(server);
 const jwt = require('jsonwebtoken');
 const secret = 'my-secret';
 const util = require('util');
+const notif = require('./notif.js');
 const query = util.promisify(con.query).bind(con);
 
 
 var users = {};
 
+
+async function putbdd(data, user) {
+	let e = 0;
+	let i = 0;
+	if(users[data.message.toId])
+		e = 1;
+	if (data.message.unread && e)
+		i = 1;
+	const put = await query(`INSERT INTO messages (userOne, userTwo, message, look) VALUES (?,?,?,?)`,[user.rr.id, data.message.toId, data.message.content, i]).then( (tr, err) => {
+		console.log(err);
+		if (users[data.message.toId])
+			users[data.message.toId].emit("chat", data);
+		if (!e)
+			notif(user.rr, data.message.toId, "message");
+	});
+}
+
+function sender(data, user) {
+	data.message.from = user.rr.username;
+	data.message.fromId = user.rr.id;
+	putbdd(data, user); 
+}
+
 async function lol(data, user) {
-	if (users[data.username].tab.includes(data.to)) {
-
-
-	} else {
-		const isAllow = await query(`SELECT COUNT(*) as d FROM likes WHERE userOne = ?`,  data.to.id).then((rt) => {
-			
-		});
-	}
+	console.log("delta="+data);
+	const isAllow = await query(`SELECT COUNT(*) as d FROM likes WHERE userOne = ? AND userTwo = ?`,  [data.message.toId, user.rr.id]).then((rt, err) => {
+		console.log(rt)
+		console.log(user.rr.id);
+		console.log(data)
+		if (rt[0].d) 
+			sender(data, user);
+	})
 }
 
 io.sockets.on('connection', function (socket) {
@@ -30,24 +54,26 @@ io.sockets.on('connection', function (socket) {
 	let user = {};
 	try {
 		user = jwt.verify(token, "my-secret");
-		if (user) {
+		if (user && good == 0) {
 			good = 1;
-			users[user.username] = {socket};
-			users[user.username].tab = [];
+			users[user.rr.id] = socket
+		}
+		if (good) {
+			socket.on('chat', function(data){
+				try {
+					lol(data, user);
+				} catch (e) {
+					console.log(e);
+				}
+			});
+			socket.on('unread', function (data) {
+				
+			});
+			socket.on('disconnect', function(){
+				console.log(delete users[user.rr.id]);
+			});
 		}
 	} catch (e) {
-	}
-	if (good) {
-		socket.on('chat', function(data){
-			try {
-				console.log(good);
-			} catch (e) {
-				console.log(e);
-			}
-		});
-		socket.on('disconnect', function(){
-			delete users[user.username];
-		});
 	}
 });
 

@@ -26,9 +26,9 @@ router.post("/", function (req, res) {
 	}
 });
 
-router.post("/debloque", function (req, res) {
+router.get("/all", function (req, res) {
 	var l = jwtDecode(req.token);
-	let f = 'SELECT * FROM bloque WHERE userId = ?';
+	let f = 'SELECT user.username, user.lastname, user.firstname, bloque.bloqueId as blockedId FROM bloque LEFT JOIN user ON user.id = bloque.bloqueId WHERE userId = ?';
 	con.connect(function(err) {
 		con.query(f,[l.rr.id], function (err, resultats) {
 			res.status(200).send(JSON.stringify({code: 0, resultats}));
