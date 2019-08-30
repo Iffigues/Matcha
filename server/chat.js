@@ -8,6 +8,7 @@ var io = require('socket.io').listen(server);
 const jwt = require('jsonwebtoken');
 const secret = 'my-secret';
 const util = require('util');
+const notif = require('./notif.js');
 const query = util.promisify(con.query).bind(con);
 
 
@@ -15,16 +16,19 @@ var users = {};
 
 
 async function putbdd(data, user) {
-	const put = await query(`INSERT INTO messages (userOne, userTwo, message) VALUES (?,?,?)`,[user.rr.id, data.message.toId, data.message.content]).then( (tr, err) => {
-		if (users[data.message.toId]) {
+	let e = 0;
+	if(users[data.message.toId])
+		e = 1;
+	const put = await query(`INSERT INTO messages (userOne, userTwo, message, look) VALUES (?,?,?,?)`,[user.rr.id, data.message.toId, data.message.content, e]).then( (tr, err) => {
+		console.log(err);
+		if (users[data.message.toId])
 			users[data.message.toId].emit("chat", data);
-		}
+		if (!e)
+			notif(user.rr, data.message.toId, "message");
 	});
 }
 
 function sender(data, user) {
-	//users[data.message.toId].socket.emit("greeting", JSON.stringify(data.message.content));
-	//users[user.rr.id].emit("chat", JSON.stringify({message:"hello world"}));
 	data.message.from = user.rr.username;
 	data.message.fromId = user.rr.id;
 	putbdd(data, user); 
@@ -60,7 +64,7 @@ io.sockets.on('connection', function (socket) {
 				}
 			});
 			socket.on('disconnect', function(){
-				delete users[user.id];
+				console.log(delete users[user.rr.id]);
 			});
 		}
 	} catch (e) {

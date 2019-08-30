@@ -11,10 +11,10 @@ const randomToken = require('random-token');
 const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 
-function sendmai(token, username){
+function sendmai(token, username, email){
 	sendmail({
 		from: 'no-reply@yourdomain.com',
-		to: 'iffigues@vivaldi.net',
+		to: email,
 		subject: 'test sendmail',
 		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>",
 	}, function(err, reply) {
@@ -34,25 +34,19 @@ router.post("/recover", function(req, res) {
 	if (!valida.isEmail(email))
 		return res.status(400).send("bad email");
 	let pass = faker.fake("{{internet.password}}");
-	//con.connect(function(err) {
-		if (0) {
-			res.status(500).send(JSON.stringify({code:1,msg: "internals error"}));
+	bcrypt.hash(pass, saltRounds, function(err, hash) {
+		if (err) {
+			res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
 		} else {
-		bcrypt.hash(pass, saltRounds, function(err, hash) {
-			if (err) {
-				res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
-			} else {
 			con.query(f,[email, tok, hash], function(err, result, field) {
 				if (!err) 
-					sendmai(tok, pass);
+					sendmai(tok, pass, email);
 				else 
 					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass);});
 				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
 			});
-			}
-		});
 		}
-//	});
+	});
 });
 
 router.get("/recover/:toki", function(req, res) {
