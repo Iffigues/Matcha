@@ -55,7 +55,7 @@ class AdminTagsContainer extends React.Component {
 		let res = [];
 		if (text.length > 0) {
 			this.state.allTags.forEach(tag => {
-				if (tag.toLowerCase().includes(text))
+				if (tag.name.toLowerCase().includes(text))
 					res.push(tag);
 			});
 		}

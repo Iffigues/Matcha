@@ -24,11 +24,12 @@ function Search(props) {
 									<div className="input-group-text">Tri par</div>
 								</div>
 								<select onChange={props.onSortChange} className="custom-select">
-									<option value="0" defaultValue>Search</option>
+									<option value="0" defaultValue>Rien</option>
 									<option value="1">Âge</option>
 									<option value="2">Popularité</option>
 									<option value="3">Localisation</option>
 									<option value="4">Intérets communs</option>
+									<option value="5">Furries communs</option>
 								</select>
 							</div>
 							<div className="input-group mb-2 col-sm-4">
@@ -134,30 +135,6 @@ function Search(props) {
 							</div>
 						);
 					})}
-{/*					<div className="col-sm-2">
-						<img src={trounoir} alt="" style={{width: '100%'}}/>
-						<h5><a href="/">Heidy</a></h5>
-					</div>
-					<div className="col-sm-2">
-						<img src={trounoir} alt="" style={{width: '100%'}}/>
-						<h5><a href="/">Heidy</a></h5>
-					</div>
-					<div className="col-sm-2">
-						<img src={trounoir} alt="" style={{width: '100%'}}/>
-						<h5><a href="/">Heidy</a></h5>
-					</div>
-					<div className="col-sm-2">
-						<img src={trounoir} alt="" style={{width: '100%'}}/>
-						<h5><a href="/">Heidy</a></h5>
-					</div>
-					<div className="col-sm-2">
-						<img src={trounoir} alt="" style={{width: '100%'}}/>
-						<h5><a href="/">Heidy</a></h5>
-					</div>
-					<div className="col-sm-2">
-						<img src={trounoir} alt="" style={{width: '100%'}}/>
-						<h5><a href="/">Heidy</a></h5>
-					</div>*/}
 				</div>
 			</div>
 		</div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfilesMap from './ProfilesMap-view.jsx';
+import { Redirect } from "react-router-dom";
 
 class ProfilesMapContainer extends React.Component {
 
@@ -48,6 +49,8 @@ class ProfilesMapContainer extends React.Component {
 
 
 	render() {
+		if (this.props.role === "preuser")
+			return <Redirect to="/account"/>
 		return <ProfilesMap
 					profiles={this.state.profiles}
 				/>;

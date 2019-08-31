@@ -28,6 +28,7 @@ function Profile(props) {
 				</div>
 				<h2>{props.firstname} {props.lastname} <i>- {props.username}</i></h2>
 				<h5>{props.age} ans - {props.sex === 1 ? "Homme" : "Femme"} - {props.city}</h5>
+				<h6>{props.popularity} de popularité</h6>
 				<p className="text-success">
 					<i>
 						{props.connected ? "En ligne" : "Dernière visite le " + date}

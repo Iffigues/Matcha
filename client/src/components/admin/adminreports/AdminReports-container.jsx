@@ -34,7 +34,7 @@ class AdminReportsContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0 && this._isMounted) {
- 						this.setState({reports: data.resultats});
+ 						this.setState({reports: data.reports});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

@@ -29,6 +29,7 @@ function Suggestions(props) {
 									<option value="2">Popularité</option>
 									<option value="3">Localisation</option>
 									<option value="4">Intérets communs</option>
+									<option value="5">Furries communs</option>
 								</select>
 							</div>
 							<div className="input-group mb-2 col-sm-4">

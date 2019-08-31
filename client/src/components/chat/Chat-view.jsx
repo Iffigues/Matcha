@@ -9,7 +9,7 @@ function Chat(props) {
 	return (
 		<div className="Chat">
 			<div className="chat-main" onClick={props.onMainClick}>
-				Messagerie {unread ? '(' + unread + ')' : ''}
+				Messagerie {unread > 0 ? '(' + unread + ')' : ''}
 			</div>
 			{props.listOpen
 				? (<div className="chat-list">

@@ -31,12 +31,12 @@ function App(props) {
 						?	<Switch> 
 								<Route path="/profiles/:id" component={Profile}/>
 								<Route path="/account" exact component={Account}/>
-								<Route path="/suggestions" component={Suggestions}/>
-								<Route path="/search" component={Search}/>
+								<Route path="/suggestions" component={Suggestions} role={props.role}/>
+								<Route path="/search" component={Search} role={props.role}/>
 								<Route path="/notifications" component={Notifications}/>
 								<Route path="/admin" component={Admin}/>
 								<Route path="/logout" component={Logout}/>
-								<Route path="/map" component={ProfilesMap}/>
+								<Route path="/map" component={ProfilesMap} role={props.role}/>
 							</Switch>
 						:	null
 					}

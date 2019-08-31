@@ -1,6 +1,7 @@
 import React from 'react';
 import Search from './Search-view.jsx';
 import debounce from "lodash.debounce";
+import { Redirect } from "react-router-dom";
 
 class SearchContainer extends React.Component {
 
@@ -238,13 +239,16 @@ class SearchContainer extends React.Component {
 				profiles.sort((a, b) => a.age - b.age);
 				break ;
 			case "2":
-				profiles.sort((a, b) => b.popularite - a.popularite);
+				profiles.sort((a, b) => b.popularity - a.popularity);
 				break ;
 			case "3":
 				profiles.sort((a, b) => a.distance - b.distance);
 				break ;
 			case "4":
 				profiles.sort((a, b) => b.tagmatch - a.tagmatch);
+				break ;
+			case "5":
+				profiles.sort((a, b) => b.furrymatch - a.furrymatch);
 				break ;
 			default:
 		}
@@ -264,6 +268,8 @@ class SearchContainer extends React.Component {
 	}
 
  	render() {
+ 		if (this.props.role === "preuser")
+			return <Redirect to="/account"/>;
  		const profiles = this.sortAndFilter();
 		return <Search
 					ageRange={this.state.ageRange}

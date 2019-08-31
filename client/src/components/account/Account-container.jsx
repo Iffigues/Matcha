@@ -329,7 +329,7 @@ class AccountContainer extends React.Component {
 					test = input.value.length < 8 || !/.*[0-9]+.*/.test(input.value) || !/.*[A-Z]+.*/.test(input.value) || !/.*[a-z]+.*/.test(input.value) || !/.*[!A-Za-z0-9]+.*/.test(input.value);
 					break ;
 				case 'confirm':
-					test = !input.value || input.value.localeCompare(password);
+					test = test || !input.value || input.value.localeCompare(password);
 					break ;
 				default:
 			}

@@ -76,7 +76,6 @@ class LoginContainer extends React.Component {
 						if (this._isMounted) {
 							if (data.code === 0) {
 								f.reset();
-								console.log(data);
 								localStorage.setItem('token', data.token);
 								localStorage.setItem('username', d.username);
 								inputs.forEach(function(input) {

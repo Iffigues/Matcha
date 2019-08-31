@@ -9,7 +9,7 @@ function AdminFurries(props) {
 			<div className="form-group row m-3">
 				<div className="col-sm-3">
 					<input name="tag" autoComplete="off" className="form-control"
-							placeholder="Recherche" onChange={props.onTagChange} required/>
+							placeholder="Recherche" onChange={props.onFurryChange} required/>
 				</div>
 			</div>
 			<table className="table table-sm">

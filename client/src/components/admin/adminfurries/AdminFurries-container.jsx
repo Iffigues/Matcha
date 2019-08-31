@@ -55,7 +55,7 @@ class AdminFurriesContainer extends React.Component {
 		let res = [];
 		if (text.length > 0) {
 			this.state.allFurries.forEach(furry => {
-				if (furry.toLowerCase().includes(text))
+				if (furry.name.toLowerCase().includes(text))
 					res.push(furry);
 			});
 		}

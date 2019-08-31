@@ -26,7 +26,7 @@ class AdminUsersContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/search/all', {
+		fetch('http://gopiko.fr:8080/adm/users', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -37,7 +37,7 @@ class AdminUsersContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0 && this._isMounted) {
- 						this.setState({users: data.profiles, allUsers: data.profiles});
+ 						this.setState({users: data.users, allUsers: data.users});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -76,7 +76,8 @@ class AdminUsersContainer extends React.Component {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,
-				Accept: 'application/json'
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(data)
 		})
@@ -84,6 +85,7 @@ class AdminUsersContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0 && this._isMounted) {
+						console.log(data);
 						this.fetchData();
 		 			}
 				}).catch(error => {
