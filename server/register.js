@@ -1,6 +1,6 @@
 const TokenGenerator = require('uuid-token-generator');
 const sendmail = require('sendmail')();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const Validateur = require("./validateur.js");
 const express = require('express');
