@@ -22,27 +22,33 @@ router.post("/add", function (req, res) {
 		let f = `INSERT INTO likes (userOne, userTwo) VALUES (?,?)`;
 		var decoded = jwtDecode(req.token);
 		let o = req.body.id;
-		con.query(f, [decoded.rr.id, o], function (err, resu) {
-			if (!err) {
-				let rrrr = "";
-				let mmm = "";
-				con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`, [o, decoded.rr.id] ,function (errr,bbb){
-					console.log(bbb.length);
-					if (!errr && bbb.length) {
-						rrr= "match";
-						mmm="vs avez ete matcher";
-					} else {
-						rrr = "like";
-						mmm="vs avez ete liker";
-					}
-					notif(decoded.rr, o, rrr, mmm);
-					res.status(200).send(JSON.stringify({code: 0, msg:"mmm"}));
-				});
-			} else {
-				con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
-					res.status(200).send(JSON.stringify({code:0, msg:"user unliker"}));
-				});
-			}
+		con.query(`SELECT profilephoto FROM user WHERE id = ? AND profilephoto != null`, o, function (err, lrem) {
+			console.log(err);
+			if (!err && lrem)
+			con.query(f, [decoded.rr.id, o], function (err, resu) {
+				if (!err) {
+					let rrrr = "";
+					let mmm = "";
+					con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`, [o, decoded.rr.id] ,function (errr,bbb){
+						console.log(bbb.length);
+						if (!errr && bbb.length) {
+							rrr= "match";
+							mmm="vs avez ete matcher";
+						} else {
+							rrr = "like";
+							mmm="vs avez ete liker";
+						}
+						notif(decoded.rr, o, rrr, mmm);
+						res.status(200).send(JSON.stringify({code: 0, msg:"mmm"}));
+					});
+				} else {
+					con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
+						res.status(200).send(JSON.stringify({code:0, msg:"user unliker"}));
+					});
+				}
+			});
+			else
+				res.status(400).send(JSON.stringify({code:0, msg:"l'utilisateur n'a pas de photo de profile"}));
 		});
 	});
 });

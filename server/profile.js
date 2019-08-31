@@ -83,8 +83,9 @@ function protect(u) {
 		retun ({code: 1, msg:"nom ou prenom invalide"})
 	if (u == "username" && !valid.isLogin(u))
 		return ({code:1, msg:"username invalide"});
-	if (u == "email" && !val.isEmail(u))
+	if (u == "email" && !valid.isEmail(u)) {
 		return ({code:1, msg:"email invalide"});
+	}
 	return tt;
 }
 
@@ -102,7 +103,7 @@ function look(tab, r, obj) {
 			tt.msg = "mauvais password";
 			return tt;
 		} else {
-			let u = protect(r[i]);
+			let u = protect(obj[r[i]]);
 			if (u.code)
 				return u;
 		}
@@ -159,6 +160,14 @@ router.post("/", function (req, res) {
 			con.connect(function (err) {
 				con.query(y.sql, [decoded.rr.id], function (err, result) {
 					res.status(200).send(JSON.stringify({code:0, msg:"Vos donnees ont ete changer"}));
+					con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
+						console.log(err);
+						if(!err && rem.length) {
+							con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {
+								console.log(err);	
+							});
+						}
+					});
 				});
 			});
 		} else {

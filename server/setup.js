@@ -17,7 +17,7 @@ function createUser(use) {
 		preferences int DEFAULT 3,
 		profilephoto  int,
 		popularity int DEFAULT 0,
-		role ENUM ("user","admin") DEFAULT "user",
+		role ENUM ("anonyme", "user" ,"admin") DEFAULT "anonyme",
 		visited TIMESTAMP DEFAULT now(),
 		completed boolean DEFAULT false,
 		active boolean DEFAULT 0
@@ -116,6 +116,7 @@ function createUser(use) {
 		who int NOT NULL,
 		date TIMESTAMP DEFAULT now(),
 		FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+		FOREIGN KEY (who) REFERENCES user(id) ON DELETE CASCADE,
 		UNIQUE KEY bloc	 (userId, who)
 	)`,function (err, res) {
 		if (err) throw err;
