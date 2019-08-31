@@ -3,6 +3,8 @@ import AdminFurries from './AdminFurries-view.jsx';
 
 class AdminFurriesContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -14,7 +16,12 @@ class AdminFurriesContainer extends React.Component {
 	}
 
 	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -29,9 +36,7 @@ class AdminFurriesContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
- 						console.log("all furries");
- 						console.log(data);
+					if (data.code === 0 && this._isMounted) {
  						this.setState({furries: data.furries, allFurries: data.furries});
 		 			}
 				}).catch(error => {
@@ -76,8 +81,7 @@ class AdminFurriesContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					console.log(data);
-					if (data.code === 0)
+					if (data.code === 0 && this._isMounted)
 						this.fetchData();
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

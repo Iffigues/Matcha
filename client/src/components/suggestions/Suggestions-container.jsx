@@ -4,6 +4,8 @@ import debounce from "lodash.debounce";
 
 class SuggestionsContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -34,15 +36,19 @@ class SuggestionsContainer extends React.Component {
 		this.sortAndFilter = this.sortAndFilter.bind(this);
 		window.onscroll = debounce(() => {
 			if (window.innerHeight + document.documentElement.scrollTop
-				=== document.documentElement.offsetHeight) {
+				=== document.documentElement.offsetHeight && this._isMounted) {
 				this.setState({load: this.state.load + 18});
 			}
 		}, 100);
 	}
 
-	componentDidMount()
-	{
+	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -57,7 +63,7 @@ class SuggestionsContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
 						if (data.profiles.length > 0) {
 	 						const ages = data.profiles.map(p => p.age);
 							const pops = data.profiles.map(p => p.popularity);
@@ -104,7 +110,7 @@ class SuggestionsContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0 && data.tags) {
+					if (data.code === 0 && data.tags && this._isMounted) {
 						this.setState({allTags: data.tags});
 					}
 				}).catch(error => {
@@ -125,7 +131,7 @@ class SuggestionsContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0 && data.furries) {
+					if (data.code === 0 && data.furries && this._isMounted) {
 						this.setState({allFurries: data.furries});
 					}
 				}).catch(error => {
@@ -209,7 +215,7 @@ class SuggestionsContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
 					}
 				}).catch(error => {

@@ -3,6 +3,8 @@ import AdminTags from './AdminTags-view.jsx';
 
 class AdminTagsContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -14,7 +16,12 @@ class AdminTagsContainer extends React.Component {
 	}
 
 	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -29,9 +36,7 @@ class AdminTagsContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
- 						console.log("all tags");
- 						console.log(data);
+					if (data.code === 0 && this._isMounted) {
  						this.setState({tags: data.tags, allTags: data.tags});
 		 			}
 				}).catch(error => {
@@ -76,7 +81,7 @@ class AdminTagsContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0)
+					if (data.code === 0 && this._isMounted)
 						this.fetchData();
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

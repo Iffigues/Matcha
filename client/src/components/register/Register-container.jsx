@@ -3,6 +3,8 @@ import Register from './Register-view.jsx';
 
 class RegisterContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -10,6 +12,14 @@ class RegisterContainer extends React.Component {
 			notices: []
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	componentDidMount() {
+		this._isMounted = true;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	handleSubmit(e) {
@@ -74,15 +84,17 @@ class RegisterContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
-							f.reset();
-							inputs.forEach(function(input) {
-								input.classList.remove('is-invalid');
-								input.classList.remove('is-valid');
-							});
-							this.setState({errors: [], notices: [data.msg]});
-						} else {
-							this.setState({errors: [data.msg], notices: []});
+						if (this._isMounted) {
+							if (data.code === 0) {
+								f.reset();
+								inputs.forEach(function(input) {
+									input.classList.remove('is-invalid');
+									input.classList.remove('is-valid');
+								});
+								this.setState({errors: [], notices: [data.msg]});
+							} else {
+								this.setState({errors: [data.msg], notices: []});
+							}
 						}
 					}).catch(error => {
 						console.log('Il y a eu un problème avec la lecture de la réponse');

@@ -4,6 +4,10 @@ import io from 'socket.io-client';
 
 class ChatContainer extends React.Component {
 
+	_interval = null;
+	_isMounted = false;
+	_socket = null;
+
 	constructor() {
 		super();
 		this.state = {
@@ -13,71 +17,70 @@ class ChatContainer extends React.Component {
 			currentUser: null,
 			username: '',
 			users: [],
-			messages: [],
-			socket: io('http://gopiko.fr:8081', {
-				query: {token: localStorage.getItem('token')}
-			})
+			messages: []
 		}
 		this.fetchData = this.fetchData.bind(this);
 		this.handleMainClick = this.handleMainClick.bind(this);
 		this.handleListClick = this.handleListClick.bind(this);
 		this.handleUserClick = this.handleUserClick.bind(this);
 		this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
-		// this.handleTextLoad = this.handleTextLoad.bind(this);
 	}
 
 	componentDidMount() {
+		this._isMounted = true;
 		this.regularlyFetchData();
-		this.state.socket.on('chat', (data) => {
-			console.log('message reçu');
-			console.log(data);
+		this._socket = io('http://gopiko.fr:8081', {
+				query: {token: localStorage.getItem('token')}
+		});
+		this._socket.on('chat', (data) => {
 			if (data.message && data.message.content.length > 0) {
-				console.log('message ok');
 				if (this.state.currentUser && data.message.fromId === this.state.currentUser.id && this.state.boxOpen) {
-					console.log('ajout message dans box');
 					const messages = this.state.messages.slice();
 					messages.unshift(data.message);
 					this.setState({messages: messages});
 				} else {
 					data.message.unread = 1;
 					this.state.socket.emit('unread', data);
-					// const user = this.state.users.find(u => u.id === data.message.fromId);
-					// user.unread = (user.unread || 0) + 1;
-					// this.setState({});
 				}
 			}
 		});
 	}
 
+	componentWillUnmount() {
+		clearTimeout(this._interval);
+		this._isMounted = false;
+	}
+
 	regularlyFetchData() {
 		this.fetchData();
-		setInterval(this.fetchData, 5000);
+		this._interval = setInterval(this.fetchData, 5000);
 	}
 
 	fetchData() {
-		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/match', {
-			method: 'GET',
-			headers: {
-				'x-access-token': token,
-				Accept: 'application/json'
-			}
-		})
-		.then(response => {
-			if (response) {
-				response.json().then(data => {
-					if (data.code === 0) {
-						console.log(data);
- 						this.setState({users: data.users});
-		 			}
-				}).catch(error => {
-					console.log('Il y a eu un problème avec la lecture de la réponse');
-				});
-			} else
-				throw Error('Pas de réponse');
-		}).catch(error => {
-			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
-		});
+		if (this._isMounted) {
+			const token = localStorage.getItem('token');
+			fetch('http://gopiko.fr:8080/match', {
+				method: 'GET',
+				headers: {
+					'x-access-token': token,
+					Accept: 'application/json'
+				}
+			})
+			.then(response => {
+				if (response) {
+					response.json().then(data => {
+						if (data.code === 0 && this._isMounted) {
+	 						this.setState({users: data.users});
+			 			}
+					}).catch(error => {
+						console.log('Il y a eu un problème avec la lecture de la réponse');
+					});
+				} else
+					throw Error('Pas de réponse');
+			}).catch(error => {
+				console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
+			});
+		}
 	}
 
 	fetchMessages(id) {
@@ -92,7 +95,7 @@ class ChatContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
  						this.setState({messages: data.messages});
  						this.fetchData();
 		 			}
@@ -127,11 +130,6 @@ class ChatContainer extends React.Component {
 		}
 	}
 
-	// handleTextLoad(e) {
-	// 	console.log(e.target);
-	// 	e.target.scrollTop = e.target.scrollHeight;
-	// }
-
 	handleMessageSubmit(e) {
 		e.preventDefault();
 		const form = new FormData(e.target);
@@ -146,9 +144,7 @@ class ChatContainer extends React.Component {
 			message.toId = this.state.currentUser.id;
 			message.date = new Date();
 			const data = {message: message};
-			console.log('message envoyé :');
-			console.log(data);
-			this.state.socket.emit('chat', data);
+			this._socket.emit('chat', data);
 			const messages = this.state.messages.slice();
 			messages.unshift(message);
 			this.setState({messages: messages});

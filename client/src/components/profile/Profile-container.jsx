@@ -3,6 +3,8 @@ import Profile from './Profile-view.jsx';
 
 class ProfileContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -29,9 +31,13 @@ class ProfileContainer extends React.Component {
 		this.handleBlockClick = this.handleBlockClick.bind(this);
 	}
 
-	componentDidMount()
-	{
+	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -46,7 +52,7 @@ class ProfileContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
  						this.setState({
  							firstname: data.profile.firstname,
 							lastname: data.profile.lastname,
@@ -93,7 +99,7 @@ class ProfileContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
 					}
 				}).catch(error => {
@@ -121,7 +127,7 @@ class ProfileContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
 					}
 				}).catch(error => {

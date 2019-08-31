@@ -3,6 +3,8 @@ import Login from './Login-view.jsx';
 
 class LoginContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -13,6 +15,14 @@ class LoginContainer extends React.Component {
 		if (this.props.notices)
 			this.state.notices.push(this.props.notices);
 		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	componentDidMount() {
+		this._isMounted = true;
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	handleSubmit(e) {
@@ -63,17 +73,20 @@ class LoginContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
-							f.reset();
-							localStorage.setItem('token', data.token);
-							localStorage.setItem('username', d.username);
-							inputs.forEach(function(input) {
-								input.classList.remove('is-invalid');
-								input.classList.remove('is-valid');
-							});
-							this.setState({errors: [], notices: [data.msg], redirect: true});
-						} else {
-							this.setState({errors: [data.msg], notices: [], redirect: false});
+						if (this._isMounted) {
+							if (data.code === 0) {
+								f.reset();
+								console.log(data);
+								localStorage.setItem('token', data.token);
+								localStorage.setItem('username', d.username);
+								inputs.forEach(function(input) {
+									input.classList.remove('is-invalid');
+									input.classList.remove('is-valid');
+								});
+								this.setState({errors: [], notices: [data.msg], redirect: true});
+							} else {
+								this.setState({errors: [data.msg], notices: [], redirect: false});
+							}
 						}
 					}).catch(error => {
 						console.log('Il y a eu un problème avec la lecture de la réponse');

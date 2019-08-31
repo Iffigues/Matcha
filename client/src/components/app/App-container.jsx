@@ -3,17 +3,27 @@ import App from './App-view.jsx';
 
 class AppContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
 			loggedIn: false,
 			username: '',
+			role: ''
 		}
 		this.handleRouteChange = this.handleRouteChange.bind(this);
 	}
 
-	handleRouteChange(e) {
+	componentDidMount() {
+		this._isMounted = true;
+	}
 
+	componentWillUnmount() {
+		this._isMounted = false;
+	}
+
+	handleRouteChange(e) {
 		const token = localStorage.getItem('token');
 		fetch('http://gopiko.fr:8080/connected', {
 			method: 'GET',
@@ -25,10 +35,15 @@ class AppContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
-						this.setState({username: localStorage.getItem('username'), loggedIn: true});
-					} else {
-						this.setState({username: '', loggedIn: false});
+					if (this._isMounted) {
+						if (data.code === 0) {
+							this.setState({
+								username: data.username || '',
+								loggedIn: true,
+								role: data.role});
+						} else {
+							this.setState({username: '', loggedIn: false, role: ''});
+						}
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -45,6 +60,7 @@ class AppContainer extends React.Component {
 		return <App
 			loggedIn={this.state.loggedIn}
 			username={this.state.username}
+			role={this.state.role}
 			handleRouteChange={this.handleRouteChange}
 		/>;
 	}

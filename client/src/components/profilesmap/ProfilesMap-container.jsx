@@ -3,6 +3,8 @@ import ProfilesMap from './ProfilesMap-view.jsx';
 
 class ProfilesMapContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -11,7 +13,12 @@ class ProfilesMapContainer extends React.Component {
 	}
 
 	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -26,7 +33,7 @@ class ProfilesMapContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
  						this.setState({profiles: data.profiles});
 		 			}
 				}).catch(error => {

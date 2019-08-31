@@ -52,43 +52,44 @@ function Profile(props) {
 				<div>
 					<h5 className="pt-3">Furries</h5>
 					<p>
-							{props.furries.length
-								? props.furries.map((furry, key) => {
-									return (<span key={key} className="badge badge-secondary mr-1">{furry}</span>);
-								})
-								: <i>Aucun</i>
-							}
-
+						{props.furries.length
+							? props.furries.map((furry, key) => {
+								return (<span key={key} className="badge badge-secondary mr-1">{furry}</span>);
+							})
+							: <i>Aucun</i>
+						}
 					</p>
 					<h5 className="pt-3">Centres d'intérêts</h5>
 					<p>
-							{props.tags.length
-								? props.tags.map((tag, key) => {
-									return (<span key={key} className="badge badge-secondary mr-1">{tag}</span>);
-								})
-								: <i>Aucun</i>
-							}
+						{props.tags.length
+							? props.tags.map((tag, key) => {
+								return (<span key={key} className="badge badge-secondary mr-1">{tag}</span>);
+							})
+							: <i>Aucun</i>
+						}
 					</p>
-					<h5>Bio</h5>
+					<h5 className="pt-3">Bio</h5>
 					<p>
-						{props.bio}
+						{props.bio
+							? props.bio
+							: <i>Aucune</i>
+						}
 					</p>
 				</div>
-
-				<p>
+				<div className="pt-3 my-3">
 					<button value={props.id}
 							className={"btn-sm btn" + (!props.blocked ? "-outline" : "") + "-danger"}
 							onClick={props.onBlockClick}>
 							Bloquer cet utilisateur
 					</button>
-				</p>
-				<p>
+				</div>
+				<div className="my-3">
 					<button value={props.id}
 							className={"btn-sm btn-outline-success"}
 							onClick={props.onReportClick}>
 							Signaler ce profil comme faux
 					</button>
-				</p>
+				</div>
 			</div>
 		</div>
 	);

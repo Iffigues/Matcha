@@ -3,6 +3,8 @@ import AdminUsers from './AdminUsers-view.jsx';
 
 class AdminUsersContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -14,7 +16,12 @@ class AdminUsersContainer extends React.Component {
 	}
 
 	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -29,9 +36,7 @@ class AdminUsersContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
- 						console.log("all users");
- 						console.log(data);
+					if (data.code === 0 && this._isMounted) {
  						this.setState({users: data.profiles, allUsers: data.profiles});
 		 			}
 				}).catch(error => {
@@ -51,7 +56,7 @@ class AdminUsersContainer extends React.Component {
 		if (text.length > 0) {
 			this.state.allUsers.forEach(user => {
 				if (('' + user.id).includes(text)
-					//|| user.username.toLowerCase().includes(text)
+					|| user.username.toLowerCase().includes(text)
 					|| user.firstname.toLowerCase().includes(text)
 					|| user.lastname.toLowerCase().includes(text))
 					res.push(user);
@@ -78,9 +83,7 @@ class AdminUsersContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
- 						console.log("all users");
- 						console.log(data);
+					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
 		 			}
 				}).catch(error => {

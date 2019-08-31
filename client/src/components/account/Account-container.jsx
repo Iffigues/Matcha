@@ -3,6 +3,8 @@ import Account from './Account-view.jsx';
 
 class AccountContainer extends React.Component {
 
+	_isMounted = false;
+
 	constructor() {
 		super();
 		this.state = {
@@ -50,7 +52,12 @@ class AccountContainer extends React.Component {
 	}
 
 	componentDidMount() {
+		this._isMounted = true;
 		this.fetchData();
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	fetchData() {
@@ -65,8 +72,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
-						localStorage.setItem('username', data.username);
+					if (data.code === 0 && this._isMounted) {
 						this.setState({
 							firstname: data.firstname || '',
 							lastname: data.lastname || '',
@@ -103,7 +109,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0 && data.tags) {
+					if (data.code === 0 && data.tags && this._isMounted) {
 						this.setState({allTags: data.tags});
 					}
 				}).catch(error => {
@@ -124,7 +130,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0 && data.furries) {
+					if (data.code === 0 && data.furries && this._isMounted) {
 						this.setState({allFurries: data.furries});
 					}
 				}).catch(error => {
@@ -145,7 +151,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
 						this.setState({blockedUsers: data.resultats});
 					}
 				}).catch(error => {
@@ -230,14 +236,16 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
-						d.errors = [];
-						d.notices = [data.msg];
-						this.setState(d);
-					} else {
-						d.notices = [];
-						d.errors = [data.msg];
-						this.setState(d);
+					if (this._isMounted) {
+						if (data.code === 0) {
+							d.errors = [];
+							d.notices = [data.msg];
+							this.setState(d);
+						} else {
+							d.notices = [];
+							d.errors = [data.msg];
+							this.setState(d);
+						}
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -266,14 +274,16 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0) {
-						d.errors = [];
-						d.notices = [data.msg];
-						this.setState(d);
-					} else {
-						d.notices = [];
-						d.errors = [data.msg];
-						this.setState(d);
+					if (this._isMounted) {
+						if (data.code === 0) {
+							d.errors = [];
+							d.notices = [data.msg];
+							this.setState(d);
+						} else {
+							d.notices = [];
+							d.errors = [data.msg];
+							this.setState(d);
+						}
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -356,16 +366,18 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
-							f.reset();
-							inputs.forEach(function(input) {
-								input.classList.remove('is-invalid');
-								input.classList.remove('is-valid');
-							});
-							this.setState({errors: [], notices: [data.msg]});
-							this.fetchData();
-						} else {
-							this.setState({errors: [data.msg], notices: []});
+						if (this._isMounted) {
+							if (data.code === 0) {
+								f.reset();
+								inputs.forEach(function(input) {
+									input.classList.remove('is-invalid');
+									input.classList.remove('is-valid');
+								});
+								this.setState({errors: [], notices: [data.msg]});
+								this.fetchData();
+							} else {
+								this.setState({errors: [data.msg], notices: []});
+							}
 						}
 					}).catch(error => {
 						console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -428,7 +440,7 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
+						if (data.code === 0 && this._isMounted) {
 							inputs.forEach(function(input) {
 								input.classList.remove('is-invalid');
 								input.classList.remove('is-valid');
@@ -493,7 +505,7 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
+						if (data.code === 0 && this._isMounted) {
 							f.reset();
 							inputs.forEach(function(input) {
 								input.classList.remove('is-invalid');
@@ -558,7 +570,7 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
+						if (data.code === 0 && this._isMounted) {
 							f.reset();
 							inputs.forEach(function(input) {
 								input.classList.remove('is-invalid');
@@ -595,7 +607,9 @@ class AccountContainer extends React.Component {
 				.then(response => {
 					if (response) {
 						response.json().then(data => {
-							this.setState({customCity: 0, city: data.city, lng: pos.coords.longitude, lat: pos.coords.latitude});
+							if (this._isMounted) {
+								this.setState({customCity: 0, city: data.city, lng: pos.coords.longitude, lat: pos.coords.latitude});
+							}
 						}).catch(error => {
 							console.log('Il y a eu un problème avec la lecture de la réponse');
 						});
@@ -618,8 +632,10 @@ class AccountContainer extends React.Component {
 					.then(response => {
 						if (response) {
 							response.json().then(data => {
-								const loc = data.loc.split(',');
-								this.setState({customCity: 0, lng: loc[1], lat: loc[0], city: data.city});
+								if (this._isMounted) {
+									const loc = data.loc.split(',');
+									this.setState({customCity: 0, lng: loc[1], lat: loc[0], city: data.city});
+								}
 							}).catch(error => {
 								console.log('Il y a eu un problème avec la lecture de la réponse');
 							});
@@ -654,7 +670,7 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
+						if (data.code === 0 && this._isMounted) {
 							f.reset();
 							this.setState({suggTags: []});
 							this.fetchData();
@@ -690,7 +706,7 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
+						if (data.code === 0 && this._isMounted) {
 							f.reset();
 							this.setState({suggFurries: []});
 							this.fetchData();
@@ -728,10 +744,12 @@ class AccountContainer extends React.Component {
 			.then(response => {
 				if (response) {
 					response.json().then(data => {
-						if (data.code === 0) {
-							this.setState({errors: [], notices: [data.msg]});
-						} else {
-							this.setState({errors: [data.msg], notices: []});
+						if (this._isMounted) {
+							if (data.code === 0) {
+								this.setState({errors: [], notices: [data.msg]});
+							} else {
+								this.setState({errors: [data.msg], notices: []});
+							}
 						}
 						this.fetchData();
 					}).catch(error => {
@@ -760,7 +778,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0)
+					if (data.code === 0 && this._isMounted)
 						this.fetchData();
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -788,7 +806,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0)
+					if (data.code === 0 && this._isMounted)
 						this.fetchData();
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -816,7 +834,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => {
-					if (data.code === 0)
+					if (data.code === 0 && this._isMounted)
 						this.fetchData();
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -843,7 +861,7 @@ class AccountContainer extends React.Component {
 		.then(response => {
 			if (response) {
 				response.json().then(data => { 
-					if (data.code === 0) {
+					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
 					}
 				}).catch(error => {
