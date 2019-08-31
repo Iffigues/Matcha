@@ -88,7 +88,6 @@ router.post("/", function (req, res) {
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
-			console.log(rr);
 			if (!rr || !rr.active) {
 				res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
 				return ;
