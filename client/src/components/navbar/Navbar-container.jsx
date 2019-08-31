@@ -59,7 +59,6 @@ class NavbarContainer extends React.Component {
 
 	handleClick(e) {
 		localStorage.removeItem('token');
-		localStorage.removeItem('username');
 		this.props.username = '';
 		this.props.loggedIn = false;
 	}
