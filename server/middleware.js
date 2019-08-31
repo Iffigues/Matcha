@@ -14,8 +14,7 @@ const withAuth = function(req, res, next) {
 			} else {
 				req.token = token;
 				con.connect(function (err) {
-					con.query(`UPDATE user SET visited = CURRENT_TIMESTAMP WHERE id = ?`,decoded.rr.id, function (err, result) {
-						
+					con.query(`UPDATE user SET visited = ? WHERE id = ?`,[Date.now(), decoded.rr.id], function (err, result) {
 					});
 				});
 				next();

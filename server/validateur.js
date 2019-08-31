@@ -26,7 +26,7 @@ class Validate {
 		);
 	}
     isName (name) {
-	if (name.length === 0)
+	if (name.length === 0 || !this.isEmpty(name))
 	    return false;
 	    if (!/[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž]+/.test(name))
 	    return false;
@@ -34,10 +34,12 @@ class Validate {
 		return(this.name.test(name));
 	}
 	isEmail (email) {
+		if (!this.isEmpty(email))
+			return false;
 		return (this.email.test(email));
 	}
 	isPwd (pwd) {
-		if (pwd.length < 8)	
+		if (pwd.length < 8 || !this.isEmpty(pwd))	
 			return false;
 		if (!this.hasUp(pwd) || !this.hasLo(pwd) || !this.hasLowerCase(pwd) || this.spec(pwd))
 			return false;
@@ -45,6 +47,8 @@ class Validate {
 		return (this.password.test(pwd));
 	}
     isLogin (login) {
+	    if(!this.isEmpty(login))
+		    return false;
 	if (!/[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž]+/.test(login))
 	    return false;
 	return true;

@@ -117,6 +117,7 @@ function hh(ee, uu, obj, id) {
 		if (obj['confirm'] == obj["password"]) {
 			bcrypt.hash(ee, saltRounds, function(err, hash) {
 				con.query(`UPDATE user SET password = ? WHERE id = ?`,[hash, id], function (err, res)  {
+					console.log(err);
 					return ;
 				});
 
