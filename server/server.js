@@ -90,8 +90,16 @@ app.use("/report",report);
 app.use("/user", prof);
 app.use("/match", match);
 app.use("/messages",msg);
-app.get('/connected',withAuth, function (req, res) {
-	res.status(200).send(JSON.stringify({code:0, msg:"connecter"}));
+app.get('/connected', function (req, res) {
+	const token = req.params.token || req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
+		if (!token) 
+					return res.status(200).send(JSON.stringify({code:1, msg:'vous n etes pas connecter'}));
+	jwt.verify(token, "my-secret", function(err, decoded) {
+		if (err ||  !decoded) 
+				return res.status(200).send(JSON.stringify({code:1, msg:'vous n etes pas connecter'}));
+		res.status(200).send(JSON.stringify({code:0, msg:"connecter", username: decoded.rr.username, role: decoded.rr.role}));
+	});
+
 })
 
 app.listen(process.env.PORT || 8080, function () {
