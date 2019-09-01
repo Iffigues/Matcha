@@ -17,10 +17,14 @@ function ages(birthday) {
 
 
 function isC (a, b) {
-	if (!a)
-		return false;
+	if (!a || !b)
+		return false
 	var d = new Date(a);
-	var diff = Math.abs(b - a);
+	console.log(d.toString())
+	var f = new Date(b);
+	console.log(f.toString());
+	var diff = Math.abs(d - f);
+	console.log("diff="+diff)
 	if (diff > 300000)
 		return false;
 	return true;
@@ -44,7 +48,7 @@ function usete(r) {
 	profile.lastVisite = r.user[0].visited;
 	if (!profile.lastVisite)
 		profile.lastVisite = null;
-	profile.connected = isC(profile.lastVisite, Date.now());
+	profile.connected = isC(profile.lastVisite, r.user[0].clock);
 	profile.tags = r.tags.map(x => x.name);
 	profile.furries = r.furry.map(x => x.name);
 	profile.beliked = r.resultat3 && r.resultat3.length > 0;
@@ -59,13 +63,14 @@ router.get("/:id", function (req, res) {
 	let id = req.params.id;
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
-		con.query(`SELECT * FROM user WHERE id = ?`, id, function (err, user) {
+		con.query(`SELECT *, CURRENT_TIMESTAMP() as clock  FROM user  WHERE id = ?`, id, function (err, user) {
+			console.log(err);
 			con.query(`SELECT name FROM furry WHERE userId = ?`, id, function (err, furry) {
 				con.query(`SELECT tag as name FROM tag WHERE userId = ?`,id, function (err, tags) {
 					con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo= ?`,[id, decoded.rr.id], function (err, resultat3){
 						con.query(`SELECT * FROM img WHERE userId =?`,[id], function (err, images) {
 							con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`,[decoded.rr.id, id], function (err, you) {
-								con.query(`SELECT * FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, id], function (err, blocks){
+								con.query(`SELECT *  FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, id], function (err, blocks){
 									notif(decoded.rr, id, 'visited',"un utilisateur a vu vorte profile");
 									let profile  = usete({user, furry, tags, resultat3, you,images, blocks}) ;
 									res.status(200).send(JSON.stringify({code:0, profile}));
