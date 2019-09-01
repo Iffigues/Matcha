@@ -1,0 +1,177 @@
+.chat-main {
+	position: fixed;
+	bottom: 0;
+	right: 25px;
+	z-index: 1030;
+
+	border: 1px solid lightgrey;
+	padding: 10px;
+	width: 160px;
+	height: 50px;
+	
+	background-color: #f8f9fa;
+	color: rgba(0,0,0,.5);
+
+	text-align: center;
+}
+
+.chat-main:hover {
+	cursor: pointer;
+
+	color: rgba(0,0,0,.7);
+}
+
+.chat-list {
+	position: fixed;
+	bottom: 50px;
+	right: 25px;
+	z-index: 1030;
+	
+	border: 1px solid lightgrey;
+	width: 160px;
+	height: 400px;
+
+	background-color: white;
+	color: rgba(0,0,0,.7);
+
+	overflow: auto;
+}
+
+.chat-list ul {
+	padding-left: 5px;
+}
+
+.chat-list ul li {
+	list-style: none;
+	cursor: pointer;
+}
+
+.chat-user {
+	position: fixed;
+	bottom: 0;
+	right: 200px;
+	z-index: 1030;
+
+	border: 1px solid lightgrey;
+	padding: 10px;
+	width: 160px;
+	height: 50px;
+	
+	background-color: #f8f9fa;
+	color: rgba(0,0,0,.5);
+
+	text-align: center;
+}
+
+.chat-user:hover {
+	cursor: pointer;
+
+	color: rgba(0,0,0,.7);
+}
+
+.chat-box {
+	position: fixed;
+	bottom: 50px;
+	right: 200px;
+	z-index: 1030;
+	
+	border: 1px solid lightgrey;
+	width: 400px;
+	height: 400px;
+
+	background-color: white;
+	color: rgba(0,0,0,.7);
+}
+
+.chat-text {	
+	border: 1px solid lightgrey;
+	width: 100%;
+	height: 360px;
+
+	background-color: white;
+   	
+   	overflow: auto;
+
+   	display: flex;
+	flex-direction: column-reverse;
+}
+
+.chat-text-him {
+	margin: 10px;
+	align-self: flex-start;
+}
+
+.chat-text-me {
+	margin: 10px;
+	align-self: flex-end;
+}
+
+.chat-text-him-body {
+	border-radius: 5px;
+	width: 250px;
+	padding: 10px;
+	margin: 10px 10px 0 10px;
+	
+	background-color: #f8f9fa;
+	color: rgba(0,0,0,.7);
+
+}
+
+.chat-text-me-body {
+	border-radius: 5px;
+	width: 250px;
+	padding: 10px;
+	margin: 10px 10px 0 10px;
+	
+	background-color: rgb(102, 120, 136);
+	color: white;
+	
+}
+
+.chat-text-him-date {
+	color: rgba(0,0,0,.7);
+	float: left;
+}
+
+.chat-text-me-date {
+	color: rgba(0,0,0,.7);
+	float: right;
+}
+
+@media screen and (max-width: 640px) {
+	.chat-main {
+		right: 0px;
+		width: 50%;
+	}
+
+	.chat-user {
+		right: 50%;
+		width: 50%;
+	}
+
+	.chat-list {
+		right: 0px;
+		width: 50%;
+	}
+	
+	.chat-box {
+		right: 0px;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	
+	.chat-text {
+		height: 320px;
+	}
+
+	.chat-input {
+		width: 96%;
+		padding: 0;
+		margin: 0;
+	}
+
+	.chat-submit {
+		width: 100%;
+	}
+}
