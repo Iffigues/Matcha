@@ -76,22 +76,19 @@ function ver(a){
 
 router.post("/", function (req, res) {
 	con.connect(function (err) {
-		if (!req.body.password || !req.body.username) {
+		if (!req.body.password || !req.body.username)
 			return res.status(400).send(JSON.stringify({code:0, msg:"un des champs est vide"}));
-		}
 		let pwd = req.body.password;
 		let email = req.body.username.trim();
 		if(!ver(email)) {
-			res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
+			return res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
 		}
 		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err) throw err;
 			let rr = result[0];
-			if (!rr || !rr.active) {
-				res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
-				return ;
-			}
+			if (!rr || !rr.active)
+				return res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
 			if (rr && rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
 					if (err) throw err;

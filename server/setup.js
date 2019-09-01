@@ -18,8 +18,9 @@ function createUser(use) {
 		profilephoto  int,
 		popularity int DEFAULT 0,
 		role ENUM ("anonyme", "user" ,"admin") DEFAULT "anonyme",
-		visited TIMESTAMP DEFAULT now(),
+		visited  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		completed boolean DEFAULT false,
+		ds int,
 		active boolean DEFAULT 0
 		)`, function (err, res) {
 			if (err) throw err;
