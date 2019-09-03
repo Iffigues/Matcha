@@ -10,15 +10,18 @@ const faker = require('faker');
 const randomToken = require('random-token');
 const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
+const mail = require("./mail.js");
 
-function sendmai(token, username, email){
-	sendmail({
+function sendmai(token, username, email) {
+	console.log("email="+email);
+	mail(email, "account recover", "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>");
+	/*sendmail({
 		from: 'no-reply@yourdomain.com',
 		to: email,
 		subject: 'test sendmail',
 		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>",
 	}, function(err, reply) {
-	});
+	});*/
 }
 
 
@@ -43,7 +46,7 @@ router.post("/recover", function(req, res) {
 				if (!err) 
 					sendmai(tok, pass, email);
 				else 
-					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass);});
+					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass, email);});
 				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
 			});
 			});
