@@ -3,46 +3,19 @@ const express = require('express');
 const  router = express.Router();
 const middles = require("./middleware.js");
 var jwtDecode = require('jwt-decode');
-const util = require('util');
-const query = util.promisify(con.query).bind(con);
 
 router.use(middles);
 
-async function getreport (req, res, report) {
-	let reports = [];
-	for (var i in report) {
-		var reporter = await query('SELECT firstname, lastname, username, id FROM user WHERE id = ?', report[i].UserId);
-		var reported = await query('SELECT firstname, lastname, username, id FROM user WHERE id = ?', report[i].who);
-		var date = report[i].date;
-		reports.push({
-			reporter:reporter[0],
-			reported:reported[0],
-			date
-		});
-	}
-	res.status(200).send(JSON.stringify({code:0, reports}));
-}
-
 router.get("/report", function (req, res) {
 	con.connect(function (err){
-		con.query(`SELECT *  FROM report ORDER BY date DESC`, function (err, resultats) {
-			if (!err)
-				getreport(req, res, resultats);
-			else 
-				res.status(400).send(JSON.stringify({code:1, msg:"il y a une erreur"}));
+		con.query(`SELECT * FROM report 
+			LEFT JOIN user ON user.id = report.userId
+			ORDER BY date`, function (err, resultats) {
+			console.log(err);
+			res.status(200).send(JSON.stringify({code:0, resultats}));
 		});
 	});
 });
-
-
-router.get("/users", function (req, res) {
-	con.connect(function (err)  {
-		con.query("SELECT username , lastname, firstname, id FROM user WHERE role != 'admin'", function (err, users) {
-			console.log(err);
-			res.status(200).send(JSON.stringify({code:0, users}));
-		});
-	});
-})
 
 router.delete("/delete/tag",function (req, res){
 	con.connect(function (err){ 
@@ -61,8 +34,10 @@ router.delete("/delete/furries",function (req, res){
 });
 
 router.delete("/delete/user",function (req, res){
+		console.log(req.body);
 		con.connect(function (err){
 					con.query('DELETE FROM user WHERE id = ?',req.body.id, function (err, result) {
+									console.log(err);
 									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a ete supprime"}));
 								});
 				});

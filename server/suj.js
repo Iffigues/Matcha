@@ -44,7 +44,6 @@ async function lol (g, res, me, type) {
 			let li = 0;
 			let ooo= 1;
 			let popu = g[n].popularity;
-			console.log(g[n]);
 			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 			for (var e in rows) {
 				const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
@@ -77,6 +76,8 @@ async function lol (g, res, me, type) {
 				match: non + oui + pok(popu + 1, me.popularity + 1)+ ye,
 				like: li
 			}, g[n]));
+			if (g[n].firstname == "boris")
+				console.log("dezzezeezez")
 		}
 		if (type == "all") {
 			let profiles = profile;
@@ -124,15 +125,25 @@ router.get("/:id",function (req, res) {
 		      SELECT  ?  AS latpoint,  -? AS longpoint
 	) AS p
 	LEFT JOIN img as img ON img.id = user.profilephoto
-	WHERE sexe = ? AND preferences = ? OR preferences = 0 AND user.id != ?
-	`;
+	WHERE (sexe = `; 
+	let gs = ` AND (preferences = ? OR preferences = 0) AND user.id != ?`;
 	con.connect(function (err) {
 		con.query(g, [decoded.rr.id], function (err, result) {
 			if (!err && result) {
 				let yy = [];
+				let ee = "1 OR sexe = 2 )";
+				let ggg = ` AND (preferences = ? OR preferences = 0) AND user.id != ?`;
 				let d = result[0];
-				con.query(f, [d.lat, d.lng, d.sexe, d.preferences, decoded.rr.id], function (err, result1)  {
+				console.log("pref="+d.preferences);
+				if (d.preferences == 1)
+					ee = "1 OR sexe = 2 )";
+				if (d.preferences == 2)
+					ee = "1 )";
+				if (d.preferences == 3)
+					ee = "2 )";
+				con.query(f+ee+ggg, [d.lat, d.lng, d.sexe, decoded.rr.id], function (err, result1)  {
 					console.log(err);
+					console.log("res="+result1)
 					lol(result1, res, d, id);
 				});
 			}
