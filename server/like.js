@@ -26,7 +26,6 @@ router.post("/add", function (req, res) {
 			res.status(200).send(JSON.stringify({code:1, msg:"Petit Cachotier"}));
 		else
 		con.query(`SELECT profilephoto FROM user WHERE id = ? AND profilephoto != null`, o, function (err, lrem) {
-			console.log(err);
 			if (!err && lrem)
 			con.query(f, [decoded.rr.id, o], function (err, resu) {
 				if (!err) {

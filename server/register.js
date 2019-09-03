@@ -6,6 +6,7 @@ const Validateur = require("./validateur.js");
 const express = require('express');
 const  router = express.Router();
 const con = require('./dt.js');
+const mail = require('./mail.js');
 
 function verif(data) {
 	let valid = new Validateur();
@@ -50,14 +51,15 @@ function user(tab, hash) {
 	return verif(user);
 }
 
-function sendmai(token, username, mail){
-	sendmail({
+function sendmai(token, username, email){
+	mail(email, 'account created', "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>");
+	/*sendmail({
 		from: 'no-reply@yourdomain.com',
 		to: mail,
 		subject: 'test sendmail',
 		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>",
 	}, function(err, reply) {
-	});
+	});*/
 }
 
 function table(req) {
