@@ -46,7 +46,6 @@ function builder(err, result, result1, result2, ips, fufu) {
 	b.photos = result2;
 	b.city = result.city;
 	b.furries = ttes(fufu);
-	b.ip = ips;
 	return b;
 }
 
@@ -92,6 +91,7 @@ function protect(u) {
 function look(tab, r, obj) {
 	let tt = {};
 	tt.code = 0;
+	console.log(r[i])
 	for (var i = 0; i < r.length; i++) {
 		if (!tab.includes(r[i])) {
 			tt.code = 1;
@@ -152,7 +152,6 @@ function hard(obj, r, f, o, tab, id) {
 }
 
 router.post("/", function (req, res) {
-	let act = req.params.id;
 	let jj = req.body;
 	if (jj) {
 		var decoded = jwtDecode(req.token);
@@ -162,7 +161,6 @@ router.post("/", function (req, res) {
 				con.query(y.sql, [decoded.rr.id], function (err, result) {
 					res.status(200).send(JSON.stringify({code:0, msg:"Vos donnees ont ete changer"}));
 					con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
-						console.log(err);
 						if(!err && rem.length) {
 							con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {
 								console.log(err);	

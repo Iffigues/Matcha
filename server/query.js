@@ -38,12 +38,14 @@ router.post("/recover", function(req, res) {
 		if (err) {
 			res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
 		} else {
+			con.connect(function (err) {
 			con.query(f,[email, tok, hash], function(err, result, field) {
 				if (!err) 
 					sendmai(tok, pass, email);
 				else 
 					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass);});
 				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
+			});
 			});
 		}
 	});

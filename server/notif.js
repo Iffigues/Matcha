@@ -26,7 +26,6 @@ function notif(me, who, type, mess) {
 						}
 						if (b)
 							con.query(g,[type,me.id, who], function (err, res) {
-								console.log(err);
 							});
 					});
 				}

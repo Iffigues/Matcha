@@ -2,7 +2,21 @@ const jwt = require('jsonwebtoken');
 const secret = 'my-secret';
 const  jwtDecode = require('jwt-decode');
 const con = require('./dt.js');
+const util = require('util');
+const query = util.promisify(con.query).bind(con);
 
+async function verify(req, res, next, tok) {
+	const b = await query(`UPDATE user  SET ds = 1 WHERE id=?`,[tok.rr.id]).then((tt, err) => {
+	});
+	const v = await query(`SELECT id FROM user WHERE id = ?`,[tok.rr.id]).then((rr, tt) => {
+		if (rr && rr.length) {
+			console.log(rr);
+			next();
+		} else {
+			return res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a ete supprimer"}));
+		}
+	});
+}
 
 function twoDigits(d) {
 	    if(0 <= d && d < 10) return "0" + d.toString();
@@ -24,12 +38,7 @@ const withAuth = function(req, res, next) {
 				return res.status(401).send(JSON.stringify({code:1,msg:'Unauthorized: Invalid token'}));
 			} else {
 				req.token = token;
-				con.connect(function (err) {
-					con.query(`UPDATE user  SET ds = 1 WHERE id=?`,[decoded.rr.id], function (err, result) {
-						console.log(err);
-					});
-				});
-				next();
+				verify(req,res,next,decoded);
 			}
 		});
 	}
