@@ -24,7 +24,7 @@ class ProfilesMapContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch(':8080/search/all', {
+		fetch('http//:8080/search/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

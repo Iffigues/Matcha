@@ -56,7 +56,7 @@ class ReinitializeContainer extends React.Component {
 				data[key] = value;
 			});
 
-			fetch(':8080/login/recover', {
+			fetch('http//:8080/login/recover', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',

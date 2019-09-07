@@ -62,7 +62,7 @@ class LoginContainer extends React.Component {
 				d[key] = value;
 			});
 
-			fetch(':8080/login', {
+			fetch('http//:8080/login', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
