@@ -36,6 +36,7 @@ function pok(a, b) {
 
 async function lol (g, res, me, type) {
 	try {
+		console.log(g);
 		let profile = [];
 		for (let n in g) {
 			let oui = 0;
@@ -94,7 +95,7 @@ async function lol (g, res, me, type) {
 				profiles =  profiles.reduce((acc, val) => acc.concat(val), []);
 				i--;
 			}
-			console.log("popo="+profiles);
+			console.log(profiles);
 			res.status(200).send(JSON.stringify({code:0, profiles}));
 		}
 	} finally {
@@ -141,6 +142,7 @@ router.get("/:id",function (req, res) {
 					ee = "2 )";
 				}
 				con.query(f+ee+ggg, [d.lat, d.lng, d.sexe, decoded.rr.id], function (err, result1)  {
+					console.log(err);
 					lol(result1, res, d, id);
 				});
 			} else {
