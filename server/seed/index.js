@@ -16,8 +16,9 @@ function rr() {
 			let c = b.split('\1');
 			bcrypt.hash("123456789", 10, function(err, hash) {
 				console.log("error="+err);
-				con.query(f,[c[3],c[2],hash,c[0],c[1], c[6], getRandomInt(3), c[4],c[5], getRandomInt(2), 0, getRandomInt(400), faker.date.between('1960-01-01', '2001-12-31')],function (err, result, fields) {
+				con.query(f,[c[3],c[2],hash,c[0],c[1], c[6], getRandomInt(3) + 1, c[4],c[5], getRandomInt(3) + 1, 0, getRandomInt(400), faker.date.between('1960-01-01', '2001-12-31')],function (err, result, fields) {
 					if (result && !err) {
+						console.log(err);
 						con.query("INSERT INTO img (userId, path) VALUES (?,?)",[result.insertId, "ici"] , function (err, rp) {
 							con.query("UPDATE user SET profilephotto=?", rp.insertId, function (err, resf) {
 							});

@@ -10,7 +10,6 @@ async function verify(req, res, next, tok) {
 	});
 	const v = await query(`SELECT id FROM user WHERE id = ?`,[tok.rr.id]).then((rr, tt) => {
 		if (rr && rr.length) {
-			console.log(rr);
 			next();
 		} else {
 			return res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a ete supprimer"}));

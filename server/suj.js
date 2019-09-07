@@ -36,6 +36,7 @@ function pok(a, b) {
 
 async function lol (g, res, me, type) {
 	try {
+		console.log(g);
 		let profile = [];
 		for (let n in g) {
 			let oui = 0;
@@ -76,8 +77,6 @@ async function lol (g, res, me, type) {
 				match: non + oui + pok(popu + 1, me.popularity + 1)+ ye,
 				like: li
 			}, g[n]));
-			if (g[n].firstname == "boris")
-				console.log("dezzezeezez")
 		}
 		if (type == "all") {
 			let profiles = profile;
@@ -96,6 +95,7 @@ async function lol (g, res, me, type) {
 				profiles =  profiles.reduce((acc, val) => acc.concat(val), []);
 				i--;
 			}
+			console.log(profiles);
 			res.status(200).send(JSON.stringify({code:0, profiles}));
 		}
 	} finally {
@@ -132,20 +132,17 @@ router.get("/:id",function (req, res) {
 			if (!err && result && result.length > 0) {
 				let yy = [];
 				let ee = "1 OR sexe = 2 )";
-				let ggg = ` AND (preferences = ? OR preferences = 0) AND user.id != ?`;
+				let ggg = ` AND (preferences = ? OR preferences = 3) AND user.id != ?`;
 				let d = result[0];
 				console.log("dd="+d);
 				if (d.preferences) {
 				if (d.preferences == 1)
-					ee = "1 OR sexe = 2 )";
+					ee = "1)";
 				if (d.preferences == 2)
-					ee = "1 )";
-				if (d.preferences == 3)
 					ee = "2 )";
 				}
 				con.query(f+ee+ggg, [d.lat, d.lng, d.sexe, decoded.rr.id], function (err, result1)  {
 					console.log(err);
-					console.log("res="+result1)
 					lol(result1, res, d, id);
 				});
 			} else {
