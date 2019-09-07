@@ -184,7 +184,7 @@ function Account(props) {
 									return (
 										<div key={key} className="col-sm-2">
 											<div className="card my-2">
-												<img src={'http//:8080/' + value.path} className="card-img px-2 pt-2" alt=""/>
+												<img src={'http//localhost:8080/' + value.path} className="card-img px-2 pt-2" alt=""/>
 												<div>
 													<div className="form-check form-check-inline m-2">
 														<input name="profilephoto" className="form-check-input" type="radio"

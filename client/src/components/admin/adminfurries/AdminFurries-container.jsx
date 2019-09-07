@@ -26,7 +26,7 @@ class AdminFurriesContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http//:8080/furry', {
+		fetch('http//localhost:8080/furry', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -69,7 +69,7 @@ class AdminFurriesContainer extends React.Component {
 		e.preventDefault();
 		const data = {name: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http//:8080/adm/delete/furries', {
+		fetch('http//localhost:8080/adm/delete/furries', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,
