@@ -26,7 +26,7 @@ class AdminTagsContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://localhost:8080/tag/all', {
+		fetch('http://127.0.0.1:8080/tag/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -69,7 +69,7 @@ class AdminTagsContainer extends React.Component {
 		e.preventDefault();
 		const data = {name: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http://localhost:8080/adm/delete/tag', {
+		fetch('http://127.0.0.1:8080/adm/delete/tag', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,

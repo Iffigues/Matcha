@@ -54,7 +54,7 @@ class SearchContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://localhost:8080/search/all', {
+		fetch('http://127.0.0.1:8080/search/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -101,7 +101,7 @@ class SearchContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http://localhost:8080/tag/all', {
+		fetch('http://127.0.0.1:8080/tag/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -122,7 +122,7 @@ class SearchContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http://localhost:8080/furry', {
+		fetch('http://127.0.0.1:8080/furry', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -204,7 +204,7 @@ class SearchContainer extends React.Component {
 	handleLikeClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http://localhost:8080/like/add', {
+		fetch('http://127.0.0.1:8080/like/add', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,

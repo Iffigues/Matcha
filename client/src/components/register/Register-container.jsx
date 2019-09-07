@@ -73,7 +73,7 @@ class RegisterContainer extends React.Component {
 				data[key] = value;
 			});
 
-			fetch('http://localhost:8080/register', {
+			fetch('http://127.0.0.1:8080/register', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
