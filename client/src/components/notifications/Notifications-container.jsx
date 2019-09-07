@@ -23,7 +23,7 @@ class NotificationsContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/notif/all', {
+		fetch('http://:8080/notif/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

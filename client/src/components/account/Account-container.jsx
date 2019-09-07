@@ -62,7 +62,7 @@ class AccountContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/profile/', {
+		fetch('http://:8080/profile/', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -99,7 +99,7 @@ class AccountContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http//localhost:8080/tag/all', {
+		fetch('http://:8080/tag/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -120,7 +120,7 @@ class AccountContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http//localhost:8080/furry', {
+		fetch('http://:8080/furry', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -141,7 +141,7 @@ class AccountContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http//localhost:8080/blocked/all', {
+		fetch('http://:8080/blocked/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -224,7 +224,7 @@ class AccountContainer extends React.Component {
 		e.preventDefault();
 		const d = {profilePhoto: parseInt(e.target.value)}; 
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/profile/profilephoto', {
+		fetch('http://:8080/profile/profilephoto', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,
@@ -262,7 +262,7 @@ class AccountContainer extends React.Component {
 		const d = {};
 		d[input.name] = parseInt(input.value); 
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/profile/', {
+		fetch('http://:8080/profile/', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,
@@ -354,7 +354,7 @@ class AccountContainer extends React.Component {
 					delete data['username'];
 			});
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/profile/', {
+			fetch('http://:8080/profile/', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -428,7 +428,7 @@ class AccountContainer extends React.Component {
 			});
 			data.customCity = this.state.customCity;
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/map', {
+			fetch('http://:8080/map', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -493,7 +493,7 @@ class AccountContainer extends React.Component {
 			});
 
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/tag/new', {
+			fetch('http://:8080/tag/new', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -558,7 +558,7 @@ class AccountContainer extends React.Component {
 			});
 
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/furry', {
+			fetch('http://:8080/furry', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -595,7 +595,7 @@ class AccountContainer extends React.Component {
   			navigator.geolocation.getCurrentPosition(pos => {
   				const data = {lng: pos.coords.longitude, lat: pos.coords.latitude};
 				const token = localStorage.getItem('token');
-  				fetch('http//localhost:8080/map/reverse', {
+  				fetch('http://:8080/map/reverse', {
 					method: 'POST',
 					headers: {
 						'x-access-token': token,
@@ -658,7 +658,7 @@ class AccountContainer extends React.Component {
 		if (!test) {
 			const data = {tag: val};
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/tag/new', {
+			fetch('http://:8080/tag/new', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -694,7 +694,7 @@ class AccountContainer extends React.Component {
 		if (!test) {
 			const data = {furry: val};
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/furry', {
+			fetch('http://:8080/furry', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -733,7 +733,7 @@ class AccountContainer extends React.Component {
 			const data = new FormData();
 			data.append('file', file);
 			const token = localStorage.getItem('token');
-			fetch('http//localhost:8080/img/upload', {
+			fetch('http://:8080/img/upload', {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,
@@ -767,7 +767,7 @@ class AccountContainer extends React.Component {
 	handleRemovePhotoClick(e) {
 		e.preventDefault();
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/img/' + e.target.getAttribute('value'), {
+		fetch('http://:8080/img/' + e.target.getAttribute('value'), {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,
@@ -794,7 +794,7 @@ class AccountContainer extends React.Component {
 		e.preventDefault();
 		const data = {name: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/tag', {
+		fetch('http://:8080/tag', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,
@@ -822,7 +822,7 @@ class AccountContainer extends React.Component {
 		e.preventDefault();
 		const data = {name: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/furry', {
+		fetch('http://:8080/furry', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,
@@ -849,7 +849,7 @@ class AccountContainer extends React.Component {
 	handleUnblockClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http//localhost:8080/blocked', {
+		fetch('http://:8080/blocked', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,
