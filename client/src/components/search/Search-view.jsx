@@ -111,7 +111,7 @@ function Search(props) {
 				</div>
 				<div className="row">
 					{props.profiles.slice(0, props.load).map((pro, key) => {
-						const pp = pro.profilephoto ? "http://gopiko.fr:8080/" + pro.profilephoto : avatar;
+						const pp = pro.profilephoto ? ":8080/" + pro.profilephoto : avatar;
 						return (
 							<div key={key} className="col-sm-2 pb-4">
 								<img className="rounded-top img-fluid" src={pp} alt="" />

@@ -33,7 +33,7 @@ class NavbarContainer extends React.Component {
 	fetchData() {
 		if (this.props.loggedIn) {
 			const token = localStorage.getItem('token');
-			fetch('http://gopiko.fr:8080/notif/nbr', {
+			fetch(':8080/notif/nbr', {
 				method: 'GET',
 				headers: {
 					'x-access-token': token,

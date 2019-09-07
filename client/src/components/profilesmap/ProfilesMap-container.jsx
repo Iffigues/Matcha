@@ -24,7 +24,7 @@ class ProfilesMapContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/search/all', {
+		fetch(':8080/search/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

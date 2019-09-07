@@ -73,7 +73,7 @@ class RegisterContainer extends React.Component {
 				data[key] = value;
 			});
 
-			fetch('http://gopiko.fr:8080/register', {
+			fetch(':8080/register', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',

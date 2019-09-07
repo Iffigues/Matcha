@@ -59,7 +59,7 @@ class ChatContainer extends React.Component {
 	fetchData() {
 		if (this._isMounted) {
 			const token = localStorage.getItem('token');
-			fetch('http://gopiko.fr:8080/match', {
+			fetch(':8080/match', {
 				method: 'GET',
 				headers: {
 					'x-access-token': token,
@@ -85,7 +85,7 @@ class ChatContainer extends React.Component {
 
 	fetchMessages(id) {
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/messages/' + id, {
+		fetch(':8080/messages/' + id, {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

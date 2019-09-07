@@ -25,7 +25,7 @@ class AppContainer extends React.Component {
 
 	handleRouteChange(e) {
 		const token = localStorage.getItem('token');
-		fetch('http://gopiko.fr:8080/connected', {
+		fetch(':8080/connected', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

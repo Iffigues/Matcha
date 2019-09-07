@@ -56,7 +56,7 @@ class ReinitializeContainer extends React.Component {
 				data[key] = value;
 			});
 
-			fetch('http://gopiko.fr:8080/login/recover', {
+			fetch(':8080/login/recover', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',

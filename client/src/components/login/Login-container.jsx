@@ -62,7 +62,7 @@ class LoginContainer extends React.Component {
 				d[key] = value;
 			});
 
-			fetch('http://gopiko.fr:8080/login', {
+			fetch(':8080/login', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
