@@ -12,18 +12,10 @@ const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 const mail = require("./mail.js");
 
-function sendmai(token, username, email) {
-	console.log("email="+email);
-	mail(email, "account recover", "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>");
-	/*sendmail({
-		from: 'no-reply@yourdomain.com',
-		to: email,
-		subject: 'test sendmail',
-		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>",
-	}, function(err, reply) {
-	});*/
+function sendmai(token, username, email, host) {
+	let i = 'http://'+host+"/";
+	mail(email, "Réinitialisation du mot de passe", "<html><head></head><body><a href=\""+i+"login/recover/"+token+"\">password="+username+"</a></body></html>");
 }
-
 
 router.post("/recover", function(req, res) {
 	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
@@ -35,19 +27,19 @@ router.post("/recover", function(req, res) {
 	let tok = randomToken(16);
 	let valida = new validate();
 	if (!valida.isEmail(email))
-		return res.status(400).send("bad email");
+		return res.status(400).send("L'adresse email est incorrecte");
 	let pass = faker.fake("{{internet.password}}");
 	bcrypt.hash(pass, saltRounds, function(err, hash) {
 		if (err) {
-			res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
+			res.satus(500).send(JSON.stringify({code:1,msg:"Un problème interne est survenu"}));
 		} else {
 			con.connect(function (err) {
 			con.query(f,[email, tok, hash], function(err, result, field) {
 				if (!err) 
-					sendmai(tok, pass, email);
+					sendmai(tok, pass, email, req.headers.host);
 				else 
 					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass, email);});
-				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
+				res.status(200).send(JSON.stringify({code:0, msg:"Un email vient de vous être envoyé"}));
 			});
 			});
 		}
@@ -58,14 +50,10 @@ router.get("/recover/:toki", function(req, res) {
 	let ff = `UPDATE user SET password = (SELECT password FROM recover WHERE tok = ?) WHERE id = (SELECT userId FROM recover WHERE tok = ?)`;
 	let f = ` UPDATE user b, recover p SET b.password = p.password WHERE p.tok = ?`;
 	let tok = req.params.toki;
-	console.log(tok);
 	con.connect(function(err) {
 		con.query(f, [tok], function (err, res, fields) {
-			console.log(res);
-			console.log(err);
 			if (res.affectedRows == 1) {
 				con.query(`DELETE FROM recover WHERE tok = ?`,[tok], function(err, res){
-					console.log(err);
 				})
 			}
 		});
@@ -82,21 +70,21 @@ function ver(a){
 router.post("/", function (req, res) {
 	con.connect(function (err) {
 		if (!req.body.password || !req.body.username)
-			return res.status(400).send(JSON.stringify({code:0, msg:"un des champs est vide"}));
+			return res.status(400).send(JSON.stringify({code:0, msg:"Un des champs est vide"}));
 		let pwd = req.body.password;
 		let email = req.body.username.trim();
 		if(!ver(email)) {
-			return res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
+			return res.status(200).send(JSON.stringify({code: 1, msg:"Le nom d'utilisateur est incorrecte"}));
 		}
 		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
-			if (err) throw err;
+			if (err || !result || result.length == 0) 
+				return res.status(404).send(JSON.stringify({code:2, msg:"le compte n'existe pas"}))
 			let rr = result[0];
 			if (!rr || !rr.active)
-				return res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
-			if (rr && rr.active) {
+				return res.status(404).send(JSON.stringify({code:2, msg:"Ce compte n'est pas activé ou n'existe pas"}));
+			if (rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
-					if (err) throw err;
 					if (ress === true) {
 						let toke = new tok();
 						rr.date = Date.now();
@@ -104,14 +92,14 @@ router.post("/", function (req, res) {
 						const token = jwt.sign(payload, 'my-secret', {
 							expiresIn: 1000000
 						});
-						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}));
+						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"Vous êtes connecté",token:token}));
 					} else {
-						res.status(404).send(JSON.stringify({code:2,msg:"bad password"}));
+						res.status(404).send(JSON.stringify({code:2,msg:"Le mot de passe est incorrect"}));
 					}
 				})
 
 			}else{
-				res.status(404).send(JSON.stringify({err:3,msg:"not found"}));
+				res.status(404).send(JSON.stringify({err:3,msg:"L'utilisateur est introuvable"}));
 			}
 		});
 	});
@@ -122,7 +110,7 @@ router.get("/logout", mid, function(req, res){
 	const token = jwt.sign(payload, 'my-secret', {
 		expiresIn: 0
 	});
-	res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}))
+	res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"Vous êtes connecté",token:token}))
 });
 
 module.exports = router;

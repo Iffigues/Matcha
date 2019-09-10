@@ -29,7 +29,7 @@ class ChatContainer extends React.Component {
 	componentDidMount() {
 		this._isMounted = true;
 		this.regularlyFetchData();
-		this._socket = io('http://gopiko.fr:8081', {
+		this._socket = io('http://' + document.location.hostname + ':8081', {
 				query: {token: localStorage.getItem('token')}
 		});
 		this._socket.on('chat', (data) => {
@@ -40,7 +40,7 @@ class ChatContainer extends React.Component {
 					this.setState({messages: messages});
 				} else {
 					data.message.unread = 1;
-					this.state.socket.emit('unread', data);
+					this._socket.emit('unread', data);
 				}
 			}
 		});
@@ -59,7 +59,7 @@ class ChatContainer extends React.Component {
 	fetchData() {
 		if (this._isMounted) {
 			const token = localStorage.getItem('token');
-			fetch('http://127.0.0.1:8080/match', {
+			fetch('http://' + document.location.hostname + ':8080/match', {
 				method: 'GET',
 				headers: {
 					'x-access-token': token,
@@ -85,7 +85,7 @@ class ChatContainer extends React.Component {
 
 	fetchMessages(id) {
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/messages/' + id, {
+		fetch('http://' + document.location.hostname + ':8080/messages/' + id, {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

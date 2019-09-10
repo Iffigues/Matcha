@@ -11,9 +11,7 @@ const util = require('util');
 const notif = require('./notif.js');
 const query = util.promisify(con.query).bind(con);
 
-
 var users = {};
-
 
 async function putbdd(data, user) {
 	let e = 0;
@@ -23,11 +21,10 @@ async function putbdd(data, user) {
 	if (data.message.unread && e)
 		i = 1;
 	const put = await query(`INSERT INTO messages (userOne, userTwo, message, look) VALUES (?,?,?,?)`,[user.rr.id, data.message.toId, data.message.content, i]).then( (tr, err) => {
-		console.log(err);
 		if (users[data.message.toId])
 			users[data.message.toId].emit("chat", data);
 		if (!e)
-			notif(user.rr, data.message.toId, "message");
+			notif(user.rr, data.message.toId, "gotmessage");
 	});
 }
 
@@ -38,15 +35,18 @@ function sender(data, user) {
 }
 
 async function lol(data, user) {
-	console.log("delta="+data);
 	const isAllow = await query(`SELECT COUNT(*) as d FROM likes WHERE userOne = ? AND userTwo = ?`,  [data.message.toId, user.rr.id]).then((rt, err) => {
-		console.log(rt)
-		console.log(user.rr.id);
-		console.log(data)
-		if (rt[0].d) 
-			sender(data, user);
+			if (rt[0].d) 
+				sender(data, user);
 	})
 }
+
+async function unreader(user, data) {
+	const yy = await query(`UPDATE messages SET look = false WHERE userTwo = ? AND userOne = ?`, [user.rr.id, data.message.toId]).then((erre, ew) => {
+	}).catch((err) => {
+	});
+}
+
 
 io.sockets.on('connection', function (socket) {
 	let good = 0;
@@ -63,14 +63,13 @@ io.sockets.on('connection', function (socket) {
 				try {
 					lol(data, user);
 				} catch (e) {
-					console.log(e);
 				}
 			});
 			socket.on('unread', function (data) {
-				
+				unreader(user, data)
 			});
 			socket.on('disconnect', function(){
-				console.log(delete users[user.rr.id]);
+				delete users[user.rr.id];
 			});
 		}
 	} catch (e) {
@@ -78,4 +77,4 @@ io.sockets.on('connection', function (socket) {
 });
 
 server.listen(8081)
-module.exports = router;
+	module.exports = router;

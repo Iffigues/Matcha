@@ -42,7 +42,7 @@ class ProfileContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/user/' + this.props.match.params.id, {
+		fetch('http://' + document.location.hostname + ':8080/user/' + this.props.match.params.id, {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -87,7 +87,7 @@ class ProfileContainer extends React.Component {
 	handleLikeClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/like/add', {
+		fetch('http://' + document.location.hostname + ':8080/like/add', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,
@@ -115,7 +115,7 @@ class ProfileContainer extends React.Component {
 	handleBlockClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/blocked', {
+		fetch('http://' + document.location.hostname + ':8080/blocked', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,
@@ -143,7 +143,7 @@ class ProfileContainer extends React.Component {
 	handleReportClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/report', {
+		fetch('http://' + document.location.hostname + ':8080/report', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,

@@ -29,7 +29,7 @@ router.get("/report", function (req, res) {
 			if (!err)
 				getreport(req, res, resultats);
 			else 
-				res.status(400).send(JSON.stringify({code:1, msg:"il y a une erreur"}));
+				res.status(400).send(JSON.stringify({code:1, msg:"Une erreur s'est produite"}));
 		});
 	});
 });
@@ -38,7 +38,6 @@ router.get("/report", function (req, res) {
 router.get("/users", function (req, res) {
 	con.connect(function (err)  {
 		con.query("SELECT username , lastname, firstname, id FROM user WHERE role != 'admin'", function (err, users) {
-			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, users}));
 		});
 	});
@@ -47,7 +46,7 @@ router.get("/users", function (req, res) {
 router.delete("/delete/tag",function (req, res){
 	con.connect(function (err){ 
 		con.query('DELETE FROM tag WHERE tag.tag = ?',req.body.name, function (err, result) {
-			res.status(200).send(JSON.stringify({code:0, msg:"tag suprimmé"}));
+			res.status(200).send(JSON.stringify({code:0, msg:"Le centre d'intérêt a été supprimé"}));
 		});	
 	});
 });
@@ -55,7 +54,7 @@ router.delete("/delete/tag",function (req, res){
 router.delete("/delete/furries",function (req, res){
 	con.connect(function (err){
 		con.query('DELETE FROM furry WHERE name = ?',req.body.name, function (err, result) {
-			res.status(200).send(JSON.stringify({code:0, msg:"tag suprimmé"}));
+			res.status(200).send(JSON.stringify({code:0, msg:"Le type de furry a été supprimé"}));
 		});
 	});
 });
@@ -63,7 +62,7 @@ router.delete("/delete/furries",function (req, res){
 router.delete("/delete/user",function (req, res){
 		con.connect(function (err){
 					con.query('DELETE FROM user WHERE id = ?',req.body.id, function (err, result) {
-									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a ete supprime"}));
+									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a été supprimé"}));
 								});
 				});
 });

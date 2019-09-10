@@ -13,8 +13,7 @@ router.post('/', function (req, res) {
 	con.connect(function (err) {
 		let r = decoded.rr.id;
 		con.query(f,[r, tag], function (err, result) {
-			console.log(err);
-			res.status(200).send(JSON.stringify({code:0, msg:"furry created"}));
+			res.status(200).send(JSON.stringify({code:0, msg:"Le type de furry a été créé"}));
 		});
 	});
 });
@@ -23,7 +22,6 @@ router.get("/", function (req, res) {
 	let f = `SELECT name, COUNT(name) AS nbr FROM furry GROUP BY name ORDER BY nbr DESC`;
 	con.connect(function (err) {
 		con.query(f, function (err, result) {
-			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, furries:result}));
 		});
 	});
@@ -45,7 +43,7 @@ router.post("/pref", function (req, res) {
 	let f = `INSERT INTO furry_pref (userId, furryId) VALUES (?,?)`;
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id, gg], function (err, result) {
-			res.status(200).send(JSON.stringify({code:0, msg:"bien enregister"}));
+			res.status(200).send(JSON.stringify({code:0, msg:"Le type de furry a été sauvegardé"}));
 		});
 	});
 });
@@ -66,8 +64,7 @@ router.delete("/", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(f,[name, decoded.rr.id], function (err, result) {
-			console.log(err);
-			res.status(200).send(JSON.stringify({code: 0, msg:"furrysupprimer"}));
+			res.status(200).send(JSON.stringify({code: 0, msg:"Le type de furry a été supprimé"}));
 		});
 	});
 });
@@ -78,7 +75,7 @@ router.delete("/pref/:id", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(f,[decoded.r.id, name], function (err, result) {
-			res.status(200).send(JSON.stringify({code: 0, msg:"furrysupprimer"}));
+			res.status(200).send(JSON.stringify({code: 0, msg:"Le type de furry a été supprimé"}));
 		});
 	});
 });
