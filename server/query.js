@@ -12,52 +12,62 @@ const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 const mail = require("./mail.js");
 
+function makeMail(token, id, email, host,i) {
+	let c = "<html><head></head><body><a href=\""+i+"/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+}
+
 function sendmai(token, username, email, host) {
 	let i = 'http://'+host+"/";
-	mail(email, "Réinitialisation du mot de passe", "<html><head></head><body><a href=\""+i+"login/recover/"+token+"\">password="+username+"</a></body></html>");
+	mail(email, "Réinitialisation du mot de passe", makeMail(token, id, host,i));
 }
 
 router.post("/recover", function(req, res) {
-	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
-	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
-	if (!req.body.email) {
-		return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
-	}
+	let f = `INSERT INTO recover (userId, tok) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?) ON DUPLICATE KEY UPDATE   userId= (SELECT id FROM user WHERE email = ? AND active = 1)`;
+	let g = `SELECT id FROM user WHERE email = ?`
+		if (!req.body.email) {
+			return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
+		}
 	let email = req.body.email.trim();
-	let tok = randomToken(16);
 	let valida = new validate();
 	if (!valida.isEmail(email))
-		return res.status(400).send("L'adresse email est incorrecte");
-	let pass = faker.fake("{{internet.password}}");
+		return res.status(400).send("bad email");
 	bcrypt.hash(pass, saltRounds, function(err, hash) {
 		if (err) {
-			res.satus(500).send(JSON.stringify({code:1,msg:"Un problème interne est survenu"}));
+			res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
 		} else {
-			con.connect(function (err) {
-			con.query(f,[email, tok, hash], function(err, result, field) {
-				if (!err) 
-					sendmai(tok, pass, email, req.headers.host);
-				else 
-					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass, email);});
-				res.status(200).send(JSON.stringify({code:0, msg:"Un email vient de vous être envoyé"}));
-			});
-			});
+			require('crypto').randomBytes(48, function(err, buffer) {
+				let token = buffer.toString('hex');
+				con.connect(function (err) {
+					con.query(g,[email],function(err, rst) {
+						if (rst && rst.lenght > 0) {
+							let id = rst[0].id;
+							con.query(f,[email, token], function(err, result, field) {
+								if (!err) {
+									sendmai(tok, id, email, req.headers.host);
+									res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
+								}else {
+									res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
+								}
+							});
+						}
+					})
+				});
+				)}
 		}
 	});
 });
 
-router.get("/recover/:toki", function(req, res) {
-	let ff = `UPDATE user SET password = (SELECT password FROM recover WHERE tok = ?) WHERE id = (SELECT userId FROM recover WHERE tok = ?)`;
-	let f = ` UPDATE user b, recover p SET b.password = p.password WHERE p.tok = ?`;
+router.get("/recover/:toki/:id", function(req, res) {
+	let ff = `SELECT * FROM recover WHERE token = ? AND id = ?`;
 	let tok = req.params.toki;
-	con.connect(function(err) {
-		con.query(f, [tok], function (err, res, fields) {
-			if (res.affectedRows == 1) {
-				con.query(`DELETE FROM recover WHERE tok = ?`,[tok], function(err, res){
-				})
-			}
+	let id = req.params.id
+		con.connect(function(err) {
+			con.query(f, [tok, id], function (err, rst, fields) {
+				if (rst && rst.length > 0) {
+					res.redirect(":3000/");
+				}
+			});
 		});
-	});
 });
 
 function ver(a){
@@ -80,7 +90,7 @@ router.post("/", function (req, res) {
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err || !result || result.length == 0) 
 				return res.status(404).send(JSON.stringify({code:2, msg:"le compte n'existe pas"}))
-			let rr = result[0];
+					let rr = result[0];
 			if (!rr || !rr.active)
 				return res.status(404).send(JSON.stringify({code:2, msg:"Ce compte n'est pas activé ou n'existe pas"}));
 			if (rr.active) {
