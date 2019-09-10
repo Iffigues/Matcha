@@ -12,65 +12,83 @@ const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 const mail = require("./mail.js");
 
-function sendmai(token, username, email) {
-	console.log("email="+email);
-	mail(email, "account recover", "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>");
-	/*sendmail({
-		from: 'no-reply@yourdomain.com',
-		to: email,
-		subject: 'test sendmail',
-		html: "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"\">password="+username+"</a></body></html>",
-	}, function(err, reply) {
-	});*/
+function makeMail(token, id, email) {
+	let c = "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+}
+
+function sendmai(token, id, email) {
+	mail(token, id , makeMail());/
 }
 
 
 router.post("/recover", function(req, res) {
-	let f = `INSERT INTO recover (userId, tok, password) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?,?)`;
-	let y = `UPDATE recover SET tok = ? , password = ? WHERE userId = (SELECT id FROM user WHERE email = ?)`;
+	let f = `INSERT INTO recover (userId, tok) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?) ON DUPLICATE KEY UPDATE   userId= (SELECT id FROM user WHERE email = ? AND active = 1)`;
+	let g = `SELECT id FROM user WHERE email = ?`
 	if (!req.body.email) {
 		return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
 	}
 	let email = req.body.email.trim();
-	let tok = randomToken(16);
 	let valida = new validate();
 	if (!valida.isEmail(email))
 		return res.status(400).send("bad email");
-	let pass = faker.fake("{{internet.password}}");
 	bcrypt.hash(pass, saltRounds, function(err, hash) {
 		if (err) {
 			res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
 		} else {
-			con.connect(function (err) {
-			con.query(f,[email, tok, hash], function(err, result, field) {
-				if (!err) 
-					sendmai(tok, pass, email);
-				else 
-					con.query(y, [tok,hash,email], function (err, result) {sendmai(tok, pass, email);});
-				res.status(200).send(JSON.stringify({code:0, msg:"un email viens de vous être envoye"}));
-			});
-			});
+			require('crypto').randomBytes(48, function(err, buffer) {
+				let token = buffer.toString('hex');
+				con.connect(function (err) {
+					con.query(g,[email],function(err, rst) {
+						if (rst && rst.lenght > 0) {
+							let id = rst[0].id;
+							con.query(f,[email, token], function(err, result, field) {
+								if (!err) {
+									sendmai(tok, id, email);
+									res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
+								}else {
+									res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
+								}
+							});
+						}
+					})
+				});
+			)}
 		}
 	});
 });
 
-router.get("/recover/:toki", function(req, res) {
-	let ff = `UPDATE user SET password = (SELECT password FROM recover WHERE tok = ?) WHERE id = (SELECT userId FROM recover WHERE tok = ?)`;
-	let f = ` UPDATE user b, recover p SET b.password = p.password WHERE p.tok = ?`;
+router.get("/recover/:toki/:id", function(req, res) {
+	let ff = `SELECT * FROM recover WHERE token = ? AND userId = ?`;
 	let tok = req.params.toki;
-	console.log(tok);
+	let id = req.params.id
 	con.connect(function(err) {
-		con.query(f, [tok], function (err, res, fields) {
-			console.log(res);
-			console.log(err);
-			if (res.affectedRows == 1) {
-				con.query(`DELETE FROM recover WHERE tok = ?`,[tok], function(err, res){
-					console.log(err);
-				})
+		con.query(f, [tok, id], function (err, rst, fields) {
+			if (rst && rst.length > 0) {
+				res.redirect(":3000/recover/"+tok+'/'+id);
 			}
 		});
 	});
 });
+
+router.post("/recover/:tok/:id" , function (req, res){
+	let f = `DELETE FROM recover WHERE id = ? AND token =?`;
+	let g = `UPDATE user SET password = ? WHERE id = ?`;
+	let tok = req.params.tok;
+	let id = req.params.id;
+	let pwd = req.body.password;
+	let valid = new validate();
+	if (!valid.isPwd(pwd)) {
+	}
+	con.connect(function(err) {
+		con.query(f, [id, tok], function (err, rst) {
+			if (rst && rst.affectedRows) {
+				con.query(g,[pwd, id], function (err, rlt) {
+				
+				})
+			}
+		})
+	});
+})
 
 function ver(a){
 	let valid = new validate();

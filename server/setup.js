@@ -37,7 +37,6 @@ function createUser(use) {
 			id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			userId int NOT NULL UNIQUE,
 			tok VARCHAR(155) NOT NULL UNIQUE,
-			password VARCHAR(155) NOT NULL,
 			FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
 		)`, function (err, res) {
 			if (err) throw err;
