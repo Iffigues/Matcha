@@ -12,8 +12,17 @@ const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 const mail = require("./mail.js");
 
+<<<<<<< HEAD
 function makeMail(token, id, email, host,i) {
 	let c = "<html><head></head><body><a href=\""+i+"/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+=======
+function makeMail(token, id, email) {
+	let c = "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+}
+
+function sendmai(token, id, email) {
+	mail(token, id , makeMail());
+>>>>>>> iffigues
 }
 
 function sendmai(token, username, email, host) {
@@ -24,9 +33,15 @@ function sendmai(token, username, email, host) {
 router.post("/recover", function(req, res) {
 	let f = `INSERT INTO recover (userId, tok) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?) ON DUPLICATE KEY UPDATE   userId= (SELECT id FROM user WHERE email = ? AND active = 1)`;
 	let g = `SELECT id FROM user WHERE email = ?`
+<<<<<<< HEAD
 		if (!req.body.email) {
 			return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
 		}
+=======
+	if (!req.body.email) {
+		return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
+	}
+>>>>>>> iffigues
 	let email = req.body.email.trim();
 	let valida = new validate();
 	if (!valida.isEmail(email))
@@ -43,21 +58,32 @@ router.post("/recover", function(req, res) {
 							let id = rst[0].id;
 							con.query(f,[email, token], function(err, result, field) {
 								if (!err) {
+<<<<<<< HEAD
 									sendmai(tok, id, email, req.headers.host);
+=======
+									sendmai(tok, id, email);
+>>>>>>> iffigues
 									res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
 								}else {
 									res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
 								}
 							});
 						}
+<<<<<<< HEAD
 					})
 				});
 				)}
+=======
+					});
+				});
+			});
+>>>>>>> iffigues
 		}
 	});
 });
 
 router.get("/recover/:toki/:id", function(req, res) {
+<<<<<<< HEAD
 	let ff = `SELECT * FROM recover WHERE token = ? AND id = ?`;
 	let tok = req.params.toki;
 	let id = req.params.id
@@ -67,8 +93,38 @@ router.get("/recover/:toki/:id", function(req, res) {
 					res.redirect(":3000/");
 				}
 			});
+=======
+	let ff = `SELECT * FROM recover WHERE token = ? AND userId = ?`;
+	let tok = req.params.toki;
+	let id = req.params.id
+	con.connect(function(err) {
+		con.query(f, [tok, id], function (err, rst, fields) {
+			if (rst && rst.length > 0) {
+				res.redirect(":3000/recover/"+tok+'/'+id);
+			}
+>>>>>>> iffigues
 		});
 });
+
+router.post("/recover/:tok/:id" , function (req, res){
+	let f = `DELETE FROM recover WHERE id = ? AND token =?`;
+	let g = `UPDATE user SET password = ? WHERE id = ?`;
+	let tok = req.params.tok;
+	let id = req.params.id;
+	let pwd = req.body.password;
+	let valid = new validate();
+	if (!valid.isPwd(pwd)) {
+	}
+	con.connect(function(err) {
+		con.query(f, [id, tok], function (err, rst) {
+			if (rst && rst.affectedRows) {
+				con.query(g,[pwd, id], function (err, rlt) {
+				
+				})
+			}
+		})
+	});
+})
 
 function ver(a){
 	let valid = new validate();

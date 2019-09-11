@@ -51,9 +51,14 @@ function user(tab, hash) {
 	return verif(user);
 }
 
+<<<<<<< HEAD
 function sendmai(token, username, email, host){
 	let i = 'http://'+host+"/";
 	mail(email, 'Création du compte', "<html><head></head><body><a href=\""+i+"validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>");
+=======
+function sendmai(token, username, email){
+	mail(email, 'account created', "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>");
+>>>>>>> iffigues
 }
 
 function table(req) {
@@ -86,8 +91,15 @@ router.post("/", function (req, res) {
 		let y  = r.msg;
 		if (!r.code) {
 		con.connect(function(err) {
+<<<<<<< HEAD
 			const f = `INSERT INTO user (firstname, lastname, password, email, username, sexe) VALUES (?, ?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.sexe], function (err, result, fields) {
+=======
+			console.log(err)
+			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
+			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
+				console.log(err);
+>>>>>>> iffigues
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;

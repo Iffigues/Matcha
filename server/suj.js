@@ -37,7 +37,9 @@ function pok(a, b) {
 async function lol (g, res, me, type) {
 	try {
 		let profile = [];
+		const max = await query(`SELECT MAX(popularity) AS max,popularity  FROM user`);
 		for (let n in g) {
+<<<<<<< HEAD
 			if (g[n].lat && g[n].lng && g[n].birthdate && g[n].city && g[n].firstname && g[n].lastname) {
 				let oui = 0;
 				let non = 0;
@@ -77,6 +79,25 @@ async function lol (g, res, me, type) {
 						match: non + oui + pok(popu + 1, me.popularity + 1)+ ye,
 						like: li
 					}, g[n]));
+=======
+			let oui = 0;
+			let non = 0;
+			let ye = 0;
+			let li = 0;
+			let ooo= 1;
+			let popu = ((g[n].popularity + 1)*max[0].max) / (max[0].popularity + 1);;
+			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
+			for (var e in rows) {
+				const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
+				if (re[0].d)
+					non = non + 1;
+			}
+			const rows1 = await query('select * FROM furry WHERE furry.userId = ?',  g[n].id);
+			for (var e in rows1) {
+				const re = await query('SELECT COUNT(*) as d FROM furry WHERE userId = ? and name = ?', [me.id, rows1[e].name]);
+				if (re[0].d)
+					oui = oui + 1;
+>>>>>>> iffigues
 			}
 		}
 		if (type == "all") {
