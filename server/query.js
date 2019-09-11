@@ -17,7 +17,7 @@ function makeMail(token, id, email) {
 }
 
 function sendmai(token, id, email) {
-	mail(token, id , makeMail());/
+	mail(token, id , makeMail());
 }
 
 
@@ -50,9 +50,9 @@ router.post("/recover", function(req, res) {
 								}
 							});
 						}
-					})
+					});
 				});
-			)}
+			});
 		}
 	});
 });

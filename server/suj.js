@@ -36,15 +36,15 @@ function pok(a, b) {
 
 async function lol (g, res, me, type) {
 	try {
-		console.log(g);
 		let profile = [];
+		const max = await query(`SELECT MAX(popularity) AS max,popularity  FROM user`);
 		for (let n in g) {
 			let oui = 0;
 			let non = 0;
 			let ye = 0;
 			let li = 0;
 			let ooo= 1;
-			let popu = g[n].popularity;
+			let popu = ((g[n].popularity + 1)*max[0].max) / (max[0].popularity + 1);;
 			const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 			for (var e in rows) {
 				const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
@@ -95,7 +95,6 @@ async function lol (g, res, me, type) {
 				profiles =  profiles.reduce((acc, val) => acc.concat(val), []);
 				i--;
 			}
-			console.log(profiles);
 			res.status(200).send(JSON.stringify({code:0, profiles}));
 		}
 	} finally {

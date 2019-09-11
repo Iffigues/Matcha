@@ -39,7 +39,7 @@ function usete(r) {
 	profile.id = r.user[0].id;
 	profile.bio = r.user[0].bio;
 	profile.city = r.user[0].city;
-	profile.popularity = r.user[0].popularity;
+	profile.popularity = ((r.user[0].popularity + 1)*r.max[0].max + 1) / (r.max[0].popularity + 1);
 	profile.sexe = r.user[0].sexe;
 	profile.lat = r.user[0].lat;
 	profile.lng = r.user[0].lng;
@@ -54,7 +54,6 @@ function usete(r) {
 	profile.beliked = r.resultat3 && r.resultat3.length > 0;
 	profile.liked = r.you && r.you.length > 0;
 	profile.blocked = (r.blocks && r.blocks.length > 0);
-	console.log(profile);
 	return profile;
 }
 
@@ -72,8 +71,10 @@ router.get("/:id", function (req, res) {
 							con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`,[decoded.rr.id, id], function (err, you) {
 								con.query(`SELECT *  FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, id], function (err, blocks){
 									notif(decoded.rr, id, 'visited',"un utilisateur a vu vorte profile");
-									let profile  = usete({user, furry, tags, resultat3, you,images, blocks}) ;
+									con.query(`SELECT MAX(popularity) AS max, popularity FROM user`,function(err, rst){
+									let profile  = usete({user, furry, tags, resultat3, you,images, blocks,max});
 									res.status(200).send(JSON.stringify({code:0, profile}));
+									})
 								});
 							});
 						});

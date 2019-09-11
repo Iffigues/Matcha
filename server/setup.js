@@ -16,7 +16,7 @@ function createUser(use) {
 		sexe	int DEFAULT 1,
 		preferences int DEFAULT 3,
 		profilephoto  int,
-		popularity int DEFAULT 0,
+		popularity int DEFAULT 1,
 		role ENUM ("anonyme", "user" ,"admin") DEFAULT "anonyme",
 		visited  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		completed boolean DEFAULT false,
