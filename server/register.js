@@ -85,10 +85,8 @@ router.post("/", function (req, res) {
 		let y  = r.msg;
 		if (!r.code) {
 		con.connect(function(err) {
-			console.log(err)
 			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
-				console.log(err);
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;

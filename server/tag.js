@@ -13,7 +13,6 @@ function sel(con, tag, req) {
 		if (!err) {
 			let r = res[0];
 			con.query(p, [req, r.id], function (err, res) {
-				if (err) throw err;
 			});
 		}
 	});
@@ -25,7 +24,6 @@ router.post("/new", function (req, res) {
 	let f = `INSERT INTO tag (tag, userId) VALUES (?,?)`;
 	con.connect(function (err) {
 				con.query(f,[tag, decoded.rr.id], function(err, result, fields) {
-					console.log(err);
 					if (err)
 						res.status(400).send(JSON.stringify({code:1, msg:"something was bad"}));
 					else
@@ -55,10 +53,8 @@ router.delete("/", function (req, res) {
 	let f = `DELETE FROM tag WHERE userId = ? AND tag = ?`;
 	let name = req.body.name;
 	var decoded = jwtDecode(req.token);
-	console.log("name = "+name);
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id, name], function (err, result) {
-			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, msg:"tag supprimer"}));
 		});
 	});

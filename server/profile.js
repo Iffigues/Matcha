@@ -91,7 +91,6 @@ function protect(u) {
 function look(tab, r, obj) {
 	let tt = {};
 	tt.code = 0;
-	console.log(r[i])
 	for (var i = 0; i < r.length; i++) {
 		if (!tab.includes(r[i])) {
 			tt.code = 1;
@@ -113,11 +112,10 @@ function look(tab, r, obj) {
 
 function hh(ee, uu, obj, id) {
 	let ff = ee;
-	if (uu = "password") {
+	if (uu == "password") {
 		if (obj['confirm'] == obj["password"]) {
 			bcrypt.hash(ee, saltRounds, function(err, hash) {
 				con.query(`UPDATE user SET password = ? WHERE id = ?`,[hash, id], function (err, res)  {
-					console.log(err);
 					return ;
 				});
 
@@ -159,12 +157,10 @@ router.post("/", function (req, res) {
 		if (y.code == 0) {
 			con.connect(function (err) {
 				con.query(y.sql, [decoded.rr.id], function (err, result) {
-					console.log(err);
 					res.status(200).send(JSON.stringify({code:0, msg:"Vos donnees ont ete changer"}));
 					con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
 						if(!err && rem.length) {
 							con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {
-								console.log(err);	
 							});
 						}
 					});
@@ -184,10 +180,8 @@ router.post("/profilephoto", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id, id], function (err, result) {
-			console.log(err);
-			if (!err && result) {
+			if (!err && result && result.length) {
 				con.query(ff, [id, decoded.rr.id], function (err, result1) {
-					console.log(err);
 					res.status(200).send(JSON.stringify({code:0, msg:"photo de profile changer"}));
 				});
 			}

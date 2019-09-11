@@ -18,10 +18,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({
-	limits: { 
-		//    fileSize: 5 * 1024 * 1024,  // 5 MB upload limit
-		files: 1                    // 1 file
-	},
+	limits: { files: 1},
 	fileFilter: function (req, file, cb){
 		if (accepted_extensions.some(ext => file.originalname.endsWith("." + ext))) {
 			return cb(null, true);
@@ -73,9 +70,6 @@ router.post("/update", function(req, res) {
 						con.query(f, [req.file.path, gg, decoded.rr.id], function (err, resul) {
 							if (!err) {
 								fs.unlink(yy, (err) => {
-									if (err) {
-										console.error(err)
-									}
 								})
 								res.status(200).send(JSON.stringify({code:0, msg: req.file.path}));
 							}
@@ -93,21 +87,16 @@ router.delete("/:id", function (req, res) {
 	let ff = `SELECT path FROM img WHERE id = ? AND userId = ?`;
 	con.connect(function (err) {
 		con.query(ff, [req.params.id, decoded.rr.id], function (err, results) {
-			console.log(err);
 			if (!err && results && results[0].path) {
 				fs.unlink(results[0].path, (err) => {
-					if (err)
-						console.log(err);
 				})
 				con.query(`SELECT * FROM user WHERE id = ?`, decoded.rr.id, function (err, rt) {
-					console.log(err);
 					if (rt[0].profilephoto == req.params.id) {
 						con.query("SELECT * FROM img WHERE userId = ?", decoded.rr.id, function (err, rz) {
 							let rrr = 0;
 							if (!err && rz[0])
 								rrr = rz[0].id;
 							con.query("UPDATE user SET profilephoto = ? WHERE id = ?",  [rrr, decoded.rr.id], function (err, rst){
-								console.log(err);
 							});
 						})
 					}
@@ -115,7 +104,6 @@ router.delete("/:id", function (req, res) {
 			}
 		});
 		con.query(f,[req.params.id, decoded.rr.id], function (err, result) {
-			console.log(err);
 			res.status(200).send(JSON.stringify({code:0, msg:"image suprime"}));
 		});
 	});

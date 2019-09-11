@@ -133,7 +133,6 @@ router.get("/:id",function (req, res) {
 				let ee = "1 OR sexe = 2 )";
 				let ggg = ` AND (preferences = ? OR preferences = 3) AND user.id != ?`;
 				let d = result[0];
-				console.log("dd="+d);
 				if (d.preferences) {
 				if (d.preferences == 1)
 					ee = "1)";
@@ -141,7 +140,6 @@ router.get("/:id",function (req, res) {
 					ee = "2 )";
 				}
 				con.query(f+ee+ggg, [d.lat, d.lng, d.sexe, decoded.rr.id], function (err, result1)  {
-					console.log(err);
 					lol(result1, res, d, id);
 				});
 			} else {

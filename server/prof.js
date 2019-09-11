@@ -20,11 +20,8 @@ function isC (a, b) {
 	if (!a || !b)
 		return false
 	var d = new Date(a);
-	console.log(d.toString())
 	var f = new Date(b);
-	console.log(f.toString());
 	var diff = Math.abs(d - f);
-	console.log("diff="+diff)
 	if (diff > 300000)
 		return false;
 	return true;
@@ -63,7 +60,6 @@ router.get("/:id", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(`SELECT *, CURRENT_TIMESTAMP() as clock  FROM user  WHERE id = ?`, id, function (err, user) {
-			console.log(err);
 			con.query(`SELECT name FROM furry WHERE userId = ?`, id, function (err, furry) {
 				con.query(`SELECT tag as name FROM tag WHERE userId = ?`,id, function (err, tags) {
 					con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo= ?`,[id, decoded.rr.id], function (err, resultat3){
