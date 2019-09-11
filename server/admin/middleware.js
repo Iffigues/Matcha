@@ -7,10 +7,9 @@ const query = util.promisify(con.query).bind(con);
 
 
 async function fete(req, res, next, decoded, token) {
-	console.log(decoded);
 	const ee = await query("SELECT role FROM user WHERE id =?", decoded.rr.id);
 	if (ee[0].role != "admin") {
-		res.status(401).send({code:3, msg:"you are not admin"});
+		res.status(401).send({code:3, msg:"You are not an administrator"});
 	} else {
 		res.token = jwt.sign(jwt.decode(token), "my-secret", {})
 		next();

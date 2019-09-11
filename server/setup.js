@@ -12,7 +12,7 @@ function createUser(use) {
 		bio 	LONGTEXT,
 		lat 	double,
 		lng 	double,
-		ville	VARCHAR(255),
+		city	VARCHAR(255),
 		sexe	int DEFAULT 1,
 		preferences int DEFAULT 3,
 		profilephoto  int,

@@ -9,7 +9,6 @@ var transporter = nodemailer.createTransport({
 });
 
 function opts(tos, subj, text) {
-	console.log(tos)
 	return {
 		  from: 'matchapeur@gmail.com',
 		  to: tos,
@@ -21,10 +20,6 @@ function opts(tos, subj, text) {
 function sendMail(tos, subj, text){
 	const mailOptions = opts(tos, subj, text);
 	transporter.sendMail(mailOptions, function (err, info) {
-		   if(err)
-			     console.log(err)
-		   else
-			     console.log(info);
 	});
 }
 

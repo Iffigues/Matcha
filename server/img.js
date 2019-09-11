@@ -23,7 +23,7 @@ const upload = multer({
 		if (accepted_extensions.some(ext => file.originalname.endsWith("." + ext))) {
 			return cb(null, true);
 		} else {
-			return cb(new Error('Only ' + accepted_extensions.join(", ") + ' files are allowed!'));
+			return cb(new Error('Seuls les fichiers ' + accepted_extensions.join(", ") + ' sont acceptés'));
 		}
 	},
 	storage: storage,
@@ -41,14 +41,14 @@ router.post("/upload", function (req, res) {
 					if(!err) {
 						var decoded = jwtDecode(req.token);
 						con.query(ff, [decoded.rr.id, req.file.path],  function (err, ress) {
-							return res.status(200).send(JSON.stringify({code:0, msg:"photos bien prise"}));
+							return res.status(200).send(JSON.stringify({code:0, msg:"La photo a bien été enregistrée"}));
 						});
 					} else {
-						return res.status(400).send(JSON.stringify({code:1, msg:'something was bad'}));
+						return res.status(400).send(JSON.stringify({code:1, msg:"Une erreur s'est produite"}));
 					}
 				})
 			} else {
-				return (res.status(400).send(JSON.stringify({code:1, msg:"vous avez dejas 5 images"})));
+				return (res.status(400).send(JSON.stringify({code:1, msg:"Vous avez déjà atteint la limite de 5 photos"})));
 			}
 		});
 	});
@@ -104,7 +104,7 @@ router.delete("/:id", function (req, res) {
 			}
 		});
 		con.query(f,[req.params.id, decoded.rr.id], function (err, result) {
-			res.status(200).send(JSON.stringify({code:0, msg:"image suprime"}));
+			res.status(200).send(JSON.stringify({code:0, msg:"La photo a été supprimée"}));
 		});
 	});
 });

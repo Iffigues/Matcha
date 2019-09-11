@@ -45,7 +45,7 @@ app.use(session({
 	saveUninitialized: true,
 	cookie: { secure: false, maxAge: 60000 }
 }))
-app.use(function (req, res, next) {;
+app.use(function (req, res, next) {
 	next();
 })
 
@@ -66,7 +66,6 @@ app.use(function(req, res, next) {
 
 app.use((err, req, res, next) => {
 	if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-		 console.error(err);
 		return res.sendStatus(400);
 	}
 	next();
@@ -93,10 +92,10 @@ app.use("/messages",msg);
 app.get('/connected', function (req, res) {
 	const token = req.params.token || req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
 		if (!token) 
-					return res.status(200).send(JSON.stringify({code:1, msg:'vous n etes pas connecter'}));
+					return res.status(200).send(JSON.stringify({code:1, msg:"Vous n'êtes pas connecté"}));
 	jwt.verify(token, "my-secret", function(err, decoded) {
 		if (err ||  !decoded) 
-				return res.status(200).send(JSON.stringify({code:1, msg:'vous n etes pas connecter'}));
+				return res.status(200).send(JSON.stringify({code:1, msg:"Vous n'êtes pas connecté"}));
 		res.status(200).send(JSON.stringify({code:0, msg:"connecter", username: decoded.rr.username, role: decoded.rr.role}));
 	});
 

@@ -12,7 +12,7 @@ async function verify(req, res, next, tok) {
 		if (rr && rr.length) {
 			next();
 		} else {
-			return res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a ete supprimer"}));
+			return res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a été supprimé"}));
 		}
 	});
 }

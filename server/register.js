@@ -11,27 +11,27 @@ const mail = require('./mail.js');
 function verif(data) {
 	let valid = new Validateur();
 	if (!valid.isName(data.firstname+" "+data.lastname)) {
-		return ({code:1, msg:"invalide  firstname or lastname"});
+		return ({code:1, msg:"Le non ou le prénom est invalide"});
 	} else {
 		data.firstname = data.firstname.trim();
 		data.lastname = data.lastname.trim();
 	}
 
 	if (!valid.isEmail(data.email)) {
-		return ({code:1, msg: "invalide email"});
+		return ({code:1, msg: "L'adresse email est invalide"});
 	} else {
 		data.email = data.email.trim();
 	}
 	if (!valid.isPwd(data.pwd)) {
-		return ({code:1, msg: "invalide password"});
+		return ({code:1, msg: "Le mot de passe est invalide"});
 	} 
 	if (!valid.isLogin(data.login)) {
-		return ({code:1, msg: "invalide username"});
+		return ({code:1, msg: "Le nom d'utilisateur est invalide"});
 	} else {
 		data.login = data.login.trim();
 	}
 	if (!data.sexe)
-		return({code:1, msg: "invalide sexe"});
+		return({code:1, msg: "Le genre est invalide"});
 	return ({code:0,msg:data});
 }
 
@@ -51,8 +51,9 @@ function user(tab, hash) {
 	return verif(user);
 }
 
-function sendmai(token, username, email){
-	mail(email, 'account created', "<html><head></head><body><a href=\"http://gopiko.fr:8080/validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>");
+function sendmai(token, username, email, host){
+	let i = 'http://'+host+"/";
+	mail(email, 'Création du compte', "<html><head></head><body><a href=\""+i+"validate/"+username+"/"+token+"\">https://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>");
 }
 
 function table(req) {
@@ -73,7 +74,7 @@ function errno(err) {
 	b.code = 0;
 	if (err.errno == 1062) {
 		b.code = 1;
-		b.msg =  "le "+err.sqlMessage.split("'")[3]+" "+err.sqlMessage.split("'")[1]+" existent deja";	
+		b.msg =  "Le "+err.sqlMessage.split("'")[3]+" "+err.sqlMessage.split("'")[1]+" existe déjà";	
 	}
 	return b;
 }
@@ -85,17 +86,17 @@ router.post("/", function (req, res) {
 		let y  = r.msg;
 		if (!r.code) {
 		con.connect(function(err) {
-			const f = `INSERT INTO user (firstname, lastname, password, email, username) VALUES (?, ?, ?, ?, ?)`;
-			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login], function (err, result, fields) {
+			const f = `INSERT INTO user (firstname, lastname, password, email, username, sexe) VALUES (?, ?, ?, ?, ?, ?)`;
+			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.sexe], function (err, result, fields) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
 					con.query(lol, [id, y.token], function (err, results, field) {
-						sendmai(y.token, id, y.email);
+						sendmai(y.token, id, y.email, req.headers.host);
 					});
-					res.status(200).send(JSON.stringify({code:0, msg:"le compte vient d être creer, un message de confirmation vient d être envoyér"}));
+					res.status(200).send(JSON.stringify({code:0, msg:"Le compte vient d'être créé, un email de confirmation vient de vous être envoyé"}));
 				}	else {
-					res.status(400).send(JSON.stringify(errno(err)));
+					res.status(400).send(JSON.stringify(err));
 				}
 			});
 		});

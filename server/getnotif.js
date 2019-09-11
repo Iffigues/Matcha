@@ -20,7 +20,7 @@ router.get("/nbr", function (req, res) {
 
 router.get("/all", function (req, res) {
 	var decoded = jwtDecode(req.token);
-	let f = `SELECT * FROM notif WHERE who = ? ORDER BY date DESC`;
+	let f = `SELECT notif.*, user.username FROM notif INNER JOIN user AS user ON user.id = notif.userId WHERE who = ? ORDER BY date DESC`;
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id], function(err, resultats) {
 			con.query(`UPDATE notif SET look = 1 WHERE who = ?`, decoded.rr.id, function (err, rs){

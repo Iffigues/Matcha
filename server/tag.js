@@ -25,9 +25,9 @@ router.post("/new", function (req, res) {
 	con.connect(function (err) {
 				con.query(f,[tag, decoded.rr.id], function(err, result, fields) {
 					if (err)
-						res.status(400).send(JSON.stringify({code:1, msg:"something was bad"}));
+						res.status(400).send(JSON.stringify({code:1, msg:"Une erreur s'est produite"}));
 					else
-						res.status(200).send(JSON.stringify({code:0, msg:"le tag a bien ete creer"}));
+						res.status(200).send(JSON.stringify({code:0, msg:"Le centre d'intérêt a bien été ajouté"}));
 				});
 	});
 });
@@ -55,7 +55,7 @@ router.delete("/", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id, name], function (err, result) {
-			res.status(200).send(JSON.stringify({code:0, msg:"tag supprimer"}));
+			res.status(200).send(JSON.stringify({code:0, msg:"Le centre d'intérêt a bien été supprimé"}));
 		});
 	});
 });

@@ -14,7 +14,7 @@ function PofilesMap(props) {
 				/>
 				{props.profiles.length
 					? props.profiles.map((p, k) => {
-						const photo = p.profilephoto ? 'http://127.0.0.1:8080/' + p.profilephoto : avatar;
+						const photo = p.profilephoto ? 'http://' + document.location.hostname + ':8080/' + p.profilephoto : avatar;
 						return (<Marker key={k} riseOnHover="true" position={[p.lat, p.lng]}>
 							<Popup>
 								<ul>

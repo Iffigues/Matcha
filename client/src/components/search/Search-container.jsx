@@ -38,7 +38,7 @@ class SearchContainer extends React.Component {
 		window.onscroll = debounce(() => {
 			if (window.innerHeight + document.documentElement.scrollTop
 				=== document.documentElement.offsetHeight && this._isMounted) {
-				this.setState({load: this.state.load + 18});
+				this.setState({load: this.state.load + 30});
 			}
 		}, 100);
 	}
@@ -54,7 +54,7 @@ class SearchContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/search/all', {
+		fetch('http://' + document.location.hostname + ':8080/search/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -77,9 +77,10 @@ class SearchContainer extends React.Component {
 								min: Math.min.apply(Math, pops),
 								max: Math.max.apply(Math, pops)
 							};
+							const distRangeMin = Math.min.apply(Math, dists) - 1;
 							const distRange = {
-								min: Math.min.apply(Math, dists),
-								max: Math.max.apply(Math, dists)
+								min: distRangeMin < 0 ? 0 : distRangeMin,
+								max: Math.max.apply(Math, dists) + 1
 							};
 							this.setState({
 								ageRange: ageRange,
@@ -101,7 +102,7 @@ class SearchContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http://127.0.0.1:8080/tag/all', {
+		fetch('http://' + document.location.hostname + ':8080/tag/all', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -122,7 +123,7 @@ class SearchContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-		fetch('http://127.0.0.1:8080/furry', {
+		fetch('http://' + document.location.hostname + ':8080/furry', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -204,7 +205,7 @@ class SearchContainer extends React.Component {
 	handleLikeClick(e) {
 		const d = {id: parseInt(e.target.value)};
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/like/add', {
+		fetch('http://' + document.location.hostname + ':8080/like/add', {
 			method: 'POST',
 			headers: {
 				'x-access-token': token,

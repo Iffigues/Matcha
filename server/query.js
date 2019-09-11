@@ -12,14 +12,14 @@ const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 const mail = require("./mail.js");
 
-function makeMail(token, id, email) {
-	let c = "<html><head></head><body><a href=\"http://gopiko.fr:8080/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+function makeMail(token, id, email, host,i) {
+	let c = "<html><head></head><body><a href=\""+i+"/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
 }
 
-function sendmai(token, id, email) {
-	mail(token, id , makeMail());
+function sendmai(token, username, email, host) {
+	let i = 'http://'+host+"/";
+	mail(email, "Réinitialisation du mot de passe", makeMail(token, id, host,i));
 }
-
 
 router.post("/recover", function(req, res) {
 	let f = `INSERT INTO recover (userId, tok) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?) ON DUPLICATE KEY UPDATE   userId= (SELECT id FROM user WHERE email = ? AND active = 1)`;
@@ -43,19 +43,20 @@ router.post("/recover", function(req, res) {
 							let id = rst[0].id;
 							con.query(f,[email, token], function(err, result, field) {
 								if (!err) {
-									sendmai(tok, id, email);
+									sendmai(tok, id, email, req.headers.host);
 									res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
 								}else {
 									res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
 								}
 							});
 						}
-					});
+					})
 				});
-			});
+			})
 		}
 	});
 });
+
 
 router.get("/recover/:toki/:id", function(req, res) {
 	let ff = `SELECT * FROM recover WHERE token = ? AND userId = ?`;
@@ -83,7 +84,7 @@ router.post("/recover/:tok/:id" , function (req, res){
 		con.query(f, [id, tok], function (err, rst) {
 			if (rst && rst.affectedRows) {
 				con.query(g,[pwd, id], function (err, rlt) {
-				
+
 				})
 			}
 		})
@@ -100,21 +101,21 @@ function ver(a){
 router.post("/", function (req, res) {
 	con.connect(function (err) {
 		if (!req.body.password || !req.body.username)
-			return res.status(400).send(JSON.stringify({code:0, msg:"un des champs est vide"}));
+			return res.status(400).send(JSON.stringify({code:0, msg:"Un des champs est vide"}));
 		let pwd = req.body.password;
 		let email = req.body.username.trim();
 		if(!ver(email)) {
-			return res.status(200).send(JSON.stringify({code: 1, msg:"bad username"}));
+			return res.status(200).send(JSON.stringify({code: 1, msg:"Le nom d'utilisateur est incorrecte"}));
 		}
 		var sql = `SELECT * FROM user WHERE user.username = ? LIMIT 1`;
 		con.query(sql, [email] ,function (err, result, fields) {
-			if (err) throw err;
+			if (err || !result || result.length == 0) 
+				return res.status(404).send(JSON.stringify({code:2, msg:"le compte n'existe pas"}))
 			let rr = result[0];
 			if (!rr || !rr.active)
-				return res.status(404).send(JSON.stringify({code:2, msg:"l utilisateur n a pas accepter le compte ou n existe pas"}));
-			if (rr && rr.active) {
+				return res.status(404).send(JSON.stringify({code:2, msg:"Ce compte n'est pas activé ou n'existe pas"}));
+			if (rr.active) {
 				bcrypt.compare(pwd, rr.password, (err, ress) => {
-					if (err) throw err;
 					if (ress === true) {
 						let toke = new tok();
 						rr.date = Date.now();
@@ -122,14 +123,14 @@ router.post("/", function (req, res) {
 						const token = jwt.sign(payload, 'my-secret', {
 							expiresIn: 1000000
 						});
-						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}));
+						res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"Vous êtes connecté",token:token}));
 					} else {
-						res.status(404).send(JSON.stringify({code:2,msg:"bad password"}));
+						res.status(404).send(JSON.stringify({code:2,msg:"Le mot de passe est incorrect"}));
 					}
 				})
 
 			}else{
-				res.status(404).send(JSON.stringify({err:3,msg:"not found"}));
+				res.status(404).send(JSON.stringify({err:3,msg:"L'utilisateur est introuvable"}));
 			}
 		});
 	});
@@ -140,7 +141,7 @@ router.get("/logout", mid, function(req, res){
 	const token = jwt.sign(payload, 'my-secret', {
 		expiresIn: 0
 	});
-	res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"vous êtes connecte",token:token}))
+	res.cookie('token', token, { httpOnly: true }).status(200).send(JSON.stringify({code:0, msg:"Vous êtes connecté",token:token}))
 });
 
 module.exports = router;

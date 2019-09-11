@@ -23,7 +23,7 @@ class AdminReportsContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/adm/report', {
+		fetch('http://' + document.location.hostname + ':8080/adm/report', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,

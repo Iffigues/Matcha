@@ -26,7 +26,7 @@ class AdminUsersContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/adm/users', {
+		fetch('http://' + document.location.hostname + ':8080/adm/users', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -72,7 +72,7 @@ class AdminUsersContainer extends React.Component {
 		e.preventDefault();
 		const data = {id: e.target.value};
 		const token = localStorage.getItem('token');
-		fetch('http://127.0.0.1:8080/adm/delete/user', {
+		fetch('http://' + document.location.hostname + ':8080/adm/delete/user', {
 			method: 'DELETE',
 			headers: {
 				'x-access-token': token,

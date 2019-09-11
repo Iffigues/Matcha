@@ -17,6 +17,7 @@
     "flow-bin": "^0.63.1",
     "graceful-fs": "^4.2.2",
     "gravatar": "^1.8.0",
+    "ip": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
     "jws": "^3.2.2",
     "jwt-decode": "^2.2.0",

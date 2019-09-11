@@ -38,7 +38,7 @@ router.post("/", function (req, res){
 		con.connect(function (err) {
 			con.query(`UPDATE user SET lat = ?, lng = ?, city = ? WHERE id= ?`,[lat, lng, req.body.city, decoded.rr.id], function (err, resiii){
 				if (!err) {
-					res.status(200).send(JSON.stringify({code: 0, msg:"ville changer"}))
+					res.status(200).send(JSON.stringify({code: 0, msg:"La ville a été modifiée"}))
 				}
 			});
 		});

@@ -23,7 +23,7 @@ function Profile(props) {
 				<Flash notices={props.notices}/>
 				<div className="row">
 					<div className="col-sm-4">
-						<img className="card-img pt-3 pb-3" src={profilePhoto ? 'http://127.0.0.1:8080/' + profilePhoto.path : avatar} alt="..."/>
+						<img className="card-img pt-3 pb-3" src={profilePhoto ? 'http://' + document.location.hostname + ':8080/' + profilePhoto.path : avatar} alt="..."/>
 					</div>
 				</div>
 				<h2>{props.firstname} {props.lastname} <i>- {props.username}</i></h2>
@@ -46,7 +46,7 @@ function Profile(props) {
 					{props.photos.map((photo, key) => 
 						<div key={key} className="col-sm-3">
 							<div className="card">
-								<img className="card-img-top" src={'http://127.0.0.1:8080/' + photo.path} alt="..."/>
+								<img className="card-img-top" src={'http://' + document.location.hostname + ':8080/' + photo.path} alt="..."/>
 							</div>
 						</div>)}
 				</div>

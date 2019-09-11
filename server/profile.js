@@ -40,7 +40,7 @@ function builder(err, result, result1, result2, ips, fufu) {
 	b.lat = result.lat;
 	b.sexe = result.sexe;
 	b.profilephoto = result.profilephoto;
-	b.pref = result.pref;
+	b.preferences = result.preferences;
 	b.username = result.username;
 	b.tags  = tte(result1);
 	b.photos = result2;
@@ -79,11 +79,11 @@ function protect(u) {
 	let valid = new val();
 	tt.code = 0;
 	if ((u == "lastname" || u == "firstname") && !valid.isName(u))
-		retun ({code: 1, msg:"nom ou prenom invalide"})
+		retun ({code: 1, msg:"Le nom ou le prénom est invalide"})
 	if (u == "username" && !valid.isLogin(u))
-		return ({code:1, msg:"username invalide"});
+		return ({code:1, msg:"Le nom d'utilisateur est invalide"});
 	if (u == "email" && !valid.isEmail(u)) {
-		return ({code:1, msg:"email invalide"});
+		return ({code:1, msg:"L'adresse email est invalide"});
 	}
 	return tt;
 }
@@ -94,12 +94,11 @@ function look(tab, r, obj) {
 	for (var i = 0; i < r.length; i++) {
 		if (!tab.includes(r[i])) {
 			tt.code = 1;
-			tt.msg = "valeur inexistante "+r[i];
+			tt.msg = "Valeur inexistante "+r[i];
 			return tt;
 		} else if (r[i] == "password" &&  obj["confirm"] != obj["password"]) {
 			tt.code = 1
-			console.log(r[i]);
-			tt.msg = "mauvais password";
+			tt.msg = "Mauvais mot de passe";
 			return tt;
 		} else {
 			let u = protect(obj[r[i]]);
@@ -157,10 +156,10 @@ router.post("/", function (req, res) {
 		if (y.code == 0) {
 			con.connect(function (err) {
 				con.query(y.sql, [decoded.rr.id], function (err, result) {
-					res.status(200).send(JSON.stringify({code:0, msg:"Vos donnees ont ete changer"}));
+					res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
 					con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
 						if(!err && rem.length) {
-							con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {
+							con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {	
 							});
 						}
 					});

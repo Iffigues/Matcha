@@ -45,7 +45,7 @@ function Notifications(props) {
 				</ul>
 			</div>
 		</div>
-		);
+	);
 }
 
 export default Notifications;
