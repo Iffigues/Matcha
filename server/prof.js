@@ -36,7 +36,7 @@ function usete(r) {
 	profile.id = r.user[0].id;
 	profile.bio = r.user[0].bio;
 	profile.city = r.user[0].city;
-	profile.popularity = ((r.user[0].popularity + 1)*r.max[0].max + 1) / (r.max[0].popularity + 1);
+	profile.popularity = ((r.user[0].popularity + 1) * 100) / (r.max[0].max + 1);
 	profile.sexe = r.user[0].sexe;
 	profile.preferences = r.user[0].preferences;
 	profile.lat = r.user[0].lat;
