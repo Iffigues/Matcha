@@ -218,7 +218,12 @@ class SearchContainer extends React.Component {
 			if (response) {
 				response.json().then(data => { 
 					if (data.code === 0 && this._isMounted) {
-						this.fetchData();
+						const profiles = this.state.profiles.slice();
+						profiles.forEach(profile => {
+							if (profile.id === d.id)
+								profile.liked = data.liked;
+						});
+						this.setState({profiles: profiles});
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
