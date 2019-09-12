@@ -38,11 +38,8 @@
     "validator": "^11.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "devserver": "nodemon  -w server -w package.json ./server.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "nodemon  -w server -w package.json ./server.js",
+    "devserver": "nodemon  -w server -w package.json ./server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -63,7 +60,6 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
-    "eslint": "5.16.0",
     "eslint-plugin-react": "^7.14.2",
     "gulp": "^4.0.2",
     "gulp-changed": "^3.0.0",
