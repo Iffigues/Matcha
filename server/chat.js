@@ -47,6 +47,12 @@ async function unreader(user, data) {
 	});
 }
 
+async function isBloque(user, data) {
+	const v = await query(`SELECT userId, bloqueID FROM bloque WHERE (bloqueId = ? AND userId = ?) OR (bloqueId = ? AND userId = ?)`, user.rr.id, data.toId, user.rr.id);
+	if (v && v.length)
+		return 0;
+	return 1;
+}
 
 io.sockets.on('connection', function (socket) {
 	let good = 0;
@@ -61,12 +67,14 @@ io.sockets.on('connection', function (socket) {
 		if (good) {
 			socket.on('chat', function(data){
 				try {
-					lol(data, user);
+					if (isBloque(user, data))
+						lol(data, user);
 				} catch (e) {
 				}
 			});
 			socket.on('unread', function (data) {
-				unreader(user, data)
+				if (isBloque(user, data))
+					unreader(user, data)
 			});
 			socket.on('disconnect', function(){
 				delete users[user.rr.id];
