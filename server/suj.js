@@ -37,7 +37,7 @@ function pok(a, b) {
 async function lol (g, res, me, type) {
 	try {
 		let profile = [];
-		const max = await query(`SELECT MAX(popularity) AS max,popularity  FROM user`);
+		const max = await query(`SELECT MAX(popularity) AS max FROM user`).catch(err => console.log(err));
 		for (let n in g) {
 			if (g[n].lat && g[n].lng && g[n].birthdate && g[n].city && g[n].firstname && g[n].lastname) {
 				let oui = 0;

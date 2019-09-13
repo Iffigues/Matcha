@@ -128,9 +128,12 @@ function Search(props) {
 											return (key > 1 ? <span key={key}></span> : <span key={key} className="badge badge-secondary mr-1">{tag.tag}</span>);
 										})}
 									</div>
-									<div className="text-center pt-3">
-										<button value={pro.id} className={"btn-sm btn" + (!pro.like ? "-outline" : "") + "-primary m-1"} onClick={props.onLikeClick}>J'aime</button>
-									</div>
+									{ pro.profilephoto
+										? <div className="text-center pt-3">
+											<button value={pro.id} className={"btn-sm btn" + (!pro.like ? "-outline" : "") + "-primary m-1"} onClick={props.onLikeClick}>J'aime</button>
+										</div>
+										: <div></div>
+									}
 								</div>
 							</div>
 						);

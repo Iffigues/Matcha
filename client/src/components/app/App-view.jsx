@@ -6,6 +6,7 @@ import Reinitialize from '../reinitialize';
 import Login from '../login';
 import Logout from '../logout';
 import Profile from '../profile';
+import Home from '../home';
 import Account from '../account';
 import Search from '../search';
 import Suggestions from '../suggestions';
@@ -22,13 +23,11 @@ function App(props) {
 			<Router>
 				<RouteChange actions={[props.handleRouteChange]}/>
 				<Navbar username={props.username} loggedIn={props.loggedIn} role={props.role}/>
-				{props.loggedIn ? <Chat/> : <div></div>}
+				{props.loggedIn ? <Chat/> : null}
 				<Switch>
-					<Route path="/login" component={Login}/>
-					<Route path="/reinitialize" component={Reinitialize}/>
-					<Route path="/register" component={Register}/>
 					{props.loggedIn
-						?	<Switch> 
+						?	<Switch>
+								<Route path="/" exact component={Account}/>
 								<Route path="/profiles/:id" component={Profile}/>
 								<Route path="/account" exact component={Account}/>
 								<Route path="/suggestions" component={Suggestions} role={props.role}/>
@@ -37,10 +36,16 @@ function App(props) {
 								<Route path="/admin" component={Admin}/>
 								<Route path="/logout" component={Logout}/>
 								<Route path="/map" component={ProfilesMap} role={props.role}/>
+								<Route path="/:whatever" component={Account}/>
 							</Switch>
-						:	null
+						:	<Switch>
+								<Route path="/" exact component={Home}/>
+								<Route path="/login" component={Login}/>
+								<Route path="/reinitialize" component={Reinitialize}/>
+								<Route path="/register" component={Register}/>
+								<Route path="/:whatever" component={Login}/>
+							</Switch>
 					}
-					<Route path="/:whatever" component={Login}/>
 				</Switch>
 			</Router>
 		</div>

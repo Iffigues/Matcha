@@ -1,0 +1,13 @@
+.Home {
+	padding-top: 56px;
+}
+
+.Home > div {
+	margin-top: 100px;
+	margin-right: auto;
+	margin-left: auto;
+
+	width: 30%;
+	background-color: rgb(255, 255, 255, 0.35);
+	border-radius: 10px;
+}

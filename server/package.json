@@ -60,7 +60,6 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
-    "eslint-plugin-react": "^7.14.2",
     "gulp": "^4.0.2",
     "gulp-changed": "^3.0.0",
     "gulp-clean-css": "^4.2.0",
