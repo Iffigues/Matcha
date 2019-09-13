@@ -36,7 +36,7 @@ function usete(r) {
 	profile.id = r.user[0].id;
 	profile.bio = r.user[0].bio;
 	profile.city = r.user[0].city;
-	profile.popularity = ((r.user[0].popularity + 1)*r.max[0].max + 1) / (r.max[0].popularity + 1);
+	profile.popularity = ((r.user[0].popularity + 1) * 100) / (r.max[0].max + 1);
 	profile.sexe = r.user[0].sexe;
 	profile.preferences = r.user[0].preferences;
 	profile.lat = r.user[0].lat;
@@ -68,7 +68,7 @@ router.get("/:id", function (req, res) {
 							con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`,[decoded.rr.id, id], function (err, you) {
 								con.query(`SELECT *  FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, id], function (err, blocks){
 									notif(decoded.rr, id, 'visited',"un utilisateur a vu vorte profile");
-									con.query(`SELECT MAX(popularity) AS max, popularity FROM user`,function(err, rst){
+									con.query(`SELECT MAX(popularity) AS max, popularity FROM user`,function(err, max){
 									let profile  = usete({user, furry, tags, resultat3, you,images, blocks,max});
 									res.status(200).send(JSON.stringify({code:0, profile}));
 									})
