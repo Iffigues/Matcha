@@ -35,7 +35,10 @@ class ProfilesMapContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0 && this._isMounted) {
- 						this.setState({profiles: data.profiles});
+						let profiles = data.profiles.slice();
+						profiles.sort((a, b) => a.distance - b.distance);
+						profiles = profiles.slice();
+ 						this.setState({profiles: profiles});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

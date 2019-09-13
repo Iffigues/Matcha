@@ -6,7 +6,7 @@ function Reinitialize(props) {
   return (
     <div className="Reinitialize">
     	<div className="container">
-		    <h2 className="my-4">Réinitialisation du Mot de passe</h2>
+		    <h2 className="mb-4">Réinitialisation du Mot de passe</h2>
 	 	    <Flash errors={props.errors}/>
 		    <Flash notices={props.notices}/>
 	    	<form onSubmit={props.onSubmit} className="needs-validation" noValidate>

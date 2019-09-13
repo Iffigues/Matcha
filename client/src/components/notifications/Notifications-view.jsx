@@ -12,7 +12,7 @@ function Notifications(props) {
 	return (
 		<div className="Notifications">
 			<div className="container">
-				<h2 className="mt-2">Notifications</h2>
+				<h2 className="mb-4">Notifications</h2>
 				<Flash errors={props.errors}/>
 				<Flash notices={props.notices}/>
 				<ul>

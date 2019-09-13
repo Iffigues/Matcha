@@ -6,7 +6,7 @@ function Register(props) {
   return (
 	<div className="Register">
 		<div className="container">
-			<h2 className="my-4">Création de compte</h2>
+			<h2 className="mb-4">Création de compte</h2>
 			<Flash errors={props.errors}/>
 			<Flash notices={props.notices}/>
 			<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
@@ -79,7 +79,7 @@ function Register(props) {
 				</div>
 				<div className="form-group row">
 					<div className="col-sm-10">
-						<button id="newbut" className="btn btn-primary mr-1">Créer un compte</button>
+						<button id="newbut" className="btn btn-primary mr-1">Créer le compte</button>
 						<button type="reset" className="btn btn-light mr-1">Annuler</button>
 					</div>
 				</div>
