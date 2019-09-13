@@ -31,7 +31,7 @@ function Notifications(props) {
 									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a aimé votre profil en retour, c'est un match !</span>;
 									break ;
 								case "unmatched":
-									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a vu votre profil</span>;
+									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> n'aime plus votre profil</span>;
 									break ;
 								case "gotmessage":
 									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> vous a envoyé un message</span>;
