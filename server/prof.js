@@ -68,7 +68,7 @@ router.get("/:id", function (req, res) {
 							con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`,[decoded.rr.id, id], function (err, you) {
 								con.query(`SELECT *  FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, id], function (err, blocks){
 									notif(decoded.rr, id, 'visited',"un utilisateur a vu vorte profile");
-									con.query(`SELECT MAX(popularity) AS max, popularity FROM user`,function(err, rst){
+									con.query(`SELECT MAX(popularity) AS max, popularity FROM user`,function(err, max){
 									let profile  = usete({user, furry, tags, resultat3, you,images, blocks,max});
 									res.status(200).send(JSON.stringify({code:0, profile}));
 									})
