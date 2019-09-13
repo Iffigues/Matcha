@@ -37,7 +37,7 @@ function pok(a, b) {
 async function lol (g, res, me, type) {
 	try {
 		let profile = [];
-		const max = await query(`SELECT MAX(popularity) AS max,popularity  FROM user`);
+		const max = await query(`SELECT MAX(popularity) AS max FROM user`);
 		for (let n in g) {
 			if (g[n].lat && g[n].lng && g[n].birthdate && g[n].city && g[n].firstname && g[n].lastname) {
 				let oui = 0;
@@ -76,7 +76,8 @@ async function lol (g, res, me, type) {
 						distance: g[n].distance,
 						furrymatch: oui,
 						match: non + oui + pok(popu + 1, me.popularity + 1)+ ye,
-						like: li
+						like: li,
+						likable: g[n].path != null
 					}, g[n]));
 			}	
 		}
@@ -123,7 +124,7 @@ router.get("/:id",function (req, res) {
 		111.045*haversine(user.lat,user.lng ,latpoint, longpoint) AS  distance
 	FROM user 
 	JOIN (
-		SELECT  ?  AS latpoint,  -? AS longpoint
+		SELECT  ?  AS latpoint,  ? AS longpoint
 	) AS p
 	LEFT JOIN img as img ON img.id = user.profilephoto
 	WHERE (sexe = `; 
