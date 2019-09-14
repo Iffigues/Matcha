@@ -3,7 +3,7 @@ const util = require('util');
 const query = util.promisify(con.query).bind(con);
 
 async function role (id) {
-	let f = `SELECT * FROM USER WHERE ID = ?`;
+	let f = `SELECT * FROM user WHERE id = ?`;
 	const rst = await query(f,id).then((rsts, err) => {
 		return rsts;
 	});
