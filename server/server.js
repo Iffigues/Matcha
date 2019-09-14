@@ -25,7 +25,8 @@ const match = require("./match.js");
 const adm = require("./admin/del.js");
 const msg = require("./message.js");
 const con = require("./dt.js");
-var cors = require('cors')
+const cors = require('cors')
+const getlike = require('./getlike.js');
 
 app.use(cors());
 app.options('*', cors());
@@ -88,7 +89,8 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 											  app.use("/user", prof);
 											  app.use("/match", match);
 											  app.use("/messages",msg);
-											  app.get('/connected', function (req, res) {
+											  app.use("/getlike", getlike);
+											  app.get('/connected', withAuth, function (req, res) {
 											  const token = req.params.token || req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
 											  if (!token) 
 											  return res.status(200).send(JSON.stringify({code:1, msg:"Vous n'êtes pas connecté"}));
@@ -97,7 +99,6 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 											  return res.status(200).send(JSON.stringify({code:1, msg:"Vous n'êtes pas connecté"}));
 											  con.connect(function (err) {
 											  con.query(`SELECT role FROM user WHERE id = ?`, decoded.rr.id, function (err, rst) {
-												console.log(err);
 											  	res.status(200).send(JSON.stringify({code:0, msg:"connecté", username: decoded.rr.username, role:rst[0].role , lng: decoded.rr.lng, lat: decoded.rr.lat}));
 												});
 											  });

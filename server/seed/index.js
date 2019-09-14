@@ -10,7 +10,6 @@ function getRandomInt(max) {
 function rr() {
 	const f = `INSERT INTO user (firstname, lastname, password, email, username, city, sexe, lat, lng, preferences, profilephoto, popularity , birthdate,active,role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,? ,1, 'user')`;
 	con.connect(function(err) {
-		if (err) throw err;
 		for (let i = 0; i < 1000; i++) {
 			let b = faker.fake("{{internet.email}}\1{{internet.userName}}\1{{name.lastName}}\1{{name.firstName}}\1{{address.latitude}}\1{{address.longitude}}\1{{address.city}}");
 			let c = b.split('\1');
@@ -32,7 +31,6 @@ function rr() {
 function createAdmin() {
 	const f = `INSERT INTO user (firstname, lastname, password, email, username,city,active,role) VALUES ('admin','admin',?,'admin@addm.fr','admin'),1,'admin'`;
 	con.connect(function (err) {
-		if (err) throw err;
 		bcrypt.hash("admin",10, function (err, hash) {
 			con.query(f,hash,function (err, res) {
 				console.log(err);
