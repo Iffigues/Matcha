@@ -11,6 +11,7 @@ import Account from '../account';
 import Search from '../search';
 import Suggestions from '../suggestions';
 import Notifications from '../notifications';
+import LikedList from '../likedlist';
 import Admin from '../admin';
 import Chat from '../chat';
 import Flash from '../flash';
@@ -29,9 +30,10 @@ function App(props) {
 				<Switch>
 					{props.loggedIn
 						?	<Switch>
-								<Route path="/" exact component={Account}/>
+								<Route path="/" exact render={() => <Account addFlash={props.addFlash}/>} />
 								<Route path="/profiles/:id" component={Profile}/>
 								<Route path="/account" exact render={() => <Account addFlash={props.addFlash}/>} />
+								<Route path="/liked"  component={LikedList} />
 								<Route path="/suggestions" render={() => <Suggestions role={props.role} addFlash={props.addFlash}/>} />
 								<Route path="/search" render={() => <Search role={props.role} addFlash={props.addFlash}/>}/>
 								<Route path="/notifications" component={Notifications}/>

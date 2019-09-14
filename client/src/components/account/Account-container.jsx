@@ -237,10 +237,10 @@ class AccountContainer extends React.Component {
 					if (this._isMounted) {
 						if (data.code === 0) {
 							this.props.addFlash("notice", data.msg);
-							//this.setState(d);
+							this.setState(d);
 						} else {
 							this.props.addFlash("error", data.msg);
-							//this.setState(d);
+							this.setState(d);
 						}
 					}
 				}).catch(error => {
@@ -273,10 +273,10 @@ class AccountContainer extends React.Component {
 					if (this._isMounted) {
 						if (data.code === 0) {
 							this.props.addFlash("notice", data.msg);
-							//this.setState(d);
+							this.setState(d);
 						} else {
 							this.props.addFlash("error", data.msg);
-							//this.setState(d);
+							this.setState(d);
 						}
 					}
 				}).catch(error => {

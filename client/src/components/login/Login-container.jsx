@@ -10,8 +10,6 @@ class LoginContainer extends React.Component {
 		this.state = {
 			redirect: false
 		}
-		if (this.props.notices)
-			this.state.notices.push(this.props.notices);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 

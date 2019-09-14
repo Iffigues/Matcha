@@ -1,8 +1,7 @@
 import React from 'react';
-import ProfilesMap from './ProfilesMap-view.jsx';
-import { Redirect } from "react-router-dom";
+import LikedList from './LikedList-view.jsx';
 
-class ProfilesMapContainer extends React.Component {
+class LikedListContainer extends React.Component {
 
 	_isMounted = false;
 
@@ -24,7 +23,7 @@ class ProfilesMapContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://' + document.location.hostname + ':8080/search/all', {
+		fetch('http://' + document.location.hostname + ':8080/profiles/liked', {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -35,10 +34,7 @@ class ProfilesMapContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0 && this._isMounted) {
-						let profiles = data.profiles.slice();
-						profiles.sort((a, b) => a.distance - b.distance);
-						profiles = profiles.slice();
- 						this.setState({profiles: profiles});
+ 						this.setState({profiles: data.profiles});
 		 			}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -52,16 +48,11 @@ class ProfilesMapContainer extends React.Component {
 
 
 	render() {
-		if (this.props.role === "preuser") {
-			return <Redirect to="/account"/>;
-		}
-		return <ProfilesMap
+		return <LikedList
 					profiles={this.state.profiles}
-					lng={this.props.lng}
-					lat={this.props.lat}
 				/>;
 	}
 
 }
 
-export default ProfilesMapContainer;
+export default LikedListContainer;

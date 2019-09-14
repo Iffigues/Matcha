@@ -277,8 +277,9 @@ class SearchContainer extends React.Component {
 	}
 
  	render() {
- 		if (this.props.role === "preuser")
+ 		if (this.props.role === "preuser") {
 			return <Redirect to="/account"/>;
+ 		}
  		const profiles = this.sortAndFilter();
 		return <Search
 					ageRange={this.state.ageRange}

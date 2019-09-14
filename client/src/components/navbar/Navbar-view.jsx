@@ -24,6 +24,9 @@ function Navbar(props) {
 								<Link className="nav-link" to="/map">Carte</Link>
 							</li>
 							<li className="nav-item">
+								<Link className="nav-link" to="/liked">J'aime</Link>
+							</li>
+							<li className="nav-item">
 								<Link className="nav-link" to="/notifications">Notifications
 									{props.notReadNotifs
 										? <span className="badge badge-danger mx-2">{props.notReadNotifs}</span>

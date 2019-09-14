@@ -4,7 +4,6 @@ import App from './App-view.jsx';
 class AppContainer extends React.Component {
 
 	_isMounted = false;
-	_interval = null;
 
 	constructor() {
 		super();
@@ -19,6 +18,7 @@ class AppContainer extends React.Component {
 		this.handleRouteChange = this.handleRouteChange.bind(this);
 		this.addFlash = this.addFlash.bind(this);
 		this.handleCloseClick = this.handleCloseClick.bind(this);
+		this.clearFlashes = this.clearFlashes.bind(this);
 	}
 
 	componentDidMount() {
@@ -70,11 +70,11 @@ class AppContainer extends React.Component {
 		const flashes = this.state.flashes.slice();
 		flashes.push({type: type, msg: message});
 		this.setState({flashes: flashes});
-		this._interval = setInterval(this.clearFlashes, 5000); 
+		setTimeout(this.clearFlashes, 3000); 
 	}
 
 	clearFlashes() {
-		this.setState({flashes: []});
+		this.setState({flashes: this.state.flashes.slice(1)});
 	}
 
 	handleCloseClick(e) {
