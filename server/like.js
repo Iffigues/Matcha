@@ -26,31 +26,33 @@ router.post("/add", function (req, res) {
 			res.status(200).send(JSON.stringify({code:1, msg:"Petit Cachotier"}));
 		else
 			con.query(`SELECT * FROM img WHERE userId = ?`, o, function (err, lrem) {
-				if (!err && lrem && lrem.length)
-					con.query(f, [decoded.rr.id, o], function (err, resu) {
-						if (!err) {
-							let rrrr = "";
-							let mmm = "";
-							con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`, [o, decoded.rr.id] ,function (errr,bbb){
-								if (!errr && bbb.length) {
-									rrr= "matched";
-									mmm="Vous venez de matcher avec un utilisateur";
-								} else {
-									rrr = "liked";
-									mmm="Quelqu'un vient de vous aimer";
-								}
-								notif(decoded.rr, o, rrr, mmm);
-								res.status(200).send(JSON.stringify({code: 0, msg:"mmm"}));
-							});
-						} else {
-							con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
-								res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur n'est plus aimé"}));
-								notif(decoded.rr, o, 'unmatched');
-							});
-						}
-					});
-				else
-					res.status(400).send(JSON.stringify({code:0, msg:"Vous ne pouvez aimer un utilisateur sans photos"}));
+				con.query(`SELECT pforilephoto FROM user WHERE id= ?`,o, function (err, lll) {
+					if (!err && lrem && lrem.length && lll)
+						con.query(f, [decoded.rr.id, o], function (err, resu) {
+							if (!err) {
+								let rrrr = "";
+								let mmm = "";
+								con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`, [o, decoded.rr.id] ,function (errr,bbb){
+									if (!errr && bbb.length) {
+										rrr= "matched";
+										mmm="Vous venez de matcher avec un utilisateur";
+									} else {
+										rrr = "liked";
+										mmm="Quelqu'un vient de vous aimer";
+									}
+									notif(decoded.rr, o, rrr, mmm);
+									res.status(200).send(JSON.stringify({code: 0, msg:"mmm",like: 1}));
+								});
+							} else {
+								con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
+									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur n'est plus aimé"}));
+									notif(decoded.rr, o, 'unmatched', like:0);
+								});
+							}
+						});
+					else
+						res.status(400).send(JSON.stringify({code:0, msg:"Vous ne pouvez aimer un utilisateur sans photos"}));
+				});
 			});
 	});
 });
