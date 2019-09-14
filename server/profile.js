@@ -8,7 +8,7 @@ const router = express.Router();
 var jwtDecode = require('jwt-decode');
 const middle = require('./middleware.js');
 const val = require('./validateur.js');
-const role = require('../role.js');
+const role = require('./role.js');
 
 router.use(middle);
 
