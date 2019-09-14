@@ -8,6 +8,7 @@ const router = express.Router();
 var jwtDecode = require('jwt-decode');
 const middle = require('./middleware.js');
 const val = require('./validateur.js');
+const role = require('./role.js');
 
 router.use(middle);
 
@@ -168,7 +169,9 @@ router.post("/", function (req, res) {
 		} else {
 			res.status(400).send(JSON.stringify(y));
 		}
+		role(decoded.rr.id);
 	} else {
+		res.status(400).send(JSON.stringify({code:3, msg:"vous devez au moins renseigner un champ"}));
 	}
 });
 
