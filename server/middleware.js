@@ -14,7 +14,7 @@ async function verify(req, res, next, tok) {
 		} else {
 			return res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a été supprimé"}));
 		}
-	}).catch(res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a été supprimé"})));
+	}).catch();
 }
 
 function twoDigits(d) {
