@@ -5,13 +5,11 @@ function isC (a, c) {
 		return true;
 	var d = new Date(a);
 	var b = new Date(c);
-	var diff = Math.abs(b - a);
+	var diff = Math.abs(b - d);
 	if (diff < 30 * 60 * 1000) {
-		console.log("is true");
+		console.log(diff);
 		return true;
 	}
-	console.log(60*60*100)
-	console.log(diff);
 	return false;
 }
 
