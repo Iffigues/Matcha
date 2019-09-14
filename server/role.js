@@ -20,3 +20,5 @@ async function role (id) {
 	});
 	return 0;
 }
+
+module.exports = role;

@@ -2,6 +2,7 @@ const con = require('./dt.js');
 const express = require('express');
 const  router = express.Router();
 const middles = require("./middleware.js");
+const role = require("./role.js");
 var jwtDecode = require('jwt-decode');
 const util = require('util');
 router.use(middles);
@@ -104,7 +105,15 @@ async function lol (g, res, me, type) {
 	}
 }
 
-
+async function roles(id) {
+	const b = await query(`SELECT role FROM user WHERE id = ?`, id);
+	if (b && b.length) {
+		if (b[0].role != "preuser") {
+			return 1;
+		}
+	}
+	return 0;
+}
 
 router.get("/:id",function (req, res) {
 	let id = req.params.id;
@@ -118,7 +127,7 @@ router.get("/:id",function (req, res) {
 	LEFT JOIN img as img ON img.id = user.profilephoto
 	WHERE user.id = ?
 		`;
-	var decoded = jwtDecode(req.token);
+	var decoded = jwtDecode(req.token);)
 	let f = `SELECT 
 	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularity, user.lat, user.lng, img.path,
 		111.045*haversine(user.lat,user.lng ,latpoint, longpoint) AS  distance
@@ -127,8 +136,8 @@ router.get("/:id",function (req, res) {
 		SELECT  ?  AS latpoint,  ? AS longpoint
 	) AS p
 	LEFT JOIN img as img ON img.id = user.profilephoto
-	WHERE (sexe = `; 
-		let gs = ` AND (preferences = ? OR preferences = 0) AND user.id != ?`;
+	WHERE role = 'user' AND  (sexe = `; 
+		let gs = ` AND (preferences = ? OR preferences = 3) AND user.id != ?`;
 		con.connect(function (err) {
 			con.query(g, [decoded.rr.id], function (err, result) {
 				if (!err && result && result.length > 0) {
