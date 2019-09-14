@@ -8,7 +8,7 @@ function getRandomInt(max) {
 }
 
 function rr() {
-	const f = `INSERT INTO user (firstname, lastname, password, email, username, city, sexe, lat, lng, preferences, profilephoto, popularity , birthdate,active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,? ,1)`;
+	const f = `INSERT INTO user (firstname, lastname, password, email, username, city, sexe, lat, lng, preferences, profilephoto, popularity , birthdate,active,role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,? ,1, 'user')`;
 	con.connect(function(err) {
 		if (err) throw err;
 		for (let i = 0; i < 1000; i++) {
