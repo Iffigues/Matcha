@@ -127,7 +127,10 @@ router.get("/:id",function (req, res) {
 	LEFT JOIN img as img ON img.id = user.profilephoto
 	WHERE user.id = ?
 		`;
-	var decoded = jwtDecode(req.token);)
+	var decoded = jwtDecode(req.token);
+	if (!roles(decoded.rr.id)) {
+		return res.status(200).send(JSON.stringify({code:3,  msg:"vous devez remplire votre profile"}));
+	}
 	let f = `SELECT 
 	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularity, user.lat, user.lng, img.path,
 		111.045*haversine(user.lat,user.lng ,latpoint, longpoint) AS  distance

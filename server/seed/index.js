@@ -28,4 +28,18 @@ function rr() {
 		}
 	});
 }
+
+function createAdmin() {
+	const f = `INSERT INTO user (firstname, lastname, password, email, username,city,active,role) VALUES ('admin','admin',?,'admin@addm.fr','admin'),1,'admin'`;
+	con.connect(function (err) {
+		if (err) throw err;
+		bcrypt.hash("admin",10, function (err, hash) {
+			con.query(f,hash,function (err, res) {
+				console.log(err);
+			});
+		});
+	});
+}
+
 rr();
+createAdmin();

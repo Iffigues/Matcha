@@ -23,7 +23,7 @@ router.post("/add", function (req, res) {
 		var decoded = jwtDecode(req.token);
 		let o = req.body.id;
 		if (decoded.rr.id == o)
-			res.status(200).send(JSON.stringify({code:1, msg:"Petit Cachotier"}));
+			res.status(200).send(JSON.stringify({code:1, msg:"Vous vous aimer dejas, sinon aller voir un psy"}));
 		else
 			con.query(`SELECT * FROM img WHERE userId = ?`, o, function (err, lrem) {
 				con.query(`SELECT pforilephoto FROM user WHERE id= ?`,o, function (err, lll) {
@@ -41,7 +41,7 @@ router.post("/add", function (req, res) {
 										mmm="Quelqu'un vient de vous aimer";
 									}
 									notif(decoded.rr, o, rrr, mmm);
-									res.status(200).send(JSON.stringify({code: 0, msg:"mmm",like: 1}));
+									res.status(200).send(JSON.stringify({code: 0, msg:"Vous avez liker un utilisateur",like: 1}));
 								});
 							} else {
 								con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
