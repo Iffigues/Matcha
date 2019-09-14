@@ -71,16 +71,16 @@ class SuggestionsContainer extends React.Component {
 							const dists = data.profiles.map(p => Math.round(p.distance));
 							const ageRange = {
 								min: Math.min.apply(Math, ages),
-								max: Math.max.apply(Math, ages)
+								max: Math.max.apply(Math, ages) + 1
 							};
 							const popRange = {
 								min: Math.min.apply(Math, pops),
-								max: Math.max.apply(Math, pops)
+								max: Math.max.apply(Math, pops) + 3
 							};
-							const distRangeMin = Math.min.apply(Math, dists) - 1;
+							const distRangeMin = Math.min.apply(Math, dists) - 1000;
 							const distRange = {
 								min: distRangeMin < 0 ? 0 : distRangeMin,
-								max: Math.max.apply(Math, dists) + 1
+								max: Math.max.apply(Math, dists) + 1000
 							};
 							this.setState({
 								ageRange: ageRange,
@@ -147,15 +147,18 @@ class SuggestionsContainer extends React.Component {
 	}
 
 	handleAgeRangeChange(value) {
-		this.setState({ ageRange: value });
+		if (value.min >= this.state.ageMaxRange.min && value.max <= this.state.ageMaxRange.max)
+			this.setState({ ageRange: value });
 	}
 
 	handlePopRangeChange(value) {
-		this.setState({ popRange: value });
+		if (value.min >= this.state.popMaxRange.min && value.max <= this.state.popMaxRange.max)
+			this.setState({ popRange: value });
 	}
 
 	handleDistRangeChange(value) {
-		this.setState({ distRange: value });
+		if (value.min >= this.state.distMaxRange.min && value.max <= this.state.distMaxRange.max)
+			this.setState({ distRange: value });
 	}
 
 	handleTagsChange(e) {
@@ -179,9 +182,7 @@ class SuggestionsContainer extends React.Component {
 	handleSortChange(e) {
 		const val = e.target.value;
 		if (this.state.sort !== val)
-		{
 			this.setState({sort: val});
-		}
 	}
 
 	handleRemoveTagClick(e) {
@@ -218,7 +219,12 @@ class SuggestionsContainer extends React.Component {
 			if (response) {
 				response.json().then(data => { 
 					if (data.code === 0 && this._isMounted) {
-						this.fetchData();
+						const profiles = this.state.profiles.slice();
+						profiles.forEach(profile => {
+							if (profile.id === d.id)
+								profile.liked = data.liked;
+						});
+						this.setState({profiles: profiles});
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -300,7 +306,6 @@ class SuggestionsContainer extends React.Component {
 					onLikeClick={this.handleLikeClick}
 				/>;
 	}
-
 }
 
 export default SuggestionsContainer;

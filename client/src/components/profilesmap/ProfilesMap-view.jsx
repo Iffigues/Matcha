@@ -7,7 +7,7 @@ import avatar from '../../avatar.jpg';
 function PofilesMap(props) {
 	return (
 		<div className="PofilesMap">
-			<Map class="MapContainer" center={[48.859595, 2.344305]} zoom={6}>
+			<Map class="MapContainer" center={[48.859595, 2.344305]} zoom={6} attributionControl={false}>
 				<TileLayer class="TileLayer"
 							url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 							attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -22,11 +22,12 @@ function PofilesMap(props) {
 									<li><Link to={'/profiles/' + p.id}>{p.firstname} {p.lastname}</Link></li>
 									<li>{p.age} ans</li>
 									<li>{p.city}</li>
+									<li>{p.distance}</li>
 								</ul>
 							</Popup>
 						</Marker>)
 					})
-					: <div></div>
+					: null
 				}
 			</Map>
 		</div>

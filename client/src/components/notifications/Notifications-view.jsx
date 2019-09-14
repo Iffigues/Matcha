@@ -12,36 +12,39 @@ function Notifications(props) {
 	return (
 		<div className="Notifications">
 			<div className="container">
-				<h2 className="mt-2">Notifications</h2>
+				<h2 className="mb-4">Notifications</h2>
 				<Flash errors={props.errors}/>
 				<Flash notices={props.notices}/>
 				<ul>
-					{props.notifications.map((notif, key) => {
-						let date = new Date(notif.date);
-						let message;
-						switch (notif.type) {
-							case "visited":
-								message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a visité votre profil</span>;
-								break;
-							case "liked":
-								message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a aimé votre profil</span>;
-								break ;
-							case "matched":
-								message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a aimé votre profil en retour, c'est un match !</span>;
-								break ;
-							case "unmatched":
-								message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a vu votre profil</span>;
-								break ;
-							case "gotmessage":
-								message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> vous a envoyé un message</span>;
-								break ;
-							default:
-						}
-						if (notif.look)
-							return <li key={key}>{message} - <i>{timeAgo.format(date)}</i></li>;
-						else
-							return <li key={key}><b>{message} - <i>{timeAgo.format(date)}</i></b></li>;
-					})}
+					{props.notifications.length
+						? props.notifications.map((notif, key) => {
+							let date = new Date(notif.date);
+							let message;
+							switch (notif.type) {
+								case "visited":
+									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a visité votre profil</span>;
+									break;
+								case "liked":
+									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a aimé votre profil</span>;
+									break ;
+								case "matched":
+									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> a aimé votre profil en retour, c'est un match !</span>;
+									break ;
+								case "unmatched":
+									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> n'aime plus votre profil</span>;
+									break ;
+								case "gotmessage":
+									message = <span><Link to={"/profiles/" + notif.userId}>{notif.username || "Un utilisateur"}</Link> vous a envoyé un message</span>;
+									break ;
+								default:
+							}
+							if (notif.look)
+								return <li key={key}>{message} - <i>{timeAgo.format(date)}</i></li>;
+							else
+								return <li key={key}><b>{message} - <i>{timeAgo.format(date)}</i></b></li>;
+						})
+						: <li><i>Aucune notification</i></li>
+					}
 				</ul>
 			</div>
 		</div>

@@ -10,7 +10,7 @@ function Search(props) {
 	return (
 		<div className="Search">
 			<div className="container">
-				<h2 className="mt-2">Recherche</h2>
+				<h2 className="mb-4">Recherche</h2>
 				<Flash errors={props.errors}/>
 				<Flash notices={props.notices}/>		
 				<p>
@@ -75,8 +75,9 @@ function Search(props) {
 									<label className="col-form-label">Âge</label>
 								</div>
 								<InputRange
+									step={1}
 									name="age"
-									maxValue={props.ageMaxRange.max > props.ageMaxRange.min ? props.ageMaxRange.max : props.ageMaxRange.min + 1}
+									maxValue={props.ageMaxRange.max}
 									minValue={props.ageMaxRange.min}
 									value={props.ageRange}
 									onChange={props.onAgeRangeChange}
@@ -87,8 +88,9 @@ function Search(props) {
 									<label className="col-form-label">Popularité</label>
 								</div>
 								<InputRange
+									step={3}
 									name="pop"
-									maxValue={props.popMaxRange.max > props.popMaxRange.min ? props.popMaxRange.max : props.popMaxRange.min + 1}
+									maxValue={props.popMaxRange.max}
 									minValue={props.popMaxRange.min}
 									value={props.popRange}
 									onChange={props.onPopRangeChange}
@@ -99,8 +101,9 @@ function Search(props) {
 									<label className="col-form-label">Distance</label>
 								</div>
 								<InputRange
+									step={1000}
 									name="dist"
-									maxValue={props.distMaxRange.max > props.distMaxRange.min ? props.distMaxRange.max : props.distMaxRange.min + 1}
+									maxValue={props.distMaxRange.max}
 									minValue={props.distMaxRange.min}
 									value={props.distRange}
 									onChange={props.onDistRangeChange}
@@ -128,9 +131,12 @@ function Search(props) {
 											return (key > 1 ? <span key={key}></span> : <span key={key} className="badge badge-secondary mr-1">{tag.tag}</span>);
 										})}
 									</div>
-									<div className="text-center pt-3">
-										<button value={pro.id} className={"btn-sm btn" + (!pro.like ? "-outline" : "") + "-primary m-1"} onClick={props.onLikeClick}>J'aime</button>
-									</div>
+									{ pro.profilephoto
+										? <div className="text-center pt-3">
+											<button value={pro.id} className={"btn-sm btn" + (!pro.like ? "-outline" : "") + "-primary m-1"} onClick={props.onLikeClick}>J'aime</button>
+										</div>
+										: <div></div>
+									}
 								</div>
 							</div>
 						);

@@ -9,7 +9,7 @@ function Login(props) {
 			{props.redirect ? <Redirect to="/"/> : null}
 			<div className="Login">
 				<div className="container">
-					<h2 className="my-4">Connexion</h2>
+					<h2 className="mb-4">Connexion</h2>
 					<Flash errors={props.errors}/>
 					<Flash notices={props.notices}/>
 					<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
