@@ -12,7 +12,7 @@ async function role (id) {
 					return 1;
 				});
 			} else {
-				const e = await query(``UPDATE user SET role = 'peuser' WHERE id = ?,id).then((rd, err) => {
+				const e = await query(`UPDATE user SET role = 'peuser' WHERE id = ?`,id).then((rd, err) => {
 					return 0;
 				});
 			}
