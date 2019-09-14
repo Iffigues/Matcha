@@ -1,12 +1,17 @@
 const con = require('./dt.js');
 
-function isC (a, b) {
+function isC (a, c) {
 	if (!a)
 		return true;
 	var d = new Date(a);
+	var b = new Date(c);
 	var diff = Math.abs(b - a);
-	if (diff < 30 * 60 * 1000)
+	if (diff < 30 * 60 * 1000) {
+		console.log("is true");
 		return true;
+	}
+	console.log(60*60*100)
+	console.log(diff);
 	return false;
 }
 
@@ -16,12 +21,12 @@ function notif(me, who, type, mess) {
 			let f = `SELECT COUNT(*) AS d FROM bloque WHERE userId = ? AND bloqueId = ?`;
 			con.query(f, [who, me.id],function (err, res){
 				if (!err && res[0].d == 0) {
-					con.query(`SELECT * FROM notif  WHERE userId = ? AND who = ? AND type = ? ORDER BY date DESC`,[me.id, who, type], function (err,ttt) {
+					con.query(`SELECT *, CURRENT_TIMESTAMP() as clock FROM notif  WHERE userId = ? AND who = ? AND type = ? ORDER BY date DESC`,[me.id, who, type], function (err,ttt) {
 						let g = `INSERT INTO notif (type, userId, who) VALUES (?,?,?)`;
 						let b = 1;
 						if (ttt && ttt.length) {
 							let k = ttt[0];
-							if (isC(k.date, Date.now()))
+							if (isC(k.date, k.clock))
 								b = 0;
 						}
 						if (b)
