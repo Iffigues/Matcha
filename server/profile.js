@@ -151,11 +151,13 @@ function hard(obj, r, f, o, tab, id) {
 
 router.post("/", function (req, res) {
 	let jj = req.body;
+	console.log("jhhjhj");
 	if (jj) {
 		var decoded = jwtDecode(req.token);
 		let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab(), decoded.rr.id);
 		if (y.code == 0) {
 			con.connect(function (err) {
+				console.log(err);
 				con.query(y.sql, [decoded.rr.id], function (err, result) {
 					res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
 					con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){

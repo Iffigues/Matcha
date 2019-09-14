@@ -58,6 +58,7 @@ function usete(r) {
 
 router.get("/:id", function (req, res) {
 	let id = req.params.id;
+	console.log("kjjkkj");
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(`SELECT *, CURRENT_TIMESTAMP() as clock  FROM user  WHERE id = ?`, id, function (err, user) {
