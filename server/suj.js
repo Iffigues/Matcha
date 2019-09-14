@@ -38,11 +38,7 @@ function pok(a, b) {
 async function lol (g, res, me, type) {
 	try {
 		let profile = [];
-<<<<<<< HEAD
-		const max = await query(`SELECT MAX(popularity) AS max FROM user`);
-=======
 		const max = await query(`SELECT MAX(popularity) AS max FROM user`).catch(err => console.log(err));
->>>>>>> iffigues
 		for (let n in g) {
 			if (g[n].lat && g[n].lng && g[n].birthdate && g[n].city && g[n].firstname && g[n].lastname) {
 				let oui = 0;
@@ -132,12 +128,9 @@ router.get("/:id",function (req, res) {
 	WHERE user.id = ?
 		`;
 	var decoded = jwtDecode(req.token);
-<<<<<<< HEAD
-=======
 	if (!roles(decoded.rr.id)) {
 		return res.status(200).send(JSON.stringify({code:3,  msg:"vous devez remplire votre profile"}));
 	}
->>>>>>> iffigues
 	let f = `SELECT 
 	user.id, user.firstname, user.lastname, user.birthdate, user.city, user.sexe, user.popularity, user.lat, user.lng, img.path,
 		111.045*haversine(user.lat,user.lng ,latpoint, longpoint) AS  distance
