@@ -81,8 +81,8 @@ function protect(u) {
 	tt.code = 0;
 	if ((u == "lastname" || u == "firstname") && !valid.isName(u))
 		retun ({code: 1, msg:"Le nom ou le prénom est invalide"})
-	if (u == "username" && !valid.isLogin(u))
-		return ({code:1, msg:"Le nom d'utilisateur est invalide"});
+			if (u == "username" && !valid.isLogin(u))
+				return ({code:1, msg:"Le nom d'utilisateur est invalide"});
 	if (u == "email" && !valid.isEmail(u)) {
 		return ({code:1, msg:"L'adresse email est invalide"});
 	}
@@ -99,7 +99,7 @@ function look(tab, r, obj) {
 			return tt;
 		} else if (r[i] == "password" &&  obj["confirm"] != obj["password"]) {
 			tt.code = 1
-			tt.msg = "Mauvais mot de passe";
+				tt.msg = "Mauvais mot de passe";
 			return tt;
 		} else {
 			let u = protect(obj[r[i]]);
@@ -129,43 +129,39 @@ function hh(ee, uu, obj, id) {
 
 function hard(obj, r, f, o, tab, id) {
 	let b = look(tab, r, obj)
-	if (b.code == 0) {
-		for (var i in r) {
-			let u = r[i];
-			let haha = hh(obj[u], u, obj, id);
-			if (r[i] != "confirm" || r[i] != "password") {
-				if (o)
-					f = f + `,`;
-				if (u == "birthdate") {
-					let vv = haha.split("/");
-					haha = vv[02]+'-'+vv[1]+'-'+vv[0]
+		if (b.code == 0) {
+			for (var i in r) {
+				let u = r[i];
+				let haha = hh(obj[u], u, obj, id);
+				if (r[i] != "confirm" || r[i] != "password") {
+					if (o)
+						f = f + `,`;
+					if (u == "birthdate") {
+						let vv = haha.split("/");
+						haha = vv[02]+'-'+vv[1]+'-'+vv[0]
+					}
+					f = f+u+`=`+"'"+haha+"'";
+					o = 1;
 				}
-				f = f+u+`=`+"'"+haha+"'";
-				o = 1;
 			}
+			b.sql =  f + ` WHERE id = ?`;
 		}
-		b.sql =  f + ` WHERE id = ?`;
-	}
 	return b;
 }
 
 router.post("/", function (req, res) {
 	let jj = req.body;
-	console.log("jhhjhj");
 	if (jj) {
 		var decoded = jwtDecode(req.token);
 		let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab(), decoded.rr.id);
 		if (y.code == 0) {
-			con.connect(function (err) {
-				console.log(err);
-				con.query(y.sql, [decoded.rr.id], function (err, result) {
-					res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
-					con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
-						if(!err && rem.length) {
-							con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {	
-							});
-						}
-					});
+			con.query(y.sql, [decoded.rr.id], function (err, result) {
+				res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
+				con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
+					if(!err && rem.length) {
+						con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {	
+						});
+					}
 				});
 			});
 		} else {
@@ -181,7 +177,7 @@ router.post("/profilephoto", function (req, res) {
 	let f = `SELECT * FROM img WHERE userId = ? AND id = ?`;
 	let ff = `UPDATE user SET profilephoto = ? WHERE id= ?`;
 	var id = req.body.profilePhoto
-	var decoded = jwtDecode(req.token);
+		var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id, id], function (err, result) {
 			if (!err && result && result.length) {

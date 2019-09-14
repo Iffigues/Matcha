@@ -82,11 +82,11 @@ function errno(err) {
 router.post("/", function (req, res) {
 	i = table(req);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
+		console.log(err);
 		let r = user(i, hash);
 		let y  = r.msg;
 		if (!r.code) {
 		con.connect(function(err) {
-			console.log(err);
 			const f = `INSERT INTO user (firstname, lastname, password, email, username, sexe) VALUES (?, ?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.sexe], function (err, result, fields) {
 				if (result && !err) {

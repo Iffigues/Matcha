@@ -7,14 +7,22 @@ const query = util.promisify(con.query).bind(con);
 
 async function verify(req, res, next, tok) {
 	const b = await query(`UPDATE user  SET ds = 1 WHERE id=?`,[tok.rr.id]).then((tt, err) => {
+<<<<<<< HEAD
 	}).catch(err => console.log(err));
+=======
+	}).catch();
+>>>>>>> iffigues
 	const v = await query(`SELECT id FROM user WHERE id = ?`,[tok.rr.id]).then((rr, tt) => {
 		if (rr && rr.length) {
 			next();
 		} else {
 			return res.status(401).send(JSON.stringify({code:1, msg:"L'utilisateur a été supprimé"}));
 		}
+<<<<<<< HEAD
 	}).catch(err => console.log(err));
+=======
+	}).catch();
+>>>>>>> iffigues
 }
 
 function twoDigits(d) {
