@@ -7,8 +7,6 @@ function Register(props) {
 	<div className="Register">
 		<div className="container">
 			<h2 className="mb-4">Création de compte</h2>
-			<Flash errors={props.errors}/>
-			<Flash notices={props.notices}/>
 			<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
 				<div className="form-group row">
 					<label className="col-sm-2 col-form-label">Nom d'Utilisateur</label>

@@ -10,9 +10,7 @@ function Search(props) {
 	return (
 		<div className="Search">
 			<div className="container">
-				<h2 className="mb-4">Recherche</h2>
-				<Flash errors={props.errors}/>
-				<Flash notices={props.notices}/>		
+				<h2 className="mb-4">Recherche</h2>		
 				<p>
 					<a data-toggle="collapse" href="#options" role="button" aria-expanded="false" aria-controls="options">Options</a>
 				</p>
@@ -120,7 +118,9 @@ function Search(props) {
 								<img className="rounded-top img-fluid" src={pp} alt="" />
 								<div className="border rounded-bottom p-2">
 									<h5><Link to={"/profiles/" + pro.id}>{pro.firstname}</Link></h5>
-									<div>{pro.age} - {pro.city}</div>
+									<div>{pro.age} ans</div>
+									<div>{pro.city}</div>
+									<div><span role="img" aria-label="star">⭐</span> {pro.popularity}</div>
 									<div>
 										{pro.furries.map((furry, key) => {
 											return (key > 1 ? <span key={key}></span> : <span key={key} className="badge badge-danger mr-1">{furry.name}</span>);

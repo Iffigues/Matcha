@@ -4,8 +4,6 @@ import Flash from '../../flash';
 function AdminUsers(props) {
 	return (
 		<div className="AdminUsers">
-			<Flash errors={props.errors}/>
-			<Flash notices={props.notices}/>
 			<div className="form-group row m-3">
 				<div className="col-sm-3">
 					<input name="user" autoComplete="off" className="form-control"

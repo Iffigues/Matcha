@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../flash';
 import './Account.css';
 
 function Account(props) {
@@ -7,8 +6,6 @@ function Account(props) {
 		<div className="Account">
 			<div className="container">
 				<h2 className="mb-4">Profil Utilisateur</h2>
-				<Flash errors={props.errors}/>
-				<Flash notices={props.notices}/>
 				<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
 					<div className="form-group row">
 						<label className="col-sm-2 col-form-label">Prénom</label>

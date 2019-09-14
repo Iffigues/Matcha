@@ -10,12 +10,12 @@ class SuggestionsContainer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			ageRange: {min: 0, max: 100},
-			ageMaxRange: {min: 0, max: 100},
-			popRange: {min: 0, max: 100},
-			popMaxRange: {min: 0, max: 100},
-			distRange: {min: 0, max: 100},
-			distMaxRange: {min: 0, max: 100},
+			ageRange: {min: 0, max: 99999},
+			ageMaxRange: {min: 0, max: 99999},
+			popRange: {min: 0, max: 99999},
+			popMaxRange: {min: 0, max: 99999},
+			distRange: {min: 0, max: 99999},
+			distMaxRange: {min: 0, max: 99999},
 			tags: [],
 			allTags: [],
 			furries: [],
@@ -222,7 +222,7 @@ class SuggestionsContainer extends React.Component {
 						const profiles = this.state.profiles.slice();
 						profiles.forEach(profile => {
 							if (profile.id === d.id)
-								profile.liked = data.liked;
+								profile.liked = !data.liked;
 						});
 						this.setState({profiles: profiles});
 					}

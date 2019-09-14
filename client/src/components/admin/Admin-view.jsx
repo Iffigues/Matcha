@@ -11,8 +11,6 @@ function Admin(props) {
 		<div className="Admin">
 			<div className="container">
 				<h2 className="my-4">Administration</h2>
-				<Flash errors={props.errors}/>
-				<Flash notices={props.notices}/>
 				<ul className="nav nav-tabs" id="myTab" role="tablist">
 					<li className="nav-item">
 						<a className="nav-link active" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="home" aria-selected="true">Utilisateurs</a>
@@ -27,25 +25,18 @@ function Admin(props) {
 						<a className="nav-link" id="reports-tab" data-toggle="tab" href="#reports" role="tab" aria-controls="contact" aria-selected="false">Signalements</a>
 					</li>
 				</ul>
-{/*				<Router>
-					<Route path="/" component={AdminUsers}/>
-					<Route path="/users" component={AdminUsers}/>
-					<Route path="/tags" component={AdminTags}/>
-					<Route path="/furries" component={AdminFurries}/>
-					<Route path="/reports" component={AdminReports}/>
-				</Router>*/}
 				<div className="tab-content" id="myTabContent">
 					<div className="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="home-tab">
-						<AdminUsers/>
+						<AdminUsers addFlash={props.addflash}/>
 					</div>
 					<div className="tab-pane fade" id="tags" role="tabpanel" aria-labelledby="profile-tab">
-						<AdminTags/>
+						<AdminTags addFlash={props.addflash}/>
 					</div>
 					<div className="tab-pane fade" id="furries" role="tabpanel" aria-labelledby="contact-tab">
-						<AdminFurries/>
+						<AdminFurries addFlash={props.addflash}/>
 					</div>
 					<div className="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="contact-tab">
-						<AdminReports/>
+						<AdminReports addFlash={props.addflash}/>
 					</div>
 				</div>	
 

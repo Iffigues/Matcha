@@ -10,9 +10,14 @@ class AppContainer extends React.Component {
 		this.state = {
 			loggedIn: false,
 			username: '',
-			role: ''
+			role: '',
+			lng: 2.344305,
+			lat: 48.859595,
+			flashes: []
 		}
 		this.handleRouteChange = this.handleRouteChange.bind(this);
+		this.addFlash = this.addFlash.bind(this);
+		this.handleCloseClick = this.handleCloseClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -40,7 +45,10 @@ class AppContainer extends React.Component {
 							this.setState({
 								username: data.username || '',
 								loggedIn: true,
-								role: data.role});
+								role: data.role,
+								lng: data.lng,
+								lat: data.lat
+							});
 						} else {
 							this.setState({username: '', loggedIn: false, role: ''});
 						}
@@ -56,12 +64,32 @@ class AppContainer extends React.Component {
 
 	}
 
+	addFlash(type, message) {
+		const flashes = this.state.flashes.slice();
+		flashes.push({type: type, msg: message});
+		this.setState({flashes: flashes});
+	}
+
+	handleCloseClick(e) {
+		e.preventDefault();
+		const f = this.state.flashes.slice();
+		const fla = f.filter(flash => flash.type !== e.target.getAttribute("value"));
+		this.setState({flashes: fla});
+	}
+
+
 	render() {
 		return <App
 			loggedIn={this.state.loggedIn}
 			username={this.state.username}
 			role={this.state.role}
+			lat={this.state.lat}
+			lng={this.state.lng}
+			flashes={this.state.flashes}
+
 			handleRouteChange={this.handleRouteChange}
+			addFlash={this.addFlash}
+			onCloseClick={this.handleCloseClick}
 		/>;
 	}
 

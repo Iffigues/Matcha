@@ -19,8 +19,6 @@ function Profile(props) {
 	return (
 		<div className="Profile">
 			<div className="container">
-				<Flash errors={props.errors}/>
-				<Flash notices={props.notices}/>
 				<div className="row">
 					<div className="col-sm-4">
 						<img className="card-img pt-3 pb-3" src={profilePhoto ? 'http://' + document.location.hostname + ':8080/' + profilePhoto.path : avatar} alt="..."/>

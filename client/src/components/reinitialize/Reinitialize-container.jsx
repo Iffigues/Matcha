@@ -8,8 +8,6 @@ class ReinitializeContainer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			errors: [],
-			notices: []
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -74,9 +72,9 @@ class ReinitializeContainer extends React.Component {
 									input.classList.remove('is-invalid');
 									input.classList.remove('is-valid');
 								});
-								this.setState({errors: [], notices: [data.msg]});
+								this.props.addFlash("notice", data.msg);
 							} else {
-								this.setState({errors: [data.msg], notices: []});
+								this.props.addFlash("error", data.msg);
 							}
 						}
 					}).catch(error => {
@@ -91,7 +89,7 @@ class ReinitializeContainer extends React.Component {
 	}
 
 	render() {
-		return <Reinitialize errors={this.state.errors} notices={this.state.notices} onSubmit={this.handleSubmit}/>;
+		return <Reinitialize onSubmit={this.handleSubmit}/>;
 	}
 
 }

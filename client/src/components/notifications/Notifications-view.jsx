@@ -13,8 +13,6 @@ function Notifications(props) {
 		<div className="Notifications">
 			<div className="container">
 				<h2 className="mb-4">Notifications</h2>
-				<Flash errors={props.errors}/>
-				<Flash notices={props.notices}/>
 				<ul>
 					{props.notifications.length
 						? props.notifications.map((notif, key) => {

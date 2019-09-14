@@ -8,8 +8,6 @@ class LoginContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			errors: [],
-			notices: [],
 			redirect: false
 		}
 		if (this.props.notices)
@@ -82,9 +80,11 @@ class LoginContainer extends React.Component {
 									input.classList.remove('is-invalid');
 									input.classList.remove('is-valid');
 								});
-								this.setState({errors: [], notices: [data.msg], redirect: true});
+								this.props.addFlash("notice", data.msg);
+								this.setState({redirect: true});
 							} else {
-								this.setState({errors: [data.msg], notices: [], redirect: false});
+								this.props.addFlash("error", data.msg);
+								this.setState({redirect: false});
 							}
 						}
 					}).catch(error => {
@@ -102,8 +102,6 @@ class LoginContainer extends React.Component {
 		return (
 			<Login
 				redirect={this.state.redirect}
-				errors={this.state.errors}
-				notices={this.state.notices}
 				onSubmit={this.handleSubmit}
 			/>
 		);

@@ -8,8 +8,6 @@ class AccountContainer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			errors: [],
-			notices: [],
 			firstname: '',
 			lastname: '',
 			username: '',
@@ -238,13 +236,11 @@ class AccountContainer extends React.Component {
 				response.json().then(data => {
 					if (this._isMounted) {
 						if (data.code === 0) {
-							d.errors = [];
-							d.notices = [data.msg];
-							this.setState(d);
+							this.props.addFlash("notice", data.msg);
+							//this.setState(d);
 						} else {
-							d.notices = [];
-							d.errors = [data.msg];
-							this.setState(d);
+							this.props.addFlash("error", data.msg);
+							//this.setState(d);
 						}
 					}
 				}).catch(error => {
@@ -276,13 +272,11 @@ class AccountContainer extends React.Component {
 				response.json().then(data => {
 					if (this._isMounted) {
 						if (data.code === 0) {
-							d.errors = [];
-							d.notices = [data.msg];
-							this.setState(d);
+							this.props.addFlash("notice", data.msg);
+							//this.setState(d);
 						} else {
-							d.notices = [];
-							d.errors = [data.msg];
-							this.setState(d);
+							this.props.addFlash("error", data.msg);
+							//this.setState(d);
 						}
 					}
 				}).catch(error => {
@@ -373,10 +367,10 @@ class AccountContainer extends React.Component {
 									input.classList.remove('is-invalid');
 									input.classList.remove('is-valid');
 								});
-								this.setState({errors: [], notices: [data.msg]});
-								this.fetchData();
+								this.props.addFlash("notice", data.msg);
+								//this.fetchData();
 							} else {
-								this.setState({errors: [data.msg], notices: []});
+								this.props.addFlash("error", data.msg);
 							}
 						}
 					}).catch(error => {
@@ -445,8 +439,8 @@ class AccountContainer extends React.Component {
 								input.classList.remove('is-invalid');
 								input.classList.remove('is-valid');
 							});
-							this.setState({errors: [], notices: [data.msg]});
-							this.fetchData();
+							this.props.addFlash("notice", data.msg);
+//							this.fetchData();
 						}
 					}).catch(error => {
 						console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -746,9 +740,9 @@ class AccountContainer extends React.Component {
 					response.json().then(data => {
 						if (this._isMounted) {
 							if (data.code === 0) {
-								this.setState({errors: [], notices: [data.msg]});
+								this.setState({flashes: [{type: "notice", msg: data.msg}]});
 							} else {
-								this.setState({errors: [data.msg], notices: []});
+								this.setState({flashes: [{type: "error", msg: data.msg}]});
 							}
 						}
 						this.fetchData();
@@ -919,9 +913,6 @@ class AccountContainer extends React.Component {
 					onRemovePhotoClick={this.handleRemovePhotoClick}
 
 					onUnblockClick={this.handleUnblockClick}
-
-					errors={this.state.errors}
-					notices={this.state.notices}
 				/>;
 	}
 

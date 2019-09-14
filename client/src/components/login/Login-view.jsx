@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../flash';
 import './Login.css';
 import { Redirect } from "react-router-dom";
 
@@ -10,8 +9,6 @@ function Login(props) {
 			<div className="Login">
 				<div className="container">
 					<h2 className="mb-4">Connexion</h2>
-					<Flash errors={props.errors}/>
-					<Flash notices={props.notices}/>
 					<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
 						<div className="form-group row">
 							<label className="col-sm-2 col-form-label">Nom d'Utilisateur</label>

@@ -8,8 +8,6 @@ class RegisterContainer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			errors: [],
-			notices: []
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -91,9 +89,9 @@ class RegisterContainer extends React.Component {
 									input.classList.remove('is-invalid');
 									input.classList.remove('is-valid');
 								});
-								this.setState({errors: [], notices: [data.msg]});
+								this.props.addFlash("notice", data.msg);
 							} else {
-								this.setState({errors: [data.msg], notices: []});
+								this.props.addFlash("error", data.msg);
 							}
 						}
 					}).catch(error => {
@@ -108,7 +106,7 @@ class RegisterContainer extends React.Component {
 	}
 
 	render() {
-		return <Register errors={this.state.errors} notices={this.state.notices} onSubmit={this.handleSubmit}/>;
+		return <Register onSubmit={this.handleSubmit}/>;
 	}
 
 }

@@ -56,6 +56,8 @@ class ProfilesMapContainer extends React.Component {
 			return <Redirect to="/account"/>
 		return <ProfilesMap
 					profiles={this.state.profiles}
+					lng={this.props.lng}
+					lat={this.props.lat}
 				/>;
 	}
 

@@ -85,7 +85,6 @@ class AdminUsersContainer extends React.Component {
 			if (response) {
 				response.json().then(data => {
 					if (data.code === 0 && this._isMounted) {
-						console.log(data);
 						this.fetchData();
 		 			}
 				}).catch(error => {

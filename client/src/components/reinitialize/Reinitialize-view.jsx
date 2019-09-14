@@ -7,8 +7,6 @@ function Reinitialize(props) {
     <div className="Reinitialize">
     	<div className="container">
 		    <h2 className="mb-4">Réinitialisation du Mot de passe</h2>
-	 	    <Flash errors={props.errors}/>
-		    <Flash notices={props.notices}/>
 	    	<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
 				<div className="form-group row">
 					<label className="col-sm-2 col-form-label">Adresse Email</label>

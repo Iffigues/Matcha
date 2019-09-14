@@ -96,7 +96,7 @@ app.get('/connected', function (req, res) {
 	jwt.verify(token, "my-secret", function(err, decoded) {
 		if (err ||  !decoded) 
 				return res.status(200).send(JSON.stringify({code:1, msg:"Vous n'êtes pas connecté"}));
-		res.status(200).send(JSON.stringify({code:0, msg:"connecter", username: decoded.rr.username, role: decoded.rr.role}));
+		res.status(200).send(JSON.stringify({code:0, msg:"connecté", username: decoded.rr.username, role: decoded.rr.role, lng: decoded.rr.lng, lat: decoded.rr.lat}));
 	});
 
 })

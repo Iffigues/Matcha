@@ -4,8 +4,6 @@ import Flash from '../../flash';
 function AdminReports(props) {
 	return (
 		<div className="AdminReports">
-			<Flash errors={props.errors}/>
-			<Flash notices={props.notices}/>
 			<table className="table table-sm">
 				<thead>
 					<tr>

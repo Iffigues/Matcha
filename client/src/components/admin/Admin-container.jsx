@@ -10,7 +10,7 @@ class AdminContainer extends React.Component {
 	}
 
 	render() {
-		return <Admin/>;
+		return <Admin addFlash={this.props.addFlash}/>;
 	}
 
 }
