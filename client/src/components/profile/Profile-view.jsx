@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../flash';
 import avatar from '../../avatar.jpg';
 import './Profile.css';
 

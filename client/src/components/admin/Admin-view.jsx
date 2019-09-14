@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../flash';
 import AdminUsers from './adminusers';
 import AdminTags from './admintags';
 import AdminFurries from './adminfurries';

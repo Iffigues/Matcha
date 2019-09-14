@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../flash';
 import './Reinitialize.css';
 
 function Reinitialize(props) {

@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../../flash';
 
 function AdminReports(props) {
 	return (

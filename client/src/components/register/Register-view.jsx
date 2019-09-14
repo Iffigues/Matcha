@@ -1,5 +1,4 @@
 import React from 'react';
-import Flash from '../flash';
 import './Register.css';
 
 function Register(props) {
