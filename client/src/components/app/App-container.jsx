@@ -4,6 +4,7 @@ import App from './App-view.jsx';
 class AppContainer extends React.Component {
 
 	_isMounted = false;
+	_interval = null;
 
 	constructor() {
 		super();
@@ -50,7 +51,7 @@ class AppContainer extends React.Component {
 								lat: data.lat
 							});
 						} else {
-							this.setState({username: '', loggedIn: false, role: ''});
+							this.setState({username: '', loggedIn: false, role: '', lng: 2.344305, lat: 48.859595});
 						}
 					}
 				}).catch(error => {
@@ -65,9 +66,15 @@ class AppContainer extends React.Component {
 	}
 
 	addFlash(type, message) {
+		clearInterval(this._interval);
 		const flashes = this.state.flashes.slice();
 		flashes.push({type: type, msg: message});
 		this.setState({flashes: flashes});
+		this._interval = setInterval(this.clearFlashes, 5000); 
+	}
+
+	clearFlashes() {
+		this.setState({flashes: []});
 	}
 
 	handleCloseClick(e) {
