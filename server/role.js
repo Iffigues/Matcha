@@ -8,15 +8,16 @@ async function role (id) {
 		return rsts;
 	});
 	if (rst && rst.length > 0) {
+		let re = 0;
 		let e = rst[0];
 		if (e.lat && e.lng && e.birthdate && e.city && e.firstname && e.lastname) {
-			const res = await query(`UPDATE user SET role = 'user' WHERE id = ?`, id).then((rd, err) => { 
+			res = await query(`UPDATE user SET role = 'user' WHERE id = ?`, id).then((rd, err) => { 
 				return 1;
-			});
+			}).catch();
 		} else {
-			const res = await query(` UPDATE user SET role = 'peuser' WHERE id = ?`, id).then((rd, err) => {
+			res = await query(` UPDATE user SET role = 'peuser' WHERE id = ?`, id).then((rd, err) => {
 				return 0;
-			})
+			}).catch()
 		}
 		return res;
 	}
