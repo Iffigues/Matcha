@@ -26,7 +26,7 @@ router.post("/add", function (req, res) {
 			res.status(200).send(JSON.stringify({code:1, msg:"Vous vous aimer dejas, sinon aller voir un psy"}));
 		else
 			con.query(`SELECT * FROM img WHERE userId = ?`, o, function (err, lrem) {
-				con.query(`SELECT pforilephoto FROM user WHERE id= ?`,o, function (err, lll) {
+				con.query(`SELECT profilephoto FROM user WHERE id= ?`,o, function (err, lll) {
 					if (!err && lrem && lrem.length && lll)
 						con.query(f, [decoded.rr.id, o], function (err, resu) {
 							if (!err) {
@@ -41,11 +41,13 @@ router.post("/add", function (req, res) {
 										mmm="Quelqu'un vient de vous aimer";
 									}
 									notif(decoded.rr, o, rrr, mmm);
+									console.log('liker')
 									res.status(200).send(JSON.stringify({code: 0, msg:"Vous avez liker un utilisateur",like: 1}));
 								});
 							} else {
 								con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
 									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur n'est plus aimé"}));
+									console.log('unliker');
 									notif(decoded.rr, o, 'unmatched', "unmatched");
 								});
 							}

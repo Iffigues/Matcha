@@ -9,42 +9,37 @@ router.use(middles);
 const util = require('util');
 const query = util.promisify(con.query).bind(con);
 
-async function isMatched(id, user) {
-	let f = await query('SELECT lastname, firstname, username FROM user WHERE id = ?', id).then((result) => result).catch((err) => false);
-	let fr = await query(`SELECT COUNT(*) FROM likes WHERE userOne = ? AND userTwo = ?`,[id, user]).then((result) => result).catch((err) => false);
+async function isMatched(id, user, res) {
+	let liked = [];
+	for (let i in id) {
+	let f = await query('SELECT lastname, firstname, username FROM user WHERE id = ?', id[i].id).then((result) => result).catch((err) => false);
+	let fr = await query(`SELECT COUNT(*) as d FROM likes WHERE userOne = ? AND userTwo = ?`,[id[i].id, user]).then((result) => result).catch((err) => false);
 	if (f) {
 			let r = f[0];
-			let user = {
+			let users = {
 				lastname: r.lastname,
-				firstname: r.firtname,
+				firstname: r.firstname,
 				username: r.username,
-				id: id,
+				id: id[i].id,
 				matched: 0
 			};
 			if (fr && fr.length)
-				user.matched = 1;
-			return user;
+				users.matched = 1;
+			liked.push(users);
+		}
 	}
-	return false;
+	res.status(200).send(JSON.stringify({code:0, liked}))
 }	
 
 router.get("/", function (req, res) {
-	let f = `SELECT userTwo FROM likes WHERE userOne = ?`;
-	let liked = [];
+	let f = `SELECT userTwo AS id FROM likes WHERE userOne = ?`;
 	let decoded = jwtDecode(req.token);
-	console.log(decoded);
 	con.connect(function (err) {
 		con.query(f,[decoded.rr.id], function (err, result) {
 			if (err) {
 				return (res.status(400).send(JSON.stringify({code:3, msg:"une erreur server est survenue"})));
 			}
-			console.log(result);
-			for (let g in result) {
-				let user = isMatched(result[g].userTwo, decoded.rr.id);
-				if (user)
-					liked.push(user);
-			}
-			res.status(200).send(JSON.stringify({code:0, liked}));
+			isMatched(result, decoded.rr.id, res)
 		});
 	});
 });
