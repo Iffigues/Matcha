@@ -89,7 +89,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 											  app.use("/user", prof);
 											  app.use("/match", match);
 											  app.use("/messages",msg);
-											  app.use("/getlike", getlike);
+											  app.use("/profiles/liked", getlike);
 											  app.get('/connected', withAuth, function (req, res) {
 											  const token = req.params.token || req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies.token;
 											  if (!token) 

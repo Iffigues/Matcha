@@ -77,7 +77,7 @@ async function lol (g, res, me, type) {
 						furries: rows1,
 						distance: g[n].distance,
 						furrymatch: oui,
-						match: non + oui + pok(popu + 1, me.popularity + 1)+ ye,
+						match: non + oui + pok(popu + 1, me.popularity + 1) + ye,
 						like: li,
 						likable: g[n].path != null
 					}, g[n]));
