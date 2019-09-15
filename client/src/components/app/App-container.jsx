@@ -62,7 +62,6 @@ class AppContainer extends React.Component {
 		}).catch(error => {
 			console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
 		});
-
 	}
 
 	addFlash(type, message) {

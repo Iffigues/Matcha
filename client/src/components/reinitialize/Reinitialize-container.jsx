@@ -8,8 +8,10 @@ class ReinitializeContainer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
+			token: 0
 		}
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleEmailSubmit = this.handleEmailSubmit.bind(this);
+		this.handlePasswordSubmit = this.handlePasswordSubmit.bind(this);
 	}
 
 	componentDidMount() {
@@ -20,15 +22,15 @@ class ReinitializeContainer extends React.Component {
 		this._isMounted = false;
 	}
 
-	handleSubmit(e) {
+	handleEmailSubmit(e) {
 		e.preventDefault();
 
 		const inputs = e.target.querySelectorAll('input');
-		var valid = true;
+		let valid = true;
 
 		inputs.forEach(function(input) {
-			var test = false;
-			var val = input.value.trim();
+			let test = false;
+			let val = input.value.trim();
 			switch (input.name) {
 				case 'email':
 					test = !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val);
@@ -49,7 +51,7 @@ class ReinitializeContainer extends React.Component {
 		{
 			const f = e.target;
 			const form = new FormData(e.target);
-			var data = {};
+			let data = {};
 			form.forEach(function(value, key){
 				data[key] = value;
 			});
@@ -88,8 +90,82 @@ class ReinitializeContainer extends React.Component {
 		}
 	}
 
+	handlePasswordSubmit(e) {
+		e.preventDefault();
+
+		const inputs = e.target.querySelectorAll('input');
+		let password = '';
+		let valid = true;
+
+		inputs.forEach(function(input) {
+			let test = false;
+			switch (input.name) {
+				case 'password':
+					password = input.value;
+					test = input.value.length < 8 || !/.*[0-9]+.*/.test(input.value) || !/.*[A-Z]+.*/.test(input.value) || !/.*[a-z]+.*/.test(input.value) || !/.*[!A-Za-z0-9]+.*/.test(input.value);
+					break ;
+				case 'confirm':
+					test = test || !input.value || input.value.localeCompare(password);
+					break ;
+				default:
+			}
+			if (test) {
+				valid = false;
+				input.classList.remove('is-valid');
+				input.classList.add('is-invalid');
+			} else {
+				valid = true;
+				input.classList.remove('is-invalid');
+				input.classList.add('is-valid');
+			}
+		});
+		if (valid)
+		{
+			const f = e.target;
+			const form = new FormData(e.target);
+			let data = {};
+			form.forEach(function(value, key){
+				data[key] = value;
+			});
+			delete data['username'];
+			const token = localStorage.getItem('token');
+			fetch('http://' + document.location.hostname + ':8080/xxxxxxxxx', {
+				method: 'POST',
+				headers: {
+					'x-access-token': token,
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => {
+				if (response) {
+					response.json().then(data => {
+						if (this._isMounted) {
+							if (data.code === 0) {
+								f.reset();
+								inputs.forEach(function(input) {
+									input.classList.remove('is-invalid');
+									input.classList.remove('is-valid');
+								});
+								this.props.addFlash("notice", data.msg);
+							} else {
+								this.props.addFlash("error", data.msg);
+							}
+						}
+					}).catch(error => {
+						console.log('Il y a eu un problème avec la lecture de la réponse');
+					});
+				} else
+					throw Error('Pas de réponse');
+			}).catch(error => {
+				console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message);
+			});
+		}
+	}
+
 	render() {
-		return <Reinitialize onSubmit={this.handleSubmit}/>;
+		return <Reinitialize onEmailSubmit={this.handleEmailSubmit} onPasswordSubmit={this.handlePasswordSubmit} token={this.props.props.match.params.token}/>;
 	}
 
 }

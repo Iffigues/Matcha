@@ -9,7 +9,7 @@ router.post("/", function (req, res) {
 	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(`INSERT INTO report (userId, who) VALUES (?,?)`,[decoded.rr.id, req.body.id], function (err, result) {
-			res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a été signalé"}));
+			res.status(200).send(JSON.stringify({code:0, msg: "L'utilisateur a été signalé"}));
 		});
 	});
 });

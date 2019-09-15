@@ -225,6 +225,7 @@ class SuggestionsContainer extends React.Component {
 								profile.liked = !data.liked;
 						});
 						this.setState({profiles: profiles});
+						this.props.addFlash("notice", data.msg);
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

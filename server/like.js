@@ -35,18 +35,18 @@ router.post("/add", function (req, res) {
 								con.query(`SELECT * FROM likes WHERE userOne = ? AND userTwo = ?`, [o, decoded.rr.id] ,function (errr,bbb){
 									if (!errr && bbb.length) {
 										rrr= "matched";
-										mmm="Vous venez de matcher avec un utilisateur";
+										mmm="Vous venez de matcher avec un profil";
 									} else {
 										rrr = "liked";
 										mmm="Quelqu'un vient de vous aimer";
 									}
 									notif(decoded.rr, o, rrr, mmm);
 									console.log('liker')
-									res.status(200).send(JSON.stringify({code: 0, msg:"Vous avez liker un utilisateur",like: 1}));
+									res.status(200).send(JSON.stringify({code: 0, msg:"Vous venez d'aimer un profil",like: 1}));
 								});
 							} else {
 								con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
-									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur n'est plus aimé"}));
+									res.status(200).send(JSON.stringify({code:0, msg:"Le profil n'est plus aimé"}));
 									console.log('unliker');
 									notif(decoded.rr, o, 'unmatched', "unmatched");
 								});

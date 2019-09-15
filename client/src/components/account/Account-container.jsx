@@ -293,12 +293,12 @@ class AccountContainer extends React.Component {
 		e.preventDefault();
 
 		const inputs = e.target.querySelectorAll('input');
-		var password = '';
-		var valid = true;
+		let password = '';
+		let valid = true;
 
 		inputs.forEach(function(input) {
-			var test = false;
-			var val = input.value.trim();
+			let test = false;
+			let val = input.value.trim();
 			switch (input.name) {
 				case 'username':
 					test = val.length < 4 || !/^[A-Za-z0-9αßÁáÀàÅåÄäÆæÇçÉéÈèÊêÍíÌìÎîÑñÓóÒòÔôÖöØøÚúÙùÜüŽž' _-]+$/.test(val);
@@ -341,7 +341,7 @@ class AccountContainer extends React.Component {
 		{
 			const f = e.target;
 			const form = new FormData(e.target);
-			var data = {};
+			let data = {};
 			form.forEach(function(value, key){
 				data[key] = value;
 				if (key === 'password')
@@ -416,7 +416,7 @@ class AccountContainer extends React.Component {
 
 		if (valid) {
 			const form = new FormData(e.target);
-			var data = {};
+			let data = {};
 			form.forEach(function(value, key){
 				data[key] = value;
 			});
@@ -481,7 +481,7 @@ class AccountContainer extends React.Component {
 
 		if (valid) {
 			const form = new FormData(e.target);
-			var data = {};
+			let data = {};
 			form.forEach(function(value, key){
 				data[key] = value;
 			});
@@ -546,7 +546,7 @@ class AccountContainer extends React.Component {
 
 		if (valid) {
 			const form = new FormData(e.target);
-			var data = {};
+			let data = {};
 			form.forEach(function(value, key){
 				data[key] = value;
 			});
