@@ -23,7 +23,7 @@ async function isMatched(id, user, res) {
 				id: id[i].id,
 				matched: 0
 			};
-			if (fr && fr.length)
+			if (fr && fr.length && fr[0].d)
 				users.matched = 1;
 			liked.push(users);
 		}
