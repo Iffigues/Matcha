@@ -29,7 +29,7 @@ class ChatContainer extends React.Component {
 	componentDidMount() {
 		this._isMounted = true;
 		this.regularlyFetchData();
-		this._socket = io('http://' + document.location.hostname + ':8081', {
+		this._socket = io('http://' + document.location.hostname + ':8080', {
 				query: {token: localStorage.getItem('token')}
 		});
 		this._socket.on('chat', (data) => {
@@ -148,6 +148,7 @@ class ChatContainer extends React.Component {
 			const messages = this.state.messages.slice();
 			messages.unshift(message);
 			this.setState({messages: messages});
+			e.target.reset();
 		}
 	}
 
