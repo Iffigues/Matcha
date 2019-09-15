@@ -41,7 +41,6 @@ router.post("/add", function (req, res) {
 										mmm="Quelqu'un vient de vous aimer";
 									}
 									notif(decoded.rr, o, rrr, mmm);
-									console.log('liker')
 									res.status(200).send(JSON.stringify({code: 0, msg:"Vous venez d'aimer un profil",like: 1}));
 								});
 							} else {
