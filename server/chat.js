@@ -54,13 +54,13 @@ async function unreader(user, data) {
 }
 
 async function isBloque(user, data) {
-	const v = await query(`SELECT userId, bloqueID FROM bloque WHERE (bloqueId = ? AND userId = ?) OR (bloqueId = ? AND userId = ?)`, user.rr.id, data.toId, user.rr.id);
+	const v = await query(`SELECT userId, bloqueId FROM bloque WHERE (bloqueId = ? AND userId = ?) OR (bloqueId = ? AND userId = ?)`, [user.rr.id, data.message.toId, data.message.toId, user.rr.id]);
 	if (v && v.length)
 		return 0;
 	return 1;
 }
 
-module.exports = io.sockets.on('connection', function (socket) {
+module.exports = function (socket) {
 	let good = 0;
 	let token = socket.handshake.query.token;
 	let user = {};
@@ -88,7 +88,8 @@ module.exports = io.sockets.on('connection', function (socket) {
 		}
 	} catch (e) {
 	}
-});
+}
+
 
 /*server.listen(8081, function (err) {
 	console.log(err);

@@ -29,9 +29,8 @@ const cors = require('cors')
 const getlike = require('./getlike.js');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
-
 const chat = require("./chat.js");
-
+io.on('connection',chat)
 app.use(cors());
 app.options('*', cors());
 app.get('*', cors());
