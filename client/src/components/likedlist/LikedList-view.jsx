@@ -9,9 +9,12 @@ function LikedList(props) {
 				<div className="container">
 					<h2 className="mb-4">Liste des profils aimés</h2>
 					<ul>
-					{props.profiles.map((profile, key) => {
-						return <li key={key}><Link to={"/profiles/" + profile.id}>{profile.firstname} {profile.lastname} - {profile.username}</Link></li>
-					})}
+					{props.profiles.length
+						? props.profiles.map((profile, key) => {
+								return <li key={key}><Link to={"/profiles/" + profile.id}>{profile.firstname} {profile.lastname} - {profile.username}</Link></li>
+						})
+						: <li><i>Aucun profil aimé</i></li>
+					}
 					</ul>
 				</div>
 			</div>

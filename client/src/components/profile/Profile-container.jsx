@@ -29,6 +29,7 @@ class ProfileContainer extends React.Component {
 		}
 		this.handleLikeClick = this.handleLikeClick.bind(this);
 		this.handleBlockClick = this.handleBlockClick.bind(this);
+		this.handleReportClick = this.handleReportClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -42,7 +43,7 @@ class ProfileContainer extends React.Component {
 
 	fetchData() {
 		const token = localStorage.getItem('token');
-		fetch('http://' + document.location.hostname + ':8080/user/' + this.props.match.params.id, {
+		fetch('http://' + document.location.hostname + ':8080/user/' + this.props.props.match.params.id, {
 			method: 'GET',
 			headers: {
 				'x-access-token': token,
@@ -101,6 +102,7 @@ class ProfileContainer extends React.Component {
 				response.json().then(data => { 
 					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
+						this.props.addFlash("notice", data.msg);
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -129,6 +131,7 @@ class ProfileContainer extends React.Component {
 				response.json().then(data => { 
 					if (data.code === 0 && this._isMounted) {
 						this.fetchData();
+						this.props.addFlash("notice", data.msg);
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');
@@ -156,7 +159,7 @@ class ProfileContainer extends React.Component {
 			if (response) {
 				response.json().then(data => { 
 					if (data.code === 0) {
-						alert("Profil signalé !");
+						this.props.addFlash("notice", data.msg);
 					}
 				}).catch(error => {
 					console.log('Il y a eu un problème avec la lecture de la réponse');

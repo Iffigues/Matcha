@@ -13,10 +13,10 @@ router.post("/", function (req, res) {
 			let f = `INSERT INTO bloque (userId, bloqueId) VALUES (?,?)`;
 			con.query(f,[decoded.rr.id, req.body.id], function (err, result) {
 				if (!err) {
-					res.status(200).send(JSON.stringify({code:0, msg:'user bloquer'}));
+					res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a été bloqué"}));
 				} else  {
 					con.query(`DELETE FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, req.body.id], function (err, resul) {
-						res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur est débloqué"}));
+						res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a été débloqué"}));
 					});
 				}
 			});

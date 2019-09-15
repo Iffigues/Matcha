@@ -30,24 +30,24 @@ function App(props) {
 				<Switch>
 					{props.loggedIn
 						?	<Switch>
-								<Route path="/" exact render={() => <Account addFlash={props.addFlash}/>} />
-								<Route path="/profiles/:id" component={Profile}/>
-								<Route path="/account" exact render={() => <Account addFlash={props.addFlash}/>} />
+								<Route path="/" exact render={(p) => <Account props={p} addFlash={props.addFlash}/>} />
+								<Route path="/profiles/:id" render={(p) => <Profile props={p} addFlash={props.addFlash}/>} />
+								<Route path="/account" exact render={(p) => <Account props={p} addFlash={props.addFlash}/>} />
 								<Route path="/liked"  component={LikedList} />
-								<Route path="/suggestions" render={() => <Suggestions role={props.role} addFlash={props.addFlash}/>} />
-								<Route path="/search" render={() => <Search role={props.role} addFlash={props.addFlash}/>}/>
+								<Route path="/suggestions" render={(p) => <Suggestions props={p} role={props.role} addFlash={props.addFlash}/>} />
+								<Route path="/search" render={(p) => <Search props={p} role={props.role} addFlash={props.addFlash}/>}/>
 								<Route path="/notifications" component={Notifications}/>
-								<Route path="/admin" render={() => <Admin addFlash={props.addFlash}/>} />
+								<Route path="/admin" render={(p) => <Admin props={p} addFlash={props.addFlash}/>} />
 								<Route path="/logout" component={Logout}/>
-								<Route path="/map" render={() => <ProfilesMap role={props.role} lng={props.lng} lat={props.lat}/>} />
-								<Route path="/:whatever" render={() => <Account addFlash={props.addFlash}/>} />
+								<Route path="/map" render={(p) => <ProfilesMap props={p} role={props.role} lng={props.lng} lat={props.lat}/>} />
+								<Route path="/:whatever" render={(p) => <Account props={p} addFlash={props.addFlash}/>} />
 							</Switch>
 						:	<Switch>
 								<Route path="/" exact component={Home}/>
-								<Route path="/login" render={() => <Login addFlash={props.addFlash}/>} />
-								<Route path="/reinitialize" render={() => <Reinitialize addFlash={props.addFlash}/>} />
-								<Route path="/register" render={() => <Register addFlash={props.addFlash}/>} />
-								<Route path="/:whatever" render={() => <Login addFlash={props.addFlash}/>} />
+								<Route path="/login" render={(p) => <Login props={p} addFlash={props.addFlash}/>} />
+								<Route path="/reinitialize/:token?" render={(p) => <Reinitialize props={p} addFlash={props.addFlash}/>} />
+								<Route path="/register" render={(p) => <Register props={p} addFlash={props.addFlash}/>} />
+								<Route path="/:whatever" render={(p) => <Login props={p} addFlash={props.addFlash}/>} />
 							</Switch>
 					}
 				</Switch>
