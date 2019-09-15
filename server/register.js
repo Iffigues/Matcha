@@ -59,7 +59,7 @@ function makeMail(username,token) {
 				<body>
 					<a href="http://localhost:8080/validate/${username}/${token}">Valide votre compte</a>
 					ou bien copier/coller ce lien
-					<p>http://localhost:3000/validate/${username}/${token}</p>
+					<p>http://localhost:8080/validate/${username}/${token}</p>
 				</body>
 			</html>	
 		`;
