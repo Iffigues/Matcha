@@ -1,5 +1,6 @@
 const con = require('./dt.js');
 const express = require('express');
+const http = require('http')
 const  router = express.Router();
 var server = require('http').Server(router);
 const middles = require("./middleware.js");
@@ -10,8 +11,13 @@ const secret = 'my-secret';
 const util = require('util');
 const notif = require('./notif.js');
 const query = util.promisify(con.query).bind(con);
-
+const ioreq = require("socket.io-request");
+router.use((req, res, next)=>{ res.locals['socketio'] = io; next(); });
 var users = {};
+
+router.get('/',function (req, res) {
+	res.send('jh');
+})
 
 async function putbdd(data, user) {
 	let e = 0;
@@ -54,7 +60,7 @@ async function isBloque(user, data) {
 	return 1;
 }
 
-io.sockets.on('connection', function (socket) {
+module.exports = io.sockets.on('connection', function (socket) {
 	let good = 0;
 	let token = socket.handshake.query.token;
 	let user = {};
@@ -84,5 +90,7 @@ io.sockets.on('connection', function (socket) {
 	}
 });
 
-server.listen(8081)
-	module.exports = router;
+/*server.listen(8081, function (err) {
+	console.log(err);
+});
+module.exports = router;*/

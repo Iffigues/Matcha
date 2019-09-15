@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
 const app = express();
+const http = require('http');
 const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const val = require("./accept.js");
@@ -15,7 +16,6 @@ const img = require("./img.js");
 const furry = require("./furry.js");
 const suj = require("./suj.js");
 const map = require("./map.js");
-const chat = require("./chat.js");
 const like = require("./like.js");
 const report = require("./report.js");
 const notif = require("./getnotif.js");
@@ -27,6 +27,10 @@ const msg = require("./message.js");
 const con = require("./dt.js");
 const cors = require('cors')
 const getlike = require('./getlike.js');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+const chat = require("./chat.js");
 
 app.use(cors());
 app.options('*', cors());
@@ -34,7 +38,9 @@ app.get('*', cors());
 app.post('*', cors());
 app.delete('*', cors());
 app.options('*', cors());
-
+app.use((req, res, next)=>{ res.locals['socketio'] = io; next(); });
+app.io = io;
+app.set("io", io);
 var MemoryStore =session.MemoryStore;
 app.set('trust proxy', 1) 
 app.use(session({
@@ -81,7 +87,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 											  app.use("/search", suj);
 											  app.use("/map", map);
 											  app.use("/adm", adm);
-											  app.use("/chat", chat);
+											  //app.use("/chat", chat);
 											  app.use("/notif", notif);
 											  app.use("/like", like);
 											  app.use("/blocked", bloke);
@@ -106,6 +112,6 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 
 											  })
 
-											  app.listen(process.env.PORT || 8080, function () {
+											  server.listen(process.env.PORT || 8080, function () {
 
 											  });
