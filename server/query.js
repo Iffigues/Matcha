@@ -63,10 +63,11 @@ router.get("/recover/:toki/:id", function(req, res) {
 		con.query(f, [tok, id], function (err, rst, fields) {
 			if (rst && rst.length > 0) {
 				return res.redirect("http://localhost:3000/reinitialize/"+tok+'/'+id);
+			} else {
+				res.redirect("http://localhost:3000/reinitialize");
 			}
 		});
 	});
-	res.redirect("http://localhost:3000/reinitialize");
 });
 
 router.post("/recover/:tok/:id" , function (req, res){
@@ -82,13 +83,16 @@ router.post("/recover/:tok/:id" , function (req, res){
 	con.connect(function(err) {
 		con.query(f, [id, tok], function (err, rst) {
 			if (rst && rst.affectedRows) {
-				con.query(g,[pwd, id], function (err, rlt) {
+				bcrypt.hash(pwd, 10, function(err, hash) {
+				con.query(g,[hash, id], function (err, rlt) {
 					return res.status(200).send(JSON.stringify({code:0, msg:'mot de passe changer'}));
 				})
+				});
+			} else {
+				res.status(400).send(JSON.stringify({code:4, msg:"verifier vote mot de passe"}));
 			}
-		})
+		});
 	});
-	res .status(400).send(JSON.stringify({code:4, msg:"verifier vote mot de passe"}));
 })
 
 function ver(a){
