@@ -7,7 +7,6 @@ function isC (a, c) {
 	var b = new Date(c);
 	var diff = Math.abs(b - d);
 	if (diff < 30 * 60 * 1000) {
-		console.log(diff);
 		return true;
 	}
 	return false;
