@@ -39,6 +39,7 @@ async function lol (g, res, me, type) {
 	try {
 		let profile = [];
 		const max = await query(`SELECT MAX(popularity) AS max FROM user`).catch(err => console.log(err));
+		let mypop = ((me.popularity + 1) * 100) / (max[0].max + 1);
 		for (let n in g) {
 			if (g[n].lat && g[n].lng && g[n].birthdate && g[n].city && g[n].firstname && g[n].lastname) {
 				let oui = 0;
@@ -77,12 +78,13 @@ async function lol (g, res, me, type) {
 						furries: rows1,
 						distance: g[n].distance,
 						furrymatch: oui,
-						match: non + oui + pok(popu + 1, me.popularity + 1) + ye,
+						match: non + oui + pok(popu + 1, mypop + 1) + ye,
 						like: li,
 						likable: g[n].path != null
 					}, g[n]));
 			}	
 		}
+		console.log(profile);
 		if (type == "all") {
 			let profiles = profile;
 			res.status(200).send(JSON.stringify({code:0, profiles}));
