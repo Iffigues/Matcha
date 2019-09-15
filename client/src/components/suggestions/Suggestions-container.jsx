@@ -222,7 +222,7 @@ class SuggestionsContainer extends React.Component {
 						const profiles = this.state.profiles.slice();
 						profiles.forEach(profile => {
 							if (profile.id === d.id)
-								profile.liked = !data.liked;
+								profile.like = data.like;
 						});
 						this.setState({profiles: profiles});
 						this.props.addFlash("notice", data.msg);

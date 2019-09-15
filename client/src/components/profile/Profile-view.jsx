@@ -13,7 +13,8 @@ function Profile(props) {
 		likeMessage = "Vous avez respectivement aimés vos profils, vous avez matché";
 	
 	const idPhoto = props.photos.findIndex(el => el.id === props.profilePhoto);
-	const profilePhoto = props.photos.splice(idPhoto, 1)[0];
+	const photos = props.photos.slice();
+	const profilePhoto = photos.splice(idPhoto, 1)[0];
 	const date = new Date(props.lastVisite).toLocaleString('fr-FR');
 	return (
 		<div className="Profile">
@@ -40,7 +41,7 @@ function Profile(props) {
 					</button>
 				</p>
 				<div className="row">
-					{props.photos.map((photo, key) => 
+					{photos.map((photo, key) => 
 						<div key={key} className="col-sm-3">
 							<div className="card">
 								<img className="card-img-top" src={'http://' + document.location.hostname + ':8080/' + photo.path} alt="..."/>
