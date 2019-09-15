@@ -14,16 +14,17 @@ const mail = require("./mail.js");
 
 function makeMail(token, id, email, host,i) {
 	let c = "<html><head></head><body><a href=\""+i+"/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+	return c;
 }
 
-function sendmai(token, username, email, host) {
-	let i = 'http://'+host+"/";
-	mail(email, "Réinitialisation du mot de passe", makeMail(token, id, host,i));
+function sendmai(token,id, email, host) {
+	let i = 'http://'+host;
+	let r = makeMail(token, id, email,host,i)
+		mail(email, "Réinitialisation du mot de passe", r);
 }
 
 router.post("/recover", function(req, res) {
-	let f = `INSERT INTO recover (userId, tok) VALUES ((SELECT id FROM user WHERE email = ? AND active = 1),?) ON DUPLICATE KEY UPDATE   userId= (SELECT id FROM user WHERE email = ? AND active = 1)`;
-	let g = `SELECT id FROM user WHERE email = ?`
+	let f = `REPLACE INTO recover SET tok = ? , userId = ?`;
 	if (!req.body.email) {
 		return res.status(400).send(JSON.stringify({code:0, msg:'Envoyer un email'}));
 	}
@@ -31,64 +32,63 @@ router.post("/recover", function(req, res) {
 	let valida = new validate();
 	if (!valida.isEmail(email))
 		return res.status(400).send("bad email");
-	bcrypt.hash(pass, saltRounds, function(err, hash) {
-		if (err) {
-			res.satus(500).send(JSON.stringify({code:1,msg:"internal error"}));
-		} else {
-			require('crypto').randomBytes(48, function(err, buffer) {
-				let token = buffer.toString('hex');
-				con.connect(function (err) {
-					con.query(g,[email],function(err, rst) {
-						if (rst && rst.lenght > 0) {
-							let id = rst[0].id;
-							con.query(f,[email, token], function(err, result, field) {
-								if (!err) {
-									sendmai(tok, id, email, req.headers.host);
-									res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
-								}else {
-									res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
-								}
-							});
+	require('crypto').randomBytes(48, function(err, buffer) {
+		let token = buffer.toString('hex');
+		con.connect(function (err) {
+			con.query('SELECT id FROM user WHERE email = ?',email, function (err, resl) {
+				if (!err && resl && resl.length) {
+					let id = resl[0].id;
+					con.query(f,[token, id], function(err, result, field) {
+						if (!err) {
+							sendmai(token, id, email, req.headers.host);
+							res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
+						}else {
+							res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
 						}
-					})
-				});
-			})
-		}
+					});
+				} else {
+					res.status(400).send(JSON.stringify({code:5, msg:'l utilisateur n existe pas'}));
+				}
+			});
+		})
 	});
 });
 
 
 router.get("/recover/:toki/:id", function(req, res) {
-	let ff = `SELECT * FROM recover WHERE token = ? AND userId = ?`;
+	let f = `SELECT * FROM recover WHERE tok = ? AND userId = ?`;
 	let tok = req.params.toki;
-	let id = req.params.id
+	let id = req.params.id;
 	con.connect(function(err) {
 		con.query(f, [tok, id], function (err, rst, fields) {
 			if (rst && rst.length > 0) {
-				res.redirect(":3000/recover/"+tok+'/'+id);
+				return res.redirect("http://localhost:3000/reinitialize/"+tok+'/'+id);
 			}
 		});
 	});
+	res.redirect("http://localhost:3000/reinitialize");
 });
 
 router.post("/recover/:tok/:id" , function (req, res){
-	let f = `DELETE FROM recover WHERE id = ? AND token =?`;
+	let f = `DELETE FROM recover WHERE userId = ? AND tok =?`;
 	let g = `UPDATE user SET password = ? WHERE id = ?`;
 	let tok = req.params.tok;
 	let id = req.params.id;
 	let pwd = req.body.password;
 	let valid = new validate();
 	if (!valid.isPwd(pwd)) {
+		return res.status(400).send(JSON.stringify({code:1, msg:"verifier votre ;ot de passe"}))
 	}
 	con.connect(function(err) {
 		con.query(f, [id, tok], function (err, rst) {
 			if (rst && rst.affectedRows) {
 				con.query(g,[pwd, id], function (err, rlt) {
-
+					return res.status(200).send(JSON.stringify({code:0, msg:'mot de passe changer'}));
 				})
 			}
 		})
 	});
+	res .status(400).send(JSON.stringify({code:4, msg:"verifier vote mot de passe"}));
 })
 
 function ver(a){
@@ -111,7 +111,7 @@ router.post("/", function (req, res) {
 		con.query(sql, [email] ,function (err, result, fields) {
 			if (err || !result || result.length == 0) 
 				return res.status(404).send(JSON.stringify({code:2, msg:"le compte n'existe pas"}))
-			let rr = result[0];
+					let rr = result[0];
 			if (!rr || !rr.active)
 				return res.status(404).send(JSON.stringify({code:2, msg:"Ce compte n'est pas activé ou n'existe pas"}));
 			if (rr.active) {
