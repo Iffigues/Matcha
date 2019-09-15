@@ -23,7 +23,7 @@ router.post("/add", function (req, res) {
 		var decoded = jwtDecode(req.token);
 		let o = req.body.id;
 		if (decoded.rr.id == o)
-			res.status(200).send(JSON.stringify({code:1, msg:"Vous vous aimer dejas, sinon aller voir un psy"}));
+			res.status(200).send(JSON.stringify({code:1, msg:"Vous ne pouvez aimer votre propre profil"}));
 		else
 			con.query(`SELECT * FROM img WHERE userId = ?`, o, function (err, lrem) {
 				con.query(`SELECT profilephoto FROM user WHERE id= ?`,o, function (err, lll) {
