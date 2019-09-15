@@ -129,7 +129,7 @@ class ReinitializeContainer extends React.Component {
 			});
 			delete data['username'];
 			const token = localStorage.getItem('token');
-			fetch('http://' + document.location.hostname + ':8080/xxxxxxxxx', {
+			fetch('http://' + document.location.hostname + ':8080/login/recover/' + this.props.props.match.params.token + '/' + this.props.props.match.params.id, {
 				method: 'POST',
 				headers: {
 					'x-access-token': token,

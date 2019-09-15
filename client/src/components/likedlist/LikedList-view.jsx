@@ -11,7 +11,11 @@ function LikedList(props) {
 					<ul>
 					{props.profiles.length
 						? props.profiles.map((profile, key) => {
-								return <li key={key}><Link to={"/profiles/" + profile.id}>{profile.firstname} {profile.lastname} - {profile.username}</Link></li>
+								return <li key={key}><Link to={"/profiles/" + profile.id}>{profile.firstname} {profile.lastname} - {profile.username}</Link>{
+									profile.matched
+									? <i> (cet utilisateur a aussi aimé votre profil)</i>
+									: null
+								}</li>
 						})
 						: <li><i>Aucun profil aimé</i></li>
 					}
