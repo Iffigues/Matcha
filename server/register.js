@@ -86,6 +86,7 @@ router.post("/", function (req, res) {
 		let y  = r.msg;
 		if (!r.code) {
 		con.connect(function(err) {
+			console.log(err)
 			const f = `INSERT INTO user (firstname, lastname, password, email, username, sexe) VALUES (?, ?, ?, ?, ?, ?)`;
 			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.sexe], function (err, result, fields) {
 				if (result && !err) {
