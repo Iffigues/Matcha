@@ -7,7 +7,7 @@ function Reinitialize(props) {
 		{!props.token
 			?   (<div className="container">
 					<h2 className="mb-4">Réinitialisation du Mot de passe</h2>
-					<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
+					<form onSubmit={props.onEmailSubmit} className="needs-validation" noValidate>
 						<div className="form-group row">
 							<label className="col-sm-2 col-form-label">Adresse Email</label>
 							<div className="col-sm-10">
@@ -27,7 +27,7 @@ function Reinitialize(props) {
 				</div>)
 			:	(<div className="container">	
 					<h2 className="mb-4">Changement du Mot de passe</h2>
-					<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
+					<form onSubmit={props.onPasswordSubmit} className="needs-validation" noValidate>
 						<input name="username" style={{display:'none'}} autoComplete="off" readOnly="readonly"/>
 						<input name="token" value={props.token} style={{display:'none'}} autoComplete="off" readOnly="readonly"/>
 						<div className="form-group row">
