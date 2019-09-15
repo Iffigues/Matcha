@@ -28,7 +28,7 @@ async function isMatched(id, user, res) {
 			liked.push(users);
 		}
 	}
-	res.status(200).send(JSON.stringify({code:0, liked}))
+	res.status(200).send(JSON.stringify({code:0, profiles:liked}))
 }	
 
 router.get("/", function (req, res) {
