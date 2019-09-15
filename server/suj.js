@@ -64,7 +64,7 @@ async function lol (g, res, me, type) {
 				const rows2 = await query('SELECT * FROM likes WHERE userOne = ? AND userTwo = ?', [me.id, g[n].id]);
 				if (rows2.length)
 					li = 1;
-				const blok = await query('SELECT * FROM bloque WHERE (userId = ? AND  bloqueId = ?) OR (userId = ? AND bloqueId = ?)',[g[n].id, me.id, me.id , g[n].id]);
+				const blok = await query('SELECT * FROM bloque  WHERE (userId = ? AND  bloqueId = ?) OR (userId = ? AND bloqueId = ?)',[g[n].id, me.ids, me.ids , g[n].id]);
 				if (blok.length)
 					ooo = 0;
 				g[n].age = age(g[n].birthdate);
@@ -84,7 +84,6 @@ async function lol (g, res, me, type) {
 					}, g[n]));
 			}	
 		}
-		console.log(profile);
 		if (type == "all") {
 			let profiles = profile;
 			res.status(200).send(JSON.stringify({code:0, profiles}));
@@ -151,6 +150,7 @@ router.get("/:id",function (req, res) {
 					let ee = "1 OR sexe = 2 )";
 					let ggg = ` AND (preferences = ? OR preferences = 3) AND user.id != ?`;
 					let d = result[0];
+					d.ids = decoded.rr.id;
 					if (!d.lat || !d.lng || !d.birthdate || !d.city || !d.email || !d.firstname || !d.lastname || !d.username)
 						return res.status(401).send(JSON.stringify({code:1, msg:"vous devez renseigner votre profile"}));
 					if (d.preferences) {
