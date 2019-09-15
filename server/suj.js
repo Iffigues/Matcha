@@ -47,6 +47,7 @@ async function lol (g, res, me, type) {
 				let li = 0;
 				let ooo= 1;
 				let popu = ((g[n].popularity + 1) * 100) / (max[0].max + 1);
+				g[n].populrity = popu;
 				const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 				for (var e in rows) {
 					const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
