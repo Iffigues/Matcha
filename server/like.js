@@ -38,14 +38,14 @@ router.post("/add", function (req, res) {
 										mmm="Vous venez de matcher avec un profil";
 									} else {
 										rrr = "liked";
-										mmm="Quelqu'un vient de vous aimer";
+										mmm="Un profil vient de vous aimer";
 									}
 									notif(decoded.rr, o, rrr, mmm);
 									res.status(200).send(JSON.stringify({code: 0, msg:"Vous venez d'aimer un profil",like: 1}));
 								});
 							} else {
 								con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
-									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur n'est plus aimÃ", like:0}));
+									res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur n'est plus aimé", like:0}));
 									notif(decoded.rr, o, 'unmatched', "unmatched");
 								});
 							}
