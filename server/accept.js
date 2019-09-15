@@ -8,7 +8,7 @@ router.get("/:id/:tok", function (req, res) {
 	con.connect(function(err) {
 		const f = `DELETE FROM verif WHERE userId = ? AND tok = ?`;
 		con.query(f, [user, tok], function (err, result) {
-			const c = `UPDATE user SET active=1 WHERE id=?`;
+			const c = `UPDATE user SET active = 1 WHERE id= ?`;
 			if (result.affectedRows && !err)
 				con.query(c, [user], function (errs, results) {
 					if (!err && result && result.afffectedRow) {

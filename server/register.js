@@ -51,9 +51,24 @@ function user(tab, hash) {
 	return verif(user);
 }
 
+
+function makeMail(username,token) {
+	let i = `
+			<html>
+				<head></head>
+				<body>
+					<a href="http://localhost:8080/validate/${username}/${token}">Valide votre compte</a>
+					ou bien copier/coller ce lien
+					<p>http://localhost:3000/validate/${username}/${token}</p>
+				</body>
+			</html>	
+		`;
+	return i;
+}	
+
 function sendmai(token, username, email, host){
 	let i = 'http://'+host+"/";
-	mail(email, 'Création du compte', "<html><head></head><body><a href=\""+i+"validate/"+username+"/"+token+"\">http://gopiko.fr:8080/validate/"+username+"/"+token+"</a></body></html>");
+	mail(email, 'Création du compte', makeMail(username, token));
 }
 
 function table(req) {
@@ -82,14 +97,12 @@ function errno(err) {
 router.post("/", function (req, res) {
 	i = table(req);
 	bcrypt.hash(i.pwd, saltRounds, function(err, hash) {
-		console.log(err);
 		let r = user(i, hash);
 		let y  = r.msg;
 		if (!r.code) {
 		con.connect(function(err) {
-			console.log(err)
 			const f = `INSERT INTO user (firstname, lastname, password, email, username, sexe) VALUES (?, ?, ?, ?, ?, ?)`;
-			con.query(f, [y.firstname, y.lastname, y.pwd,y.email, y.login, y.sexe], function (err, result, fields) {
+			con.query(f, [y.firstname, y.lastname, hash, y.email, y.login, y.sexe], function (err, result, fields) {
 				if (result && !err) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
