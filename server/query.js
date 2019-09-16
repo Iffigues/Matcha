@@ -19,7 +19,7 @@ function makeMail(token, id, email, host,i,name) {
 	<body>
 	<p>Hello ${name},</p>
 	<p>Nous avons reçu une demande de réinitialisation du mot de passe associé à ton compte Matcha ${email} sur matcha. Si tu en es bien l'auteur, clique sur le lien ci-dessous :</p>
-	<a href="http://localhost:8080/login/recover/${token}/${id}"><button style:"background-color:black;">Reinitialiser</button></a>
+	<a href="http://localhost:8080/login/recover/${token}/${id}"><button style:"background-color:#00CC00;">Reinitialiser</button></a>
 	<p>Si tu n'as pas demandé la réinitialisation de ton mot de passe, tu peux simplement ignorer cet e-mail. Sois rassuré, ton compte reste sécurisé.</p>
 	<p>Merci de faire confiance à Matcha !</p>
 	<p>L'équipe Matcha</p>
