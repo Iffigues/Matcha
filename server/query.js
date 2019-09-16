@@ -12,14 +12,26 @@ const sendmail = require('sendmail')();
 const validate = require("./validateur.js");
 const mail = require("./mail.js");
 
-function makeMail(token, id, email, host,i) {
-	let c = "<html><head></head><body><a href=\""+i+"/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+function makeMail(token, id, email, host,i,name) {
+	//let c = "<html><head></head><body><a href=\""+i+"/login/recover/"+token+"/"+id+"\">reset your password</a></body></html>";
+	let c = `
+	<html>
+	<body>
+	<p>Hello ${name},</p>
+	<p>Nous avons reçu une demande de réinitialisation du mot de passe associé à ton compte Matcha ${email} sur matcha. Si tu en es bien l'auteur, clique sur le lien ci-dessous :</p>
+	<a href="http://localhost:8080/login/recover/${token}/${id}"><button style:"background-color:black;">Reinitialiser</button></a>
+	<p>Si tu n'as pas demandé la réinitialisation de ton mot de passe, tu peux simplement ignorer cet e-mail. Sois rassuré, ton compte reste sécurisé.</p>
+	<p>Merci de faire confiance à Matcha !</p>
+	<p>L'équipe Matcha</p>
+	</body>
+	</html>
+	`;
 	return c;
 }
 
-function sendmai(token,id, email, host) {
+function sendmai(token,id, email, host, name) {
 	let i = 'http://'+host;
-	let r = makeMail(token, id, email,host,i)
+	let r = makeMail(token, id, email,host,i, name)
 		mail(email, "Réinitialisation du mot de passe", r);
 }
 
@@ -35,12 +47,13 @@ router.post("/recover", function(req, res) {
 	require('crypto').randomBytes(48, function(err, buffer) {
 		let token = buffer.toString('hex');
 		con.connect(function (err) {
-			con.query('SELECT id FROM user WHERE email = ?',email, function (err, resl) {
+			con.query('SELECT id, username FROM user WHERE email = ?',email, function (err, resl) {
 				if (!err && resl && resl.length) {
 					let id = resl[0].id;
+					let names = resl[0].username;
 					con.query(f,[token, id], function(err, result, field) {
 						if (!err) {
-							sendmai(token, id, email, req.headers.host);
+							sendmai(token, id, email, req.headers.host, names);
 							res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
 						}else {
 							res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))

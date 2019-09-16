@@ -52,23 +52,28 @@ function user(tab, hash) {
 }
 
 
-function makeMail(username,token) {
+function makeMail(username,token, name, email) {
 	let i = `
-			<html>
-				<head></head>
-				<body>
-					<a href="http://localhost:8080/validate/${username}/${token}">Valide votre compte</a>
-					ou bien copier/coller ce lien
-					<p>http://localhost:8080/validate/${username}/${token}</p>
-				</body>
-			</html>	
-		`;
+		<html>
+		<body>
+		<p>S'il te plait, confirme ton compte Matcha</p>
+		<p>Hello ${name},</p>
+		<p>Ton compte Matcha a bien été crée avec l'adresse email : ${email}</p>
+		<p>Pour commencer, active ton compte en cliquant sur le bouton ci-dessous. Après cela, tu pourras te connecter sur le site.</p>
+		<p>Confirmer son adresse email</p>
+		<p><a href="http://localhost:8080/validate/${username}/${token}"><button>Confirmer</button></a></p>
+		<p>Nous te remercions pour ton inscription sur notre site.</p>
+		<p>À très vite,</p> 
+		<p>L'équipe Matcha</p>
+		</body>
+		</html>
+	`;
 	return i;
 }	
 
-function sendmai(token, username, email, host){
+function sendmai(token, username, email, host, name){
 	let i = 'http://'+host+"/";
-	mail(email, 'Création du compte', makeMail(username, token));
+	mail(email, 'Création du compte', makeMail(username, token, name,email));
 }
 
 function table(req) {
@@ -107,7 +112,7 @@ router.post("/", function (req, res) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
 					con.query(lol, [id, y.token], function (err, results, field) {
-						sendmai(y.token, id, y.email, req.headers.host);
+						sendmai(y.token, id, y.email, req.headers.hosti, y.username);
 					});
 					res.status(200).send(JSON.stringify({code:0, msg:"Le compte vient d'être créé, un email de confirmation vient de vous être envoyé"}));
 				}	else {
