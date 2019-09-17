@@ -43,7 +43,7 @@ router.post("/upload", function (req, res) {
 						var decoded = jwtDecode(req.token);
 						con.query(ff, [decoded.rr.id, req.file.path],  function (err, ress) {
 							if (r == 0) {
-								con.query("UPDATE user SET profilePhoto = ? WHERE id = ?",[ress.insertId, decoded.rr.id], function (err, resultats) {
+								con.query("UPDATE user SET profilephoto = ? WHERE id = ?",[ress.insertId, decoded.rr.id], function (err, resultats) {
 									
 								});
 							}
