@@ -54,13 +54,13 @@ router.post("/recover", function(req, res) {
 					con.query(f,[token, id], function(err, result, field) {
 						if (!err) {
 							sendmai(token, id, email, req.headers.host, names);
-							res.status(200).send(JSON.stringify({code:0, msg:"Un message viens de vous etre envoyer"}));
+							res.status(200).send(JSON.stringify({code:0, msg:"Un message vient de vous être envoyé"}));
 						}else {
 							res.status(404).send(JSON.stringify({code:1, msg:"Une erreur est survenue"}))
 						}
 					});
 				} else {
-					res.status(400).send(JSON.stringify({code:5, msg:'l utilisateur n existe pas'}));
+					res.status(400).send(JSON.stringify({code:5, msg:"L'utilisateur n'existe pas"}));
 				}
 			});
 		})
