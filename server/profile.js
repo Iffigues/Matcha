@@ -160,7 +160,10 @@ router.post("/", function (req, res) {
 		if (y.code == 0) {
 			y.tabs.push(decoded.rr.id)
 			con.query(y.sql, y.tabs, function (err, result) {
-				res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
+				if (err)
+					res.status(400).send(JSON.stringify({code:3, msg:"Vos informations n'ont pas été modifiées"}));
+				else
+					res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
 				con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
 					if(!err && rem.length) {
 						con.query("SETUP user SET role = user WHERE id = ?",decoded.rr.id, function (err, rrr) {	

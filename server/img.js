@@ -42,6 +42,11 @@ router.post("/upload", function (req, res) {
 					if(!err) {
 						var decoded = jwtDecode(req.token);
 						con.query(ff, [decoded.rr.id, req.file.path],  function (err, ress) {
+							if (r == 0) {
+								con.query("UPDATE user SET profilePhoto = ? WHERE id = ?",[ress.insertId, decoded.rr.id], function (err, resultats) {
+									
+								});
+							}
 							return res.status(200).send(JSON.stringify({code:0, msg:"La photo a bien été enregistrée"}));
 						});
 					} else {
