@@ -128,6 +128,7 @@ function hh(ee, uu, obj, id) {
 }
 
 function hard(obj, r, f, o, tab, id) {
+	let tabs = [];
 	let b = look(tab, r, obj)
 		if (b.code == 0) {
 			for (var i in r) {
@@ -140,10 +141,12 @@ function hard(obj, r, f, o, tab, id) {
 						let vv = haha.split("/");
 						haha = vv[02]+'-'+vv[1]+'-'+vv[0]
 					}
-					f = f+u+`=`+"'"+haha+"'";
+					tabs.push(haha);
+					f = f+u+`=? `;
 					o = 1;
 				}
 			}
+			b.tabs = tabs;
 			b.sql =  f + ` WHERE id = ?`;
 		}
 	return b;
@@ -155,7 +158,8 @@ router.post("/", function (req, res) {
 		var decoded = jwtDecode(req.token);
 		let y = hard(jj, Object.keys(jj), `UPDATE user SET `, 0, getTab(), decoded.rr.id);
 		if (y.code == 0) {
-			con.query(y.sql, [decoded.rr.id], function (err, result) {
+			y.tabs.push(decoded.rr.id)
+			con.query(y.sql, y.tabs, function (err, result) {
 				res.status(200).send(JSON.stringify({code:0, msg:"Vos informations ont été modifiées"}));
 				con.query('SELECT lat, lng FROM user WHERE id = ? AND lat != null AND lng != null', decoded.rr.id, function (err, rem){
 					if(!err && rem.length) {
@@ -187,6 +191,7 @@ router.post("/profilephoto", function (req, res) {
 			}
 		});
 	});
+	role(decoded.rr.id);
 });
 
 module.exports = router;
