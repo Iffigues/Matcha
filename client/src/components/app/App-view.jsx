@@ -45,8 +45,10 @@ function App(props) {
 						:	<Switch>
 								<Route path="/" exact component={Home}/>
 								<Route path="/login" render={(p) => <Login props={p} addFlash={props.addFlash}/>} />
+								<Route path="/login/validated" render={(p) => <Login props={p} addFlash={props.addFlash}/>} />
 								<Route path="/reinitialize/:token?/:id?" render={(p) => <Reinitialize props={p} addFlash={props.addFlash}/>} />
 								<Route path="/register" render={(p) => <Register props={p} addFlash={props.addFlash}/>} />
+								<Route path="/register/non-validated" render={(p) => <Register props={p} addFlash={props.addFlash}/>} />
 								<Route path="/:whatever" render={(p) => <Login props={p} addFlash={props.addFlash}/>} />
 							</Switch>
 					}

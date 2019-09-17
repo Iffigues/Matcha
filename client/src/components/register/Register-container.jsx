@@ -14,6 +14,9 @@ class RegisterContainer extends React.Component {
 
 	componentDidMount() {
 		this._isMounted = true;
+		if (this.props.props.location.pathname === "/register/non-validated") {
+			this.props.addFlash("error", "Le compte n'a pas été confirmé");
+		}
 	}
 
 	componentWillUnmount() {
