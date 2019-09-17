@@ -13,6 +13,8 @@ router.post("/", function (req, res) {
 			let f = `INSERT INTO bloque (userId, bloqueId) VALUES (?,?)`;
 			con.query(f,[decoded.rr.id, req.body.id], function (err, result) {
 				if (!err) {
+					con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`,[decoded.rr.id, req.body.id],function (err, resulo){
+					 });
 					res.status(200).send(JSON.stringify({code:0, msg:"L'utilisateur a été bloqué"}));
 				} else  {
 					con.query(`DELETE FROM bloque WHERE userId = ? AND bloqueId = ?`,[decoded.rr.id, req.body.id], function (err, resul) {

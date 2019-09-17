@@ -26,7 +26,7 @@ function notif(me, who, type, mess) {
 							if (isC(k.date, k.clock))
 								b = 0;
 						}
-						if (b)
+						if (b && type != "unmatched")
 							con.query(g,[type,me.id, who], function (err, res) {
 								con.query(`UPDATE user SET popularity = popularity + 1 WHERE id = ?`,who,function (err, rts) {
 								});

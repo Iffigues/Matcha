@@ -7,6 +7,7 @@ const middles = require("./middleware.js");
 var jwtDecode = require('jwt-decode');
 router.use(middles);
 const fileType = require('file-type');
+const role = require('./role.js');
 
 const accepted_extensions = ['jpg', 'png', 'gif','jpeg'];
 
@@ -47,6 +48,7 @@ router.post("/upload", function (req, res) {
 									
 								});
 							}
+							role(decoded.rr.id);
 							return res.status(200).send(JSON.stringify({code:0, msg:"La photo a bien été enregistrée"}));
 						});
 					} else {
@@ -77,6 +79,7 @@ router.post("/update", function(req, res) {
 							if (!err) {
 								fs.unlink(yy, (err) => {
 								})
+								role(decoded.rr.id);
 								res.status(200).send(JSON.stringify({code:0, msg: req.file.path}));
 							}
 						});
@@ -100,9 +103,10 @@ router.delete("/:id", function (req, res) {
 					if (rt[0].profilephoto == req.params.id) {
 						con.query("SELECT * FROM img WHERE userId = ?", decoded.rr.id, function (err, rz) {
 							let rrr = 0;
-							if (!err && rz[0])
+							if (!err && rz &&  rz.length)
 								rrr = rz[0].id;
 							con.query("UPDATE user SET profilephoto = ? WHERE id = ?",  [rrr, decoded.rr.id], function (err, rst){
+								role(decoded.rr.id);
 							});
 						})
 					}
@@ -111,6 +115,7 @@ router.delete("/:id", function (req, res) {
 		});
 		con.query(f,[req.params.id, decoded.rr.id], function (err, result) {
 			res.status(200).send(JSON.stringify({code:0, msg:"La photo a été supprimée"}));
+			role(decoded.rr.id);
 		});
 	});
 });

@@ -184,17 +184,17 @@ router.post("/profilephoto", function (req, res) {
 	let f = `SELECT * FROM img WHERE userId = ? AND id = ?`;
 	let ff = `UPDATE user SET profilephoto = ? WHERE id= ?`;
 	var id = req.body.profilePhoto
-		var decoded = jwtDecode(req.token);
+	var decoded = jwtDecode(req.token);
 	con.connect(function (err) {
 		con.query(f, [decoded.rr.id, id], function (err, result) {
 			if (!err && result && result.length) {
 				con.query(ff, [id, decoded.rr.id], function (err, result1) {
 					res.status(200).send(JSON.stringify({code:0, msg:"La photo de profil a été modifiée"}));
+					role(decoded.rr.id);
 				});
 			}
 		});
 	});
-	role(decoded.rr.id);
 });
 
 module.exports = router;
