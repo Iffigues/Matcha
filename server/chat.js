@@ -54,7 +54,7 @@ async function unreader(user, data) {
 }
 
 async function isBloque(user, data) {
-	const r = await query(`SELECT * FROM id = ?`).then((b) => {
+	const r = await query(`SELECT * FROM user WHERE id=?`,user.rr.id).then((b) => {
 		if (b && b.length)
 			return 1;
 		return 0;
