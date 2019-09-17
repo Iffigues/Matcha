@@ -54,10 +54,12 @@ async function unreader(user, data) {
 }
 
 async function isBloque(user, data) {
-	const v = await query(`SELECT userId, bloqueId FROM bloque WHERE (bloqueId = ? AND userId = ?) OR (bloqueId = ? AND userId = ?)`, [user.rr.id, data.message.toId, data.message.toId, user.rr.id]);
-	if (v && v.length)
-		return 0;
-	return 1;
+	const v = await query(`SELECT userId, bloqueId FROM bloque WHERE (bloqueId = ? AND userId = ?) OR (bloqueId = ? AND userId = ?)`, [user.rr.id, data.message.toId, data.message.toId, user.rr.id]).then((b) => {
+		if (b && b.length)
+		   return 0;
+		return 1;   
+	});
+	return v;
 }
 
 module.exports = function (socket) {
@@ -73,14 +75,18 @@ module.exports = function (socket) {
 		if (good) {
 			socket.on('chat', function(data){
 				try {
-					if (isBloque(user, data))
-						lol(data, user);
-				} catch (e) {
+						isBloque(user, data).then((rr) => {
+							if (rr)
+								lol(data, user);
+						});
+					} catch (e) {
 				}
 			});
 			socket.on('unread', function (data) {
-				if (isBloque(user, data))
-					unreader(user, data)
+				isBloque(user, data).then((r) => {
+					if (r)
+						unreader(user, data);
+				})
 			});
 			socket.on('disconnect', function(){
 				delete users[user.rr.id];
@@ -89,9 +95,3 @@ module.exports = function (socket) {
 	} catch (e) {
 	}
 }
-
-
-/*server.listen(8081, function (err) {
-	console.log(err);
-});
-module.exports = router;*/
