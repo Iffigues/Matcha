@@ -6,7 +6,7 @@ function Account(props) {
 		<div className="Account">
 			<div className="container">
 				<h2 className="mb-4">Profil Utilisateur</h2>
-				<p><b>Vous devez entièrement remplir votre profil pour pouvoir accéder aux profils des autres utilisateurs</b></p>
+				<p><b>Vous devez entièrement remplir votre profil pour pouvoir accéder aux profils des autres utilisateurs (photo de profil, date de naissance, localisation, etc.)</b></p>
 				<form onSubmit={props.onSubmit} className="needs-validation" noValidate>
 					<div className="form-group row">
 						<label className="col-sm-2 col-form-label">Prénom</label>

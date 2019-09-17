@@ -740,9 +740,9 @@ class AccountContainer extends React.Component {
 					response.json().then(data => {
 						if (this._isMounted) {
 							if (data.code === 0) {
-								this.setState({flashes: [{type: "notice", msg: data.msg}]});
+								this.props.addFlash("notice", data.msg);
 							} else {
-								this.setState({flashes: [{type: "error", msg: data.msg}]});
+								this.props.addFlash("error", data.msg);
 							}
 						}
 						this.fetchData();
