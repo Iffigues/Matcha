@@ -47,8 +47,8 @@ class AppContainer extends React.Component {
 								username: data.username || '',
 								loggedIn: true,
 								role: data.role,
-								lng: data.lng,
-								lat: data.lat
+								lng: data.lng || 2.344305,
+								lat: data.lat || 48.859595
 							});
 						} else {
 							this.setState({username: '', loggedIn: false, role: '', lng: 2.344305, lat: 48.859595});
