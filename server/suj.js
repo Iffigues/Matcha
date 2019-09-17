@@ -51,17 +51,17 @@ async function lol (g, res, me, type) {
 				g[n].popularity = popu;
 				const rows = await query('select * FROM tag WHERE tag.userId = ?', g[n].id);
 				for (var e in rows) {
-					const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.id, rows[e].tag]);
+					const re = await query('SELECT COUNT(*) as d FROM tag WHERE userId = ? AND tag  = ?', [me.ids, rows[e].tag]);
 					if (re[0].d)
 						non = non + 1;
 				}
 				const rows1 = await query('select * FROM furry WHERE furry.userId = ?',  g[n].id);
 				for (var e in rows1) {
-					const re = await query('SELECT COUNT(*) as d FROM furry WHERE userId = ? and name = ?', [me.id, rows1[e].name]);
+					const re = await query('SELECT COUNT(*) as d FROM furry WHERE userId = ? and name = ?', [me.ids, rows1[e].name]);
 					if (re[0].d)
 						oui = oui + 1;
 				}
-				const rows2 = await query('SELECT * FROM likes WHERE userOne = ? AND userTwo = ?', [me.id, g[n].id]);
+				const rows2 = await query('SELECT * FROM likes WHERE userOne = ? AND userTwo = ?', [me.ids, g[n].id]);
 				if (rows2.length)
 					li = 1;
 				const blok = await query('SELECT * FROM bloque  WHERE (userId = ? AND  bloqueId = ?) OR (userId = ? AND bloqueId = ?)',[g[n].id, me.ids, me.ids , g[n].id]);
@@ -120,12 +120,8 @@ async function roles(id) {
 router.get("/:id",function (req, res) {
 	let id = req.params.id;
 	let g = `SELECT *,
-		tag.tag,
-		furry.name,
 		img.path
 	FROM user
-	LEFT JOIN tag as tag ON tag.userId = user.id
-	LEFT JOIN furry as furry ON furry.userId = user.id
 	LEFT JOIN img as img ON img.id = user.profilephoto
 	WHERE user.id = ?
 		`;
