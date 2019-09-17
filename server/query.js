@@ -91,18 +91,18 @@ router.post("/recover/:tok/:id" , function (req, res){
 	let pwd = req.body.password;
 	let valid = new validate();
 	if (!valid.isPwd(pwd)) {
-		return res.status(400).send(JSON.stringify({code:1, msg:"verifier votre ;ot de passe"}))
+		return res.status(400).send(JSON.stringify({code:1, msg:"Le mot de passe est incorrect"}))
 	}
 	con.connect(function(err) {
 		con.query(f, [id, tok], function (err, rst) {
 			if (rst && rst.affectedRows) {
 				bcrypt.hash(pwd, 10, function(err, hash) {
 				con.query(g,[hash, id], function (err, rlt) {
-					return res.status(200).send(JSON.stringify({code:0, msg:'mot de passe changer'}));
+					return res.status(200).send(JSON.stringify({code:0, msg:'Le mot de passe a été modifié'}));
 				})
 				});
 			} else {
-				res.status(400).send(JSON.stringify({code:4, msg:"verifier vote mot de passe"}));
+				res.status(400).send(JSON.stringify({code:4, msg:"Le mot de passe est incorrect"}));
 			}
 		});
 	});
