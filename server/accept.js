@@ -9,7 +9,7 @@ router.get("/:id/:tok", function (req, res) {
 		const f = `DELETE FROM verif WHERE userId = ? AND tok = ?`;
 		con.query(f, [user, tok], function (err, result) {
 			const c = `UPDATE user SET active = 1 WHERE id= ?`;
-			if (result.affectedRows && !err)
+			if (result.affectedRows && !err) {
 				con.query(c, [user], function (errs, results) {
 					if (!err && results && results.afffectedRow) {
 						res.redirect("http://localhost:3000/login/validated");
@@ -17,6 +17,9 @@ router.get("/:id/:tok", function (req, res) {
 						res.redirect("http://localhost:3000/register/non-validated");
 					}
 				});
+			} else {
+				res.redirect("http://localhost:3000/login/validated");
+			}
 		});
 	});
 });
