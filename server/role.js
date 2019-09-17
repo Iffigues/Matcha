@@ -10,6 +10,8 @@ async function role (id) {
 	if (rst && rst.length > 0) {
 		let res = 0;
 		let e = rst[0];
+		if (e.role == "admin")
+			return (0);
 		if (e.lat && e.lng && e.birthdate && e.city && e.firstname && e.lastname && e.profilephoto) {
 			res = await query(`UPDATE user SET role = 'user' WHERE id = ?`, id).then((rd, err) => { 
 				return 1;
