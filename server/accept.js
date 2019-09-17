@@ -11,7 +11,7 @@ router.get("/:id/:tok", function (req, res) {
 			const c = `UPDATE user SET active = 1 WHERE id= ?`;
 			if (result.affectedRows && !err) {
 				con.query(c, [user], function (err, results) {
-					if (!err && results && results.affectedRow) {
+					if (!err && results && results.affectedRows) {
 						res.redirect("http://localhost:3000/login/validated");
 					} else {
 						res.redirect("http://localhost:3000/register/non-validated");
