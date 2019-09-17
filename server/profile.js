@@ -182,7 +182,7 @@ router.post("/profilephoto", function (req, res) {
 		con.query(f, [decoded.rr.id, id], function (err, result) {
 			if (!err && result && result.length) {
 				con.query(ff, [id, decoded.rr.id], function (err, result1) {
-					res.status(200).send(JSON.stringify({code:0, msg:"photo de profile changer"}));
+					res.status(200).send(JSON.stringify({code:0, msg:"La photo de profil a été modifiée"}));
 				});
 			}
 		});
