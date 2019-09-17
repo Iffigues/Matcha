@@ -82,6 +82,7 @@ class SuggestionsContainer extends React.Component {
 								min: distRangeMin < 0 ? 0 : distRangeMin,
 								max: Math.max.apply(Math, dists) + 1000
 							};
+							console.log(data);
 							this.setState({
 								ageRange: ageRange,
 								ageMaxRange: ageRange,

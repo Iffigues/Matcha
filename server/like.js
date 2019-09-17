@@ -46,7 +46,7 @@ router.post("/add", function (req, res) {
 							} else {
 								con.query(`DELETE FROM likes WHERE userOne = ? AND userTwo = ?`, [decoded.rr.id, o], function (err, resu) {
 									res.header("Content-Type", "application/json; charset=utf-8");
-									res.status(200).send(JSON.stringify({code:0, msg:"Le profil n'est plus aimé", like:0}));
+									res.status(200).send(JSON.stringify({code:0, msg:"Le profil n'est plus aimÃ©", like:0}));
 									notif(decoded.rr, o, 'unmatched', "unmatched");
 								});
 							}
