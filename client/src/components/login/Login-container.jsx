@@ -15,6 +15,9 @@ class LoginContainer extends React.Component {
 
 	componentDidMount() {
 		this._isMounted = true;
+		if (this.props.props.location.pathname === "/login/validated") {
+			this.props.addFlash("notice", "Le compte a été confirmé");
+		}
 	}
 
 	componentWillUnmount() {
