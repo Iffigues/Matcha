@@ -12,9 +12,9 @@ router.get("/:id/:tok", function (req, res) {
 			if (result.affectedRows && !err)
 				con.query(c, [user], function (errs, results) {
 					if (!err && result && result.afffectedRow) {
-						res.redirect("http://localhost:3000/login");
+						res.redirect("http://localhost:3000/login/validated");
 					} else {
-						res.redirect("http://localhost:3000/register");
+						res.redirect("http://localhost:3000/register/non-validated");
 					}
 				});
 		});
