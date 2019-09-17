@@ -71,7 +71,7 @@ function makeMail(username,token, name, email) {
 
 function sendmai(token, username, email, host, name){
 	let i = 'http://'+host+"/";
-	mail(email, 'S'il te plait, confirme ton compte Matcha', makeMail(username, token, name,email));
+	mail(email, `S'il te plait, confirme ton compte Matcha`, makeMail(username, token, name,email));
 }
 
 function table(req) {
@@ -110,7 +110,6 @@ router.post("/", function (req, res) {
 					const lol = `INSERT INTO verif (userId, tok) VALUES (?, ?)`;
 					const id = result.insertId;
 					con.query(lol, [id, y.token], function (err, results, field) {
-						console.log(y);
 						sendmai(y.token, id, y.email, req.headers.host, y.login);
 					});
 					res.status(200).send(JSON.stringify({code:0, msg:"Le compte vient d'être créé, un email de confirmation vient de vous être envoyé"}));

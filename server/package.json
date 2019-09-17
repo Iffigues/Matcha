@@ -41,31 +41,5 @@
   "scripts": {
     "start": "nodemon  -w server -w package.json ./server.js",
     "devserver": "nodemon  -w server -w package.json ./server.js"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/register": "^7.5.5",
-    "gulp": "^4.0.2",
-    "gulp-changed": "^3.0.0",
-    "gulp-clean-css": "^4.2.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-sass": "4.0.2",
-    "gulp-uglify": "^3.0.2"
   }
 }
