@@ -33,7 +33,7 @@ const upload = multer({
 router.post("/upload", function (req, res) {
 	let f = `SELECT count(*) as nbr FROM img WHERE userId = ?`;
 	let ff = `INSERT INTO img (userId, path) VALUES (?, ?)`;
-	let decoded = jwtDecoded(req.token);
+	let decoded = jwtDecode(req.token);
 	con.connect(function (err){
 		con.query(f, decoded.rr.id, function (err, result) {
 			let r = result[0]['nbr'];
