@@ -137,7 +137,7 @@ router.get("/:id",function (req, res) {
 		SELECT  ?  AS latpoint,  ? AS longpoint
 	) AS p
 	LEFT JOIN img as img ON img.id = user.profilephoto
-	WHERE role = 'user' AND  (sexe = `; 
+	WHERE role != 'preuser' AND  (sexe = `; 
 		let gs = ` AND (preferences = ? OR preferences = 3) AND user.id != ?`;
 		con.connect(function (err) {
 			con.query(g, [decoded.rr.id], function (err, result) {
