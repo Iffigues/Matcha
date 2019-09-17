@@ -54,6 +54,13 @@ async function unreader(user, data) {
 }
 
 async function isBloque(user, data) {
+	const r = await query(`SELECT * FROM id = ?`).then((b) => {
+		if (b && b.length)
+			return 1;
+		return 0;
+	});
+	if (!r)
+		return 0;
 	const v = await query(`SELECT userId, bloqueId FROM bloque WHERE (bloqueId = ? AND userId = ?) OR (bloqueId = ? AND userId = ?)`, [user.rr.id, data.message.toId, data.message.toId, user.rr.id]).then((b) => {
 		if (b && b.length)
 		   return 0;
