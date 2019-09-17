@@ -85,7 +85,7 @@ function Search(props) {
 									<label className="col-form-label">Popularité</label>
 								</div>
 								<InputRange
-									step={3}
+									step={1}
 									name="pop"
 									maxValue={props.popMaxRange.max}
 									minValue={props.popMaxRange.min}
@@ -98,7 +98,7 @@ function Search(props) {
 									<label className="col-form-label">Distance</label>
 								</div>
 								<InputRange
-									step={1000}
+									step={100}
 									name="dist"
 									maxValue={props.distMaxRange.max}
 									minValue={props.distMaxRange.min}

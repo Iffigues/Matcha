@@ -73,16 +73,16 @@ class SuggestionsContainer extends React.Component {
 								min: Math.min.apply(Math, ages),
 								max: Math.max.apply(Math, ages) + 1
 							};
+							const popRangeMin = Math.min.apply(Math, pops) - 1;
 							const popRange = {
-								min: Math.min.apply(Math, pops),
-								max: Math.max.apply(Math, pops) + 3
+								min: popRangeMin < 0 ? 0 : popRangeMin,
+								max: Math.max.apply(Math, pops) + 1
 							};
-							const distRangeMin = Math.min.apply(Math, dists) - 1000;
+							const distRangeMin = Math.min.apply(Math, dists) - 100;
 							const distRange = {
 								min: distRangeMin < 0 ? 0 : distRangeMin,
-								max: Math.max.apply(Math, dists) + 1000
+								max: Math.max.apply(Math, dists) + 100
 							};
-							console.log(data);
 							this.setState({
 								ageRange: ageRange,
 								ageMaxRange: ageRange,
